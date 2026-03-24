@@ -1,4 +1,4 @@
-# The Rebuild Protocol
+# Rebuild The Man Protocol
 
 A mental health app for men who find traditional therapy uncomfortable. Treats mental health challenges like fixing a car or building something - practical, action-oriented, with clear step-by-step instructions.
 

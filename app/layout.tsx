@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Rebuild The Man - Mental Strength System",
+  title: "Rebuild The Man Protocol - Mental Strength System",
   description: "14-day action-driven mental reconstruction protocol. No theory, no fluff. Just focused action to rebuild your mind and reclaim your drive.",
 };
 
