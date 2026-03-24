@@ -20,10 +20,18 @@ export default function NewUserLanding({
       <div className="relative max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="text-7xl mb-6">🔨</div>
-          <h1 className="text-5xl font-bold text-white uppercase tracking-tight mb-4">
+          <div className="mb-6">
+            <div className="text-3xl font-bold text-white uppercase tracking-tight leading-tight">
+              Rebuild the man
+            </div>
+            <div className="font-broadway text-purple-500 text-5xl tracking-wide">
+              Protocol
+            </div>
+          </div>
+          <div className="text-5xl mb-4">🔨</div>
+          <h2 className="text-2xl font-bold text-white uppercase tracking-tight mb-4">
             What Needs Fixing?
-          </h1>
+          </h2>
           <p className="text-xl text-gray-300">
             Choose how you want to start your rebuild
           </p>
@@ -102,7 +110,7 @@ export default function NewUserLanding({
         </div>
 
         {/* Footer Note */}
-        <div className="mt-8 text-center text-gray-500 text-sm">
+        <div className="mt-8 text-center text-white text-sm">
           <p>All options are free. Choose what feels right.</p>
         </div>
       </div>

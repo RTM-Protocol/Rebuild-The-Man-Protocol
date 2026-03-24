@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Abril_Fatface } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+
+const abrilFatface = Abril_Fatface({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-broadway',
+});
 
 export const metadata: Metadata = {
   title: "Rebuild The Man Protocol - Mental Strength System",
@@ -13,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={`dark ${abrilFatface.variable}`}>
       <body className="min-h-screen bg-tactical-black text-gray-100 antialiased">
         <Providers>
           {children}
