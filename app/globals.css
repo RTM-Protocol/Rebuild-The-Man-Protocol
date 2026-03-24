@@ -1,0 +1,1070 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Tactical Background Textures */
+@layer base {
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+    background-image: 
+      linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .02) 25%, rgba(255, 255, 255, .02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .02) 75%, rgba(255, 255, 255, .02) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .02) 25%, rgba(255, 255, 255, .02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .02) 75%, rgba(255, 255, 255, .02) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Carbon Fiber Texture */
+  .bg-carbon {
+    background-color: #0d0d0d;
+    background-image: 
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+      repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,.3) 2px, rgba(0,0,0,.3) 4px);
+  }
+  
+  /* Metal Plate Texture */
+  .bg-metal {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.5);
+  }
+  
+  /* Technical Grid */
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(63, 63, 63, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63, 63, 63, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Angled Corner (top-left) */
+  .corner-cut-tl {
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+  }
+  
+  /* Angled Corner (all corners) */
+  .corner-cut {
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+  
+  /* Sharp angle on right side */
+  .angle-right {
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+  }
+}
+
+/* Tactical UI Elements */
+.protocol-card {
+  @apply bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-tactical-green transition-all duration-200;
+  position: relative;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.protocol-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(106, 142, 78, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.protocol-card:hover::before {
+  opacity: 1;
+}
+
+.btn-primary {
+  @apply bg-tactical-orange hover:bg-tactical-orange-bright text-white font-bold py-3 px-6 transition-all duration-200 uppercase tracking-widest text-sm relative;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+  @apply bg-tactical-steel hover:bg-tactical-metal text-white font-bold py-3 px-6 transition-all duration-200 uppercase tracking-widest text-sm border-2 border-tactical-lightgray relative;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(106, 142, 78, 0.5);
+}
+
+.progress-bar {
+  @apply bg-tactical-steel h-3 overflow-hidden relative;
+  clip-path: polygon(2px 0, 100% 0, 100% calc(100% - 2px), calc(100% - 2px) 100%, 0 100%, 0 2px);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.progress-fill {
+  @apply bg-gradient-to-r from-tactical-green-dark via-tactical-green to-tactical-green-bright h-full relative;
+  transition: width 500ms ease-out;
+  overflow: hidden;
+}
+
+.progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  animation: shimmer 3s infinite;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    transparent 40%,
+    rgba(255, 255, 255, 0.3) 50%, 
+    transparent 60%,
+    transparent 100%
+  );
+  animation: pulse-sweep 3.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse-sweep {
+  0% { 
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.08);
+  }
+}
+
+.breathe-animation {
+  animation: breathe 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes emergency-flash {
+  0%, 100% { 
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% { 
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+}
+
+.emergency-light {
+  animation: emergency-flash 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Sharp, Angular Borders */
+input[type="time"],
+input[type="text"],
+textarea {
+  clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+}
+
+/* Tactical Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-left: 1px solid #2a2a2a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3a5f3a, #2d4f2f);
+  border: 1px solid #1a2a1a;
+  clip-path: polygon(2px 0, 100% 0, 100% calc(100% - 2px), calc(100% - 2px) 100%, 0 100%, 0 2px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4a5f3a, #3d4f2f);
+}
+
+/* Selection */
+::selection {
+  background: rgba(106, 142, 78, 0.3);
+  color: #ffffff;
+}
+
+/* Utility Icons (Font-based for performance) */
+.icon-gear::before {
+  content: '⚙';
+}
+
+.icon-check::before {
+  content: '✓';
+}
+
+.icon-wrench::before {
+  content: '🔧';
+}
+
+.icon-bolt::before {
+  content: '⚡';
+}
+
+/* Light Mode - Comprehensive Theme Override */
+.light-mode {
+  --background: #f5f5f5;
+  --foreground: #1a1a1a;
+}
+
+.light-mode body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Background Colors */
+.light-mode .bg-tactical-black {
+  background-color: #ffffff !important;
+}
+
+.light-mode .bg-tactical-carbon {
+  background-color: #fafafa !important;
+}
+
+.light-mode .bg-tactical-darkgray {
+  background-color: #f0f0f0 !important;
+}
+
+.light-mode .bg-tactical-steel {
+  background-color: #e8e8e8 !important;
+}
+
+.light-mode .bg-tactical-gray {
+  background-color: #e0e0e0 !important;
+}
+
+.light-mode .bg-tactical-metal {
+  background-color: #d8d8d8 !important;
+}
+
+.light-mode .bg-tactical-lightgray {
+  background-color: #d0d0d0 !important;
+}
+
+.light-mode .bg-tactical-chrome {
+  background-color: #c8c8c8 !important;
+}
+
+/* Text Colors */
+.light-mode .text-white {
+  color: #1a1a1a !important;
+}
+
+.light-mode .text-gray-100 {
+  color: #2a2a2a !important;
+}
+
+.light-mode .text-gray-200 {
+  color: #3a3a3a !important;
+}
+
+.light-mode .text-gray-300 {
+  color: #4a4a4a !important;
+}
+
+.light-mode .text-gray-400 {
+  color: #6a6a6a !important;
+}
+
+.light-mode .text-gray-500 {
+  color: #7a7a7a !important;
+}
+
+.light-mode .text-gray-600 {
+  color: #8a8a8a !important;
+}
+
+.light-mode .text-gray-700 {
+  color: #4a4a4a !important;
+}
+
+.light-mode .text-gray-800 {
+  color: #3a3a3a !important;
+}
+
+.light-mode .text-gray-900 {
+  color: #2a2a2a !important;
+}
+
+/* Tactical Text Colors - Keep colors but ensure contrast */
+.light-mode .text-tactical-green {
+  color: #2d5a1f !important;
+}
+
+.light-mode .text-tactical-green-dark {
+  color: #1d3a14 !important;
+}
+
+.light-mode .text-tactical-green-bright {
+  color: #3d7a2f !important;
+}
+
+.light-mode .text-tactical-green-neon {
+  color: #4a9a3a !important;
+}
+
+.light-mode .text-tactical-orange {
+  color: #b8510f !important;
+}
+
+.light-mode .text-tactical-orange-dark {
+  color: #8a3d0a !important;
+}
+
+.light-mode .text-tactical-orange-bright {
+  color: #d9611f !important;
+}
+
+.light-mode .text-tactical-orange-hot {
+  color: #e8712f !important;
+}
+
+.light-mode .text-tactical-blue-steel {
+  color: #2d4a63 !important;
+}
+
+.light-mode .text-tactical-red-alert {
+  color: #b8212d !important;
+}
+
+.light-mode .text-tactical-yellow-caution {
+  color: #c9981f !important;
+}
+
+/* Border Colors */
+.light-mode .border-tactical-black {
+  border-color: #d0d0d0 !important;
+}
+
+.light-mode .border-tactical-darkgray {
+  border-color: #c0c0c0 !important;
+}
+
+.light-mode .border-tactical-gray {
+  border-color: #b0b0b0 !important;
+}
+
+.light-mode .border-tactical-lightgray {
+  border-color: #a0a0a0 !important;
+}
+
+.light-mode .border-tactical-steel {
+  border-color: #b8b8b8 !important;
+}
+
+.light-mode .border-tactical-metal {
+  border-color: #c8c8c8 !important;
+}
+
+.light-mode .border-tactical-green {
+  border-color: #3d4f2f !important;
+}
+
+.light-mode .border-tactical-orange {
+  border-color: #cc6119 !important;
+}
+
+/* Button Styles */
+.light-mode .btn-primary {
+  background-color: #cc6119 !important;
+  color: #ffffff !important;
+}
+
+.light-mode .btn-primary:hover {
+  background-color: #e87528 !important;
+}
+
+.light-mode .btn-secondary {
+  background-color: #e8e8e8 !important;
+  color: #1a1a1a !important;
+  border-color: #a0a0a0 !important;
+}
+
+.light-mode .btn-secondary:hover {
+  background-color: #d8d8d8 !important;
+}
+
+/* Protocol Cards */
+.light-mode .protocol-card {
+  background-color: #f0f0f0 !important;
+  border-color: #a0a0a0 !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Progress Bars */
+.light-mode .progress-bar {
+  background-color: #e8e8e8 !important;
+}
+
+.light-mode .progress-fill {
+  background: linear-gradient(to right, #2d3a22, #3d4f2f, #5a7043) !important;
+}
+
+/* Scrollbar */
+.light-mode ::-webkit-scrollbar {
+  background: #f5f5f5 !important;
+}
+
+.light-mode ::-webkit-scrollbar-track {
+  background: #e8e8e8 !important;
+  border-left: 1px solid #d0d0d0 !important;
+}
+
+.light-mode ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b0b0b0, #a0a0a0) !important;
+  border: 1px solid #909090 !important;
+}
+
+.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #3d5f3d, #2d4f2d) !important;
+}
+
+/* Input Fields */
+.light-mode input[type="text"],
+.light-mode input[type="time"],
+.light-mode textarea {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border-color: #a0a0a0 !important;
+}
+
+.light-mode input[type="text"]:focus,
+.light-mode input[type="time"]:focus,
+.light-mode textarea:focus {
+  border-color: #cc6119 !important;
+  outline-color: #cc6119 !important;
+}
+
+/* Links */
+.light-mode a {
+  color: #cc6119 !important;
+}
+
+.light-mode a:hover {
+  color: #e87528 !important;
+}
+
+/* Selection - More subtle in light mode */
+.light-mode ::selection {
+  background: rgba(61, 79, 47, 0.2) !important;
+  color: #1a1a1a !important;
+}
+
+.light-mode ::-moz-selection {
+  background: rgba(61, 79, 47, 0.2) !important;
+  color: #1a1a1a !important;
+}
+
+/* Carbon Fiber Texture Override */
+.light-mode .bg-carbon {
+  background-color: #fafafa !important;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 4px),
+    repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,.02) 2px, rgba(0,0,0,.02) 4px) !important;
+}
+
+/* Metal Plate Texture Override */
+.light-mode .bg-metal {
+  background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.05), inset 0 -1px 0 rgba(255,255,255,0.3) !important;
+}
+
+/* Background Texture Override */
+.light-mode body::before {
+  opacity: 0.02 !important;
+  background-image: 
+    linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .01) 25%, rgba(0, 0, 0, .01) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .01) 75%, rgba(0, 0, 0, .01) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .01) 25%, rgba(0, 0, 0, .01) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .01) 75%, rgba(0, 0, 0, .01) 76%, transparent 77%, transparent) !important;
+}
+
+/* Modal Overlays */
+.light-mode .bg-black\/80,
+.light-mode .bg-black\/90 {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Hover States - Preserve Animations */
+.light-mode .hover\:bg-tactical-gray:hover {
+  background-color: #d8d8d8 !important;
+}
+
+.light-mode .hover\:bg-tactical-lightgray:hover {
+  background-color: #c8c8c8 !important;
+}
+
+.light-mode .hover\:bg-tactical-darkgray:hover {
+  background-color: #e0e0e0 !important;
+}
+
+.light-mode .hover\:text-tactical-orange:hover {
+  color: #cc6119 !important;
+}
+
+.light-mode .hover\:text-tactical-green:hover {
+  color: #3d4f2f !important;
+}
+
+.light-mode .hover\:text-tactical-green-bright:hover {
+  color: #3d7a2f !important;
+}
+
+.light-mode .hover\:border-tactical-orange:hover {
+  border-color: #cc6119 !important;
+}
+
+.light-mode .hover\:border-tactical-green:hover {
+  border-color: #3d4f2f !important;
+}
+
+.light-mode .hover\:border-tactical-green-bright:hover {
+  border-color: #3d7a2f !important;
+}
+
+/* Group Hover States - Critical for Protocol Cards */
+.light-mode .group:hover .group-hover\:text-tactical-orange {
+  color: #cc6119 !important;
+}
+
+.light-mode .group:hover .group-hover\:text-tactical-green-bright {
+  color: #3d7a2f !important;
+}
+
+.light-mode .group:hover .group-hover\:ml-3 {
+  margin-left: 0.75rem !important;
+}
+
+.light-mode .group:hover .group-hover\:scale-125 {
+  transform: scale(1.25) !important;
+}
+
+.light-mode .group:hover .group-hover\:scale-110 {
+  transform: scale(1.1) !important;
+}
+
+/* Protocol Card Hover Animation */
+.light-mode .protocol-card:hover {
+  border-color: #3d4f2f !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(61, 79, 47, 0.2) !important;
+}
+
+.light-mode .protocol-card:hover::before {
+  opacity: 1 !important;
+  background: linear-gradient(90deg, transparent, rgba(61, 79, 47, 0.4), transparent) !important;
+}
+
+/* Link Hover Animations */
+.light-mode a:hover {
+  transition: color 0.2s ease !important;
+}
+
+.light-mode .hover\:pl-8:hover {
+  padding-left: 2rem !important;
+}
+
+/* Button Hover Animations */
+.light-mode .btn-primary:hover {
+  transform: translateY(-1px) !important;
+  transition: all 0.2s ease !important;
+}
+
+.light-mode .btn-secondary:hover {
+  transform: translateY(-1px) !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Scale Animations */
+.light-mode .hover\:scale-110:hover {
+  transform: scale(1.1) !important;
+}
+
+.light-mode .hover\:scale-105:hover {
+  transform: scale(1.05) !important;
+}
+
+/* Background Hover Effects */
+.light-mode .hover\:bg-tactical-green\/10:hover {
+  background-color: rgba(61, 79, 47, 0.1) !important;
+}
+
+.light-mode .hover\:bg-tactical-orange\/10:hover {
+  background-color: rgba(204, 97, 25, 0.1) !important;
+}
+
+.light-mode .hover\:bg-red-900\/30:hover {
+  background-color: rgba(204, 41, 54, 0.3) !important;
+}
+
+/* Text Color Hover Effects */
+.light-mode .hover\:text-red-400:hover {
+  color: #e85a6a !important;
+}
+
+.light-mode .hover\:text-red-500:hover {
+  color: #ef4444 !important;
+}
+
+/* Transition Preservations */
+.light-mode .transition-all {
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.light-mode .transition-colors {
+  transition-property: color, background-color, border-color !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.light-mode .transition-transform {
+  transition-property: transform !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Breathe Animation - Ensure it works in light mode */
+.light-mode .breathe-animation {
+  animation: breathe 3s ease-in-out infinite !important;
+  display: inline-block !important;
+}
+
+/* Emergency Flash Animation */
+.light-mode .emergency-light {
+  animation: emergency-flash 2s ease-in-out infinite !important;
+  display: inline-block !important;
+}
+
+/* Featured Protocol Card Hover */
+.light-mode .group:hover .group-hover\:text-tactical-orange {
+  color: #cc6119 !important;
+  transition: color 0.2s ease !important;
+}
+
+/* Opacity Variants - Only apply to block elements, not inline text */
+.light-mode .bg-tactical-black\/50 {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.light-mode .bg-tactical-gray\/50 {
+  background-color: rgba(224, 224, 224, 0.5) !important;
+}
+
+.light-mode .bg-tactical-darkgray\/30 {
+  background-color: rgba(240, 240, 240, 0.3) !important;
+}
+
+/* Background colors on containers - ensure they don't bleed */
+.light-mode .bg-tactical-green\/10 {
+  background-color: rgba(61, 79, 47, 0.1) !important;
+}
+
+.light-mode .bg-tactical-green\/20 {
+  background-color: rgba(61, 79, 47, 0.2) !important;
+}
+
+.light-mode .bg-tactical-orange\/10 {
+  background-color: rgba(204, 97, 25, 0.1) !important;
+}
+
+.light-mode .bg-tactical-orange\/20 {
+  background-color: rgba(204, 97, 25, 0.2) !important;
+}
+
+/* Prevent background colors from bleeding onto text */
+.light-mode p,
+.light-mode span:not([class*="px-"]):not([class*="py-"]):not([class*="p-"]),
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6,
+.light-mode li,
+.light-mode td {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Ensure container backgrounds are properly contained */
+.light-mode section,
+.light-mode div[class*="bg-"],
+.light-mode .bg-tactical-orange\/10,
+.light-mode .bg-tactical-green\/10,
+.light-mode .bg-tactical-green\/20,
+.light-mode .bg-tactical-orange\/20 {
+  overflow: hidden !important;
+}
+
+/* Badges and tags should keep backgrounds but be contained */
+.light-mode span[class*="bg-"][class*="px-"],
+.light-mode span[class*="bg-"][class*="py-"],
+.light-mode span[class*="bg-"][class*="p-"] {
+  display: inline-block !important;
+  background-clip: padding-box !important;
+}
+
+/* Gradient Overrides */
+.light-mode .bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important;
+}
+
+.light-mode .from-tactical-darkgray {
+  --tw-gradient-from: #f0f0f0 !important;
+}
+
+.light-mode .to-tactical-gray {
+  --tw-gradient-to: #e0e0e0 !important;
+}
+
+.light-mode .from-tactical-green {
+  --tw-gradient-from: #3d4f2f !important;
+}
+
+.light-mode .to-tactical-green-dark {
+  --tw-gradient-to: #2d3a22 !important;
+}
+
+/* Border Width Overrides */
+.light-mode .border-l-4 {
+  border-left-width: 4px !important;
+}
+
+.light-mode .border-l-2 {
+  border-left-width: 2px !important;
+}
+
+.light-mode .border-t-2 {
+  border-top-width: 2px !important;
+}
+
+.light-mode .border-b-2 {
+  border-bottom-width: 2px !important;
+}
+
+/* Red Alert Colors */
+.light-mode .border-red-600,
+.light-mode .border-red-700 {
+  border-color: #cc2936 !important;
+}
+
+.light-mode .bg-red-900\/20 {
+  background-color: rgba(204, 41, 54, 0.2) !important;
+}
+
+.light-mode .bg-red-900\/30 {
+  background-color: rgba(204, 41, 54, 0.3) !important;
+}
+
+.light-mode .bg-red-900 {
+  background-color: #b8212d !important;
+}
+
+.light-mode .bg-red-800 {
+  background-color: #c8313d !important;
+}
+
+.light-mode .text-red-400 {
+  color: #e85a6a !important;
+}
+
+.light-mode .border-red-500 {
+  border-color: #d93a4a !important;
+}
+
+/* Green Success Colors */
+.light-mode .bg-tactical-green {
+  background-color: #3d4f2f !important;
+}
+
+.light-mode .bg-tactical-green\/5 {
+  background-color: rgba(61, 79, 47, 0.05) !important;
+}
+
+/* Blue Colors */
+.light-mode .bg-blue-500\/10 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.light-mode .text-blue-400 {
+  color: #3b82f6 !important;
+}
+
+.light-mode .text-blue-300 {
+  color: #60a5fa !important;
+}
+
+/* Purple Colors */
+.light-mode .bg-purple-500\/10 {
+  background-color: rgba(168, 85, 247, 0.1) !important;
+}
+
+.light-mode .text-purple-400 {
+  color: #a855f7 !important;
+}
+
+.light-mode .text-purple-300 {
+  color: #c084fc !important;
+}
+
+/* Shadow Overrides */
+.light-mode .shadow-lg,
+.light-mode .shadow-xl,
+.light-mode .shadow-2xl {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Component-Specific Overrides */
+.light-mode .corner-cut,
+.light-mode .corner-cut-tl,
+.light-mode .angle-right {
+  /* Clip paths work the same in light mode */
+}
+
+/* Ensure all headings are readable - no background highlights */
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6 {
+  color: #1a1a1a !important;
+  background-color: transparent !important;
+  background: none !important;
+}
+
+/* Ensure paragraphs and text elements have no background */
+.light-mode p {
+  background-color: transparent !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
+.light-mode span:not([class*="bg-"]):not([class*="px-"]):not([class*="py-"]) {
+  background-color: transparent !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
+/* Remove text shadows that might create unwanted highlights */
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6,
+.light-mode p,
+.light-mode span,
+.light-mode a,
+.light-mode li {
+  text-shadow: none !important;
+}
+
+/* Ensure background containers properly contain their content */
+.light-mode .bg-tactical-orange\/10:has(p),
+.light-mode .bg-tactical-green\/10:has(p),
+.light-mode .bg-tactical-green\/20:has(p),
+.light-mode .bg-tactical-orange\/20:has(p) {
+  display: block !important;
+}
+
+/* Code/Mono text - Remove background to prevent highlights */
+.light-mode code {
+  background-color: transparent !important;
+  color: #1a1a1a !important;
+  padding: 0 !important;
+}
+
+.light-mode .font-mono {
+  background-color: transparent !important;
+  color: #1a1a1a !important;
+}
+
+/* Only apply background to code blocks, not inline code */
+.light-mode pre code {
+  background-color: #f0f0f0 !important;
+  padding: 0.5rem !important;
+  display: block !important;
+}
+
+/* Disabled states */
+.light-mode .opacity-50,
+.light-mode .cursor-not-allowed {
+  opacity: 0.6 !important;
+}
+
+.light-mode .opacity-75 {
+  opacity: 0.8 !important;
+}
+
+/* Focus states */
+.light-mode *:focus {
+  outline-color: #cc6119 !important;
+}
+
+.light-mode *:focus-visible {
+  outline: 2px solid #cc6119 !important;
+  outline-offset: 2px !important;
+}
+
+/* Active states */
+.light-mode .active,
+.light-mode [aria-current="page"] {
+  background-color: #cc6119 !important;
+  color: #ffffff !important;
+}
+
+/* Loading states */
+.light-mode .animate-pulse {
+  background-color: #e8e8e8 !important;
+}
+
+/* Badge/Tag styles */
+.light-mode .bg-tactical-green.text-white {
+  background-color: #3d4f2f !important;
+  color: #ffffff !important;
+}
+
+.light-mode .bg-tactical-orange.text-white {
+  background-color: #cc6119 !important;
+  color: #ffffff !important;
+}
+
+/* Table/List styles */
+.light-mode table {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+}
+
+.light-mode th {
+  background-color: #f0f0f0 !important;
+  color: #1a1a1a !important;
+}
+
+.light-mode td {
+  background-color: #ffffff !important;
+  color: #1a1a1a !important;
+  border-color: #d0d0d0 !important;
+}
+
+/* Ensure contrast for important elements */
+.light-mode .text-tactical-green-bright {
+  color: #3d7a2f !important;
+}
+
+.light-mode .text-tactical-orange-bright {
+  color: #d9611f !important;
+}
+
+/* Landing Page Animations */
+.fade-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-on-scroll.animate-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Protocol Card Hover Enhancement */
+.protocol-card {
+  transition: all 0.3s ease;
+}
+
+.protocol-card:hover {
+  box-shadow: 0 8px 24px rgba(212, 102, 47, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Ensure hover animations work in both modes */
+.light-mode .protocol-card:hover {
+  box-shadow: 0 8px 24px rgba(61, 79, 47, 0.2) !important;
+}
