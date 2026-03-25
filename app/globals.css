@@ -197,32 +197,18 @@ body {
   }
 }
 
-@keyframes shake {
-  0%, 100% { transform: rotate(0deg); }
-  15% { transform: rotate(-6deg); }
-  30% { transform: rotate(6deg); }
-  45% { transform: rotate(-4deg); }
-  60% { transform: rotate(4deg); }
-  75% { transform: rotate(-2deg); }
-  90% { transform: rotate(2deg); }
-}
-
-@keyframes aggressive-pulse {
-  0%, 100% { transform: scale(1); }
-  20% { transform: scale(1.35); }
-  40% { transform: scale(0.85); }
-  60% { transform: scale(1.25); }
-  80% { transform: scale(0.95); }
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.18);
+  }
 }
 
 .breathe-animation {
-  animation: shake 0.6s ease-in-out infinite;
+  animation: breathe 2s ease-in-out infinite;
   display: inline-block;
-}
-
-.breathe-animation:hover,
-.group:hover .breathe-animation {
-  animation: aggressive-pulse 0.4s ease-in-out infinite;
 }
 
 @keyframes emergency-flash {
@@ -720,13 +706,8 @@ textarea {
 
 /* Breathe Animation - Ensure it works in light mode */
 .light-mode .breathe-animation {
-  animation: shake 0.6s ease-in-out infinite !important;
+  animation: breathe 2s ease-in-out infinite !important;
   display: inline-block !important;
-}
-
-.light-mode .breathe-animation:hover,
-.light-mode .group:hover .breathe-animation {
-  animation: aggressive-pulse 0.4s ease-in-out infinite !important;
 }
 
 /* Emergency Flash Animation */
