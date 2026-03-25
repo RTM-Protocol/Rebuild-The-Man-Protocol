@@ -37,11 +37,9 @@ export default function LandingPage() {
             <div className="flex items-center gap-3">
               <span className="text-2xl">🔨</span>
               <div>
-                <div className="font-brand text-white font-bold uppercase tracking-tight text-lg">
-                  Rebuild The Man Protocol
-                </div>
-                <div className="text-tactical-green-bright text-xs font-mono">
-                  REPAIR MANUAL FOR MEN
+                <div className="font-brand">
+                  <span className="block text-lg font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>Protocol</span>
                 </div>
               </div>
             </div>
@@ -181,9 +179,10 @@ export default function LandingPage() {
                 [ SOLUTION DEPLOYED ]
               </div>
               
-              <h2 className="font-brand text-4xl sm:text-5xl font-bold text-white uppercase mb-6">
-                Introducing<br />
-                Rebuild The Man Protocol
+              <h2 className="font-brand text-4xl sm:text-5xl font-bold uppercase mb-6">
+                <span style={{ color: '#faf9f5' }}>Introducing</span><br />
+                <span style={{ color: '#faf9f5' }}>Rebuild The Man</span><br />
+                <span className="text-2xl sm:text-3xl font-semibold tracking-[0.25em]" style={{ color: '#d97757' }}>Protocol</span>
               </h2>
               
               <p className="text-xl text-tactical-green-bright mb-6 font-semibold">
@@ -345,8 +344,9 @@ export default function LandingPage() {
 
             {/* Rebuild The Man Protocol */}
             <div className="bg-tactical-darkgray border-2 border-tactical-green p-8">
-              <h3 className="font-brand text-2xl font-bold text-tactical-green-bright uppercase mb-6 text-center">
-                Rebuild The Man Protocol
+              <h3 className="font-brand text-center mb-6">
+                <span className="block text-2xl font-bold uppercase" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
+                <span className="block text-sm font-semibold uppercase tracking-[0.25em]" style={{ color: '#d97757' }}>Protocol</span>
               </h3>
               <div className="space-y-4">
                 {[
@@ -505,11 +505,9 @@ export default function LandingPage() {
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">🔨</span>
                 <div>
-                  <div className="font-brand text-white font-bold uppercase text-sm">
-                    Rebuild The Man Protocol
-                  </div>
-                  <div className="text-tactical-green-bright text-xs font-mono">
-                    REPAIR MANUAL FOR MEN
+                  <div className="font-brand">
+                    <span className="block text-sm font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
+                    <span className="block text-[8px] font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>Protocol</span>
                   </div>
                 </div>
               </div>

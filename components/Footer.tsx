@@ -18,8 +18,8 @@ export default function Footer() {
             Contact
           </a>
         </div>
-        <p className="font-brand text-white text-xs mb-2 text-center">
-          © 2026 Rebuild The Man Protocol. All rights reserved.
+        <p className="font-brand text-xs mb-2 text-center">
+          © 2026 <span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#d97757' }}>Protocol</span>. All rights reserved.
         </p>
         <p className="text-white text-xs max-w-4xl mx-auto leading-relaxed text-center">
           <span className="text-tactical-orange font-bold">Disclaimer:</span> This app is not a substitute for professional mental health care. Results vary based on individual circumstances and commitment. If you&apos;re experiencing a mental health crisis, thoughts of self-harm, or symptoms interfering with daily functioning, seek immediate professional help from a qualified mental health professional or call emergency services.

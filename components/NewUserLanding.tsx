@@ -21,11 +21,11 @@ export default function NewUserLanding({
         <div className="relative max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-10">
-          <div className="mb-5">
-            <div className="font-brand text-4xl font-bold text-white uppercase tracking-tight leading-tight">
+          <div className="mb-5 inline-block">
+            <div className="font-brand text-5xl sm:text-6xl font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>
               Rebuild the man
             </div>
-            <div className="font-brand text-6xl font-bold text-white uppercase tracking-tight leading-none">
+            <div className="font-brand text-2xl sm:text-3xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>
               Protocol
             </div>
           </div>

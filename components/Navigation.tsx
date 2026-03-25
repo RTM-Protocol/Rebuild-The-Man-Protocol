@@ -202,11 +202,9 @@ export default function Navigation() {
             >
               <span className="text-2xl">🔨</span>
               <div>
-                <div className="font-brand text-white font-bold uppercase tracking-tight text-lg group-hover:text-tactical-orange transition-colors">
-                  Rebuild The Man Protocol
-                </div>
-                <div className="text-tactical-green-bright text-xs font-mono">
-                  MENTAL STRENGTH SYSTEM
+                <div className="font-brand">
+                  <span className="block text-lg font-bold uppercase tracking-tight leading-none group-hover:text-tactical-orange transition-colors" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>Protocol</span>
                 </div>
               </div>
             </Link>
