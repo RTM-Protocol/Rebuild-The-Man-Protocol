@@ -247,7 +247,7 @@ export default function FAQPage() {
             Questions? Answered.
           </h1>
           <p className="text-xl text-gray-300">
-            Everything you need to know about <span className="font-brand"><span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#d97757' }}>Protocol</span></span>
+            Everything you need to know about <span className="font-brand"><span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#cc6119' }}>Protocol</span></span>
           </p>
         </div>
       </header>

@@ -130,7 +130,7 @@ export default function Home() {
             <div className="max-w-3xl mx-auto">
               <h1 className="font-brand mb-4">
                 <span className="block text-5xl font-bold tracking-tight uppercase leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
-                <span className="block text-2xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>Protocol</span>
+                <span className="block text-2xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#cc6119' }}>Protocol</span>
               </h1>
               <p className="text-base text-tactical-green-bright leading-relaxed mb-2 uppercase">
                 No theory, no fluff, no excuses.

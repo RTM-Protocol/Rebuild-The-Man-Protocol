@@ -25,7 +25,7 @@ export default function NewUserLanding({
             <div className="font-brand text-5xl sm:text-6xl font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>
               Rebuild the man
             </div>
-            <div className="font-brand text-2xl sm:text-3xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#d97757' }}>
+            <div className="font-brand text-2xl sm:text-3xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#cc6119' }}>
               Protocol
             </div>
           </div>

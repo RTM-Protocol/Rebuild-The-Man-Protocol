@@ -295,7 +295,7 @@ export default function SettingsPage() {
         <section className="mb-8 bg-tactical-darkgray border border-tactical-lightgray p-6">
               <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
             <span>ℹ️</span>
-            <span className="font-brand"><span style={{ color: '#faf9f5' }}>About Rebuild The Man</span> <span style={{ color: '#d97757' }}>Protocol</span></span>
+            <span className="font-brand"><span style={{ color: '#faf9f5' }}>About Rebuild The Man</span> <span style={{ color: '#cc6119' }}>Protocol</span></span>
           </h2>
           
           <div className="space-y-4 text-gray-300 leading-relaxed">
@@ -364,7 +364,7 @@ export default function SettingsPage() {
 
         {/* App Info */}
         <div className="text-center text-gray-500 text-sm">
-          <p className="font-brand mb-1"><span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#d97757' }}>Protocol</span> v1.0.0</p>
+          <p className="font-brand mb-1"><span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#cc6119' }}>Protocol</span> v1.0.0</p>
           <p>Built with purpose. Designed for results.</p>
         </div>
       </div>
