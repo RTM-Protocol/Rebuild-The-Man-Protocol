@@ -62,7 +62,7 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
           <div className="flex flex-col items-center text-center">
             <div className="text-6xl mb-4 breathe-animation">🔨</div>
             <div className="w-full">
-              <h3 className="text-3xl font-bold text-white group-hover:text-tactical-orange transition-colors uppercase mb-2">
+              <h3 className="font-brand text-3xl font-bold text-white group-hover:text-tactical-orange transition-colors uppercase mb-2">
                 Rebuild The Man
               </h3>
               <p className="text-tactical-green-bright font-mono text-sm mb-4">

@@ -18,7 +18,7 @@ export default function Footer() {
             Contact
           </a>
         </div>
-        <p className="text-white text-xs mb-2 text-center">
+        <p className="font-brand text-white text-xs mb-2 text-center">
           © 2026 Rebuild The Man Protocol. All rights reserved.
         </p>
         <p className="text-white text-xs max-w-4xl mx-auto leading-relaxed text-center">

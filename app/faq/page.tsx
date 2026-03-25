@@ -247,7 +247,7 @@ export default function FAQPage() {
             Questions? Answered.
           </h1>
           <p className="text-xl text-gray-300">
-            Everything you need to know about Rebuild The Man Protocol
+            Everything you need to know about <span className="font-brand">Rebuild The Man Protocol</span>
           </p>
         </div>
       </header>

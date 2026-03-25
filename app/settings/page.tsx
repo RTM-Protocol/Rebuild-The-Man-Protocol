@@ -295,7 +295,7 @@ export default function SettingsPage() {
         <section className="mb-8 bg-tactical-darkgray border border-tactical-lightgray p-6">
               <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
             <span>ℹ️</span>
-            <span>About Rebuild The Man Protocol</span>
+            <span className="font-brand">About Rebuild The Man Protocol</span>
           </h2>
           
           <div className="space-y-4 text-gray-300 leading-relaxed">
@@ -364,7 +364,7 @@ export default function SettingsPage() {
 
         {/* App Info */}
         <div className="text-center text-gray-500 text-sm">
-          <p className="mb-1">Rebuild The Man Protocol v1.0.0</p>
+          <p className="font-brand mb-1">Rebuild The Man Protocol v1.0.0</p>
           <p>Built with purpose. Designed for results.</p>
         </div>
       </div>

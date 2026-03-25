@@ -21,14 +21,14 @@ export default function NewUserLanding({
         <div className="relative max-w-2xl w-full">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="mb-5">
-              <div className="font-brand text-4xl font-bold text-white uppercase tracking-tight leading-tight">
-                Rebuild the man
-              </div>
-              <div className="font-brand text-6xl font-extrabold text-white tracking-tight leading-none">
-                Protocol
-              </div>
+          <div className="mb-5">
+            <div className="font-brand text-4xl font-bold text-white uppercase tracking-tight leading-tight">
+              Rebuild the man
             </div>
+            <div className="font-brand text-6xl font-bold text-white uppercase tracking-tight leading-none">
+              Protocol
+            </div>
+          </div>
             <div className="text-4xl mb-3">🔨</div>
             <h2 className="text-2xl font-bold text-white uppercase tracking-tight mb-3">
               What Needs Fixing?

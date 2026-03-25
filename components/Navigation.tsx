@@ -202,7 +202,7 @@ export default function Navigation() {
             >
               <span className="text-2xl">🔨</span>
               <div>
-                <div className="text-white font-bold uppercase tracking-tight text-lg group-hover:text-tactical-orange transition-colors">
+                <div className="font-brand text-white font-bold uppercase tracking-tight text-lg group-hover:text-tactical-orange transition-colors">
                   Rebuild The Man Protocol
                 </div>
                 <div className="text-tactical-green-bright text-xs font-mono">
