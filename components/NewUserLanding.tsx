@@ -46,7 +46,7 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-orange hover:border-tactical-orange-bright p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl group-hover:scale-110 transition-transform">
+                <div className="text-4xl breathe-animation">
                   🎯
                 </div>
                 <div className="flex-1">
@@ -69,7 +69,7 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-green hover:border-tactical-green-bright p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl group-hover:scale-110 transition-transform">
+                <div className="text-4xl breathe-animation">
                   📋
                 </div>
                 <div className="flex-1">
@@ -92,7 +92,7 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-white p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl group-hover:scale-110 transition-transform">
+                <div className="text-4xl breathe-animation">
                   🔨
                 </div>
                 <div className="flex-1">

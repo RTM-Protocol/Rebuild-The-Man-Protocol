@@ -151,7 +151,7 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
               >
                 <div className="flex items-center gap-4">
                   {'icon' in option && (
-                    <span className="text-4xl group-hover:scale-110 transition-transform">
+                    <span className="text-4xl breathe-animation">
                       {option.icon}
                     </span>
                   )}
