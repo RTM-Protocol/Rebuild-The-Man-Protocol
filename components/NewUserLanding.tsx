@@ -21,10 +21,10 @@ export default function NewUserLanding({
         {/* Header */}
         <div className="text-center mb-12">
           <div className="mb-6">
-            <div className="text-3xl font-bold text-white uppercase tracking-tight leading-tight">
+            <div className="font-brand text-4xl font-bold text-white uppercase tracking-tight leading-tight">
               Rebuild the man
             </div>
-            <div className="font-broadway text-purple-500 text-5xl tracking-wide">
+            <div className="font-brand text-6xl font-extrabold text-white tracking-tight leading-none">
               Protocol
             </div>
           </div>

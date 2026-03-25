@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Abril_Fatface } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const abrilFatface = Abril_Fatface({
-  weight: '400',
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-broadway',
+  variable: '--font-brand',
 });
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${abrilFatface.variable}`}>
+    <html lang="en" className={`dark ${plusJakartaSans.variable}`}>
       <body className="min-h-screen bg-tactical-black text-gray-100 antialiased">
         <Providers>
           {children}

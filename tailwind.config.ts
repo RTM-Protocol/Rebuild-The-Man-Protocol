@@ -42,7 +42,7 @@ const config: Config = {
       fontFamily: {
         'tactical': ['monospace', 'Courier New', 'Courier'],
         'display': ['Impact', 'Arial Black', 'sans-serif'],
-        'broadway': ['var(--font-broadway)', 'serif'],
+        'brand': ['var(--font-brand)', 'sans-serif'],
       },
       borderWidth: {
         '3': '3px',
