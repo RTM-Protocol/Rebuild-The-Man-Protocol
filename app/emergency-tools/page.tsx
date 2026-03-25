@@ -25,18 +25,15 @@ export default function EmergencyToolsPage() {
             </Link>
           </div>
           
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-5xl emergency-light">🚨</span>
-            <div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-white uppercase tracking-tight">
-                Emergency Protocols
-              </h1>
-            </div>
+          <div className="text-center">
+            <div className="text-5xl mb-4">🚨</div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white uppercase tracking-tight mb-4">
+              Emergency Protocols
+            </h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Quick relief tools for when you need help right now. Pick your situation, follow the steps, regain control.
+            </p>
           </div>
-          
-          <p className="text-xl text-gray-300 max-w-3xl">
-            Quick relief tools for when you need help right now. Pick your situation, follow the steps, regain control.
-          </p>
         </div>
       </header>
 
@@ -137,7 +134,7 @@ export default function EmergencyToolsPage() {
                     </div>
                     <div className="text-gray-300 space-y-3">
                       <div className="flex items-start gap-3">
-                        <span className="text-red-500 font-bold flex-shrink-0 emergency-light">🚨</span>
+                        <span className="text-red-500 font-bold flex-shrink-0">🚨</span>
                         <div className="text-sm">
                           <div className="text-gray-400">Emergency Services:</div>
                           <div className="text-white font-bold text-lg">{resource.emergency}</div>
