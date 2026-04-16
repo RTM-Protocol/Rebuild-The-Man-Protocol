@@ -7,6 +7,7 @@ import { protocols } from '@/data/protocols';
 import { ProtocolDuration, IntensityMode } from '@/types';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import IntensitySelector from '@/components/IntensitySelector';
+import AccountabilityPartnerPrompt from '@/components/AccountabilityPartnerPrompt';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Navigation from '@/components/Navigation';
 import { useProgress } from '@/contexts/ProgressContext';
@@ -29,6 +30,7 @@ export default function ProtocolDetail() {
   const [showModal, setShowModal] = useState(false);
   const [showReplaceWarning, setShowReplaceWarning] = useState(false);
   const [showIntensitySelector, setShowIntensitySelector] = useState(false);
+  const [showAccountabilityPrompt, setShowAccountabilityPrompt] = useState(false);
   const [selectedIntensity, setSelectedIntensity] = useState<IntensityMode>('standard');
 
   // Check if this is the user's active protocol
@@ -77,11 +79,13 @@ export default function ProtocolDetail() {
 
   const handleIntensitySelected = () => {
     if (!selectedDuration || !protocol) return;
-    
-    // Use progress context to start protocol with selected intensity
+    setShowIntensitySelector(false);
+    setShowAccountabilityPrompt(true);
+  };
+
+  const handleStartProtocol = () => {
+    if (!selectedDuration || !protocol) return;
     startProtocol(protocol.id, selectedDuration, selectedIntensity);
-    
-    // Navigate to day 1
     router.push(`/protocol/${protocol.id}/mission/1?duration=${selectedDuration}`);
   };
 
@@ -398,6 +402,19 @@ export default function ProtocolDetail() {
           onContinue={handleIntensitySelected}
         />
       )}
+
+      {/* Accountability Partner Prompt */}
+      <AccountabilityPartnerPrompt
+        isOpen={showAccountabilityPrompt}
+        onAccept={() => {
+          setShowAccountabilityPrompt(false);
+          handleStartProtocol();
+        }}
+        onDecline={() => {
+          setShowAccountabilityPrompt(false);
+          handleStartProtocol();
+        }}
+      />
 
       {/* Active Protocol Blocker */}
       {activeProtocol && (

@@ -15,6 +15,7 @@ import MissionFieldNotes from '@/components/MissionFieldNotes';
 import CommandersBrief from '@/components/CommandersBrief';
 import IntensitySelector from '@/components/IntensitySelector';
 import IntensityEscalationPrompt from '@/components/IntensityEscalationPrompt';
+import MissedDayPrompt from '@/components/MissedDayPrompt';
 import { shouldShowBrief, generateCommandersBrief } from '@/utils/briefGenerator';
 import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReason, getCompletionLimitMessage } from '@/utils/progressUtils';
 import StatCard from '@/components/StatCard';
@@ -29,11 +30,12 @@ export default function MissionPage() {
   const [showCommandersBrief, setShowCommandersBrief] = useState(false);
   const [showIntensityChange, setShowIntensityChange] = useState(false);
   const [showEscalationPrompt, setShowEscalationPrompt] = useState(false);
+  const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [tempIntensity, setTempIntensity] = useState<IntensityMode>('standard');
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { activeProtocol, completeDay, savePreMissionCheckIn, savePostMissionCheckIn, saveFieldNotes, saveWeeklyBrief, changeIntensity, declineEscalation, getCheckIn } = useProgress();
+  const { activeProtocol, completeDay, savePreMissionCheckIn, savePostMissionCheckIn, saveFieldNotes, saveWeeklyBrief, changeIntensity, declineEscalation, getCheckIn, setAccountabilityPartner, dismissAccountabilityPrompt } = useProgress();
   
   const protocolId = params.id as string;
   const dayNumber = parseInt(params.day as string);
@@ -94,6 +96,30 @@ export default function MissionPage() {
     setShowEscalationPrompt(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProtocol, dayNumber, missionCompleted, currentIntensity]);
+
+  // Detect missed days and show gentle accountability prompt
+  useEffect(() => {
+    if (!activeProtocol || missionCompleted) return;
+    if (activeProtocol.accountabilityPartner?.enabled) return;
+
+    const startDate = new Date(activeProtocol.startDate);
+    const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (daysSinceStart < 3) return;
+
+    const expectedCompleted = Math.min(daysSinceStart, activeProtocol.duration);
+    const actualCompleted = activeProtocol.completedDays.length;
+    const missedCount = expectedCompleted - actualCompleted;
+    if (missedCount < 1) return;
+
+    if (activeProtocol.lastAccountabilityPrompt) {
+      const lastPrompt = new Date(activeProtocol.lastAccountabilityPrompt);
+      const daysSincePrompt = (Date.now() - lastPrompt.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSincePrompt < 5) return;
+    }
+
+    setShowMissedDayPrompt(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeProtocol, dayNumber, missionCompleted]);
 
   if (!protocol || !mission) {
     return (
@@ -645,6 +671,30 @@ export default function MissionPage() {
             const nextMode = currentIntensity === 'light' ? 'standard' : 'intensive';
             declineEscalation(currentIntensity, nextMode);
             setShowEscalationPrompt(false);
+          }}
+        />
+      )}
+
+      {/* Missed Day Accountability Prompt */}
+      {activeProtocol && (
+        <MissedDayPrompt
+          isOpen={showMissedDayPrompt}
+          missedCount={(() => {
+            const startDate = new Date(activeProtocol.startDate);
+            const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            const expected = Math.min(daysSinceStart, activeProtocol.duration);
+            return Math.max(0, expected - activeProtocol.completedDays.length);
+          })()}
+          completedCount={activeProtocol.completedDays.length}
+          totalDays={duration}
+          onAddPartner={() => {
+            setAccountabilityPartner(true);
+            dismissAccountabilityPrompt();
+            setShowMissedDayPrompt(false);
+          }}
+          onContinueSolo={() => {
+            dismissAccountabilityPrompt();
+            setShowMissedDayPrompt(false);
           }}
         />
       )}

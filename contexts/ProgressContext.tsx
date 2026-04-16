@@ -31,6 +31,8 @@ interface ProgressContextType {
   changeIntensity: (mode: IntensityMode, day: number) => void;
   declineEscalation: (fromMode: IntensityMode, toMode: IntensityMode) => void;
   getCheckIn: (day: number) => any;
+  setAccountabilityPartner: (enabled: boolean) => void;
+  dismissAccountabilityPrompt: () => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -478,6 +480,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     return activeProtocol.checkIns.find(ci => ci.day === day) || null;
   };
 
+  const setAccountabilityPartner = (enabled: boolean) => {
+    if (!activeProtocol) return;
+    setActiveProtocol({
+      ...activeProtocol,
+      accountabilityPartner: { enabled, declinedAt: enabled ? undefined : new Date().toISOString() }
+    });
+  };
+
+  const dismissAccountabilityPrompt = () => {
+    if (!activeProtocol) return;
+    setActiveProtocol({
+      ...activeProtocol,
+      lastAccountabilityPrompt: new Date().toISOString()
+    });
+  };
+
   return (
     <ProgressContext.Provider
       value={{
@@ -498,7 +516,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         saveWeeklyBrief,
         changeIntensity,
         declineEscalation,
-        getCheckIn
+        getCheckIn,
+        setAccountabilityPartner,
+        dismissAccountabilityPrompt
       }}
     >
       {children}

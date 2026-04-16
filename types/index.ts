@@ -89,6 +89,11 @@ export interface UserProgress {
     fromMode: IntensityMode;
     toMode: IntensityMode;
   } | null;
+  accountabilityPartner?: {
+    enabled: boolean;
+    declinedAt?: string;
+  };
+  lastAccountabilityPrompt?: string;
 }
 
 export interface ReminderSettings {
