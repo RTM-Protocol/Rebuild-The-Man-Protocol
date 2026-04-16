@@ -13,11 +13,13 @@ export default function SettingsPage() {
     updateReminderSettings, 
     resetProtocol, 
     resetAllProgress,
-    activeProtocol 
+    activeProtocol,
+    setAccountabilityPartner
   } = useProgress();
 
   const [showResetProtocolModal, setShowResetProtocolModal] = useState(false);
   const [showClearDataModal, setShowClearDataModal] = useState(false);
+  const [showRemovePartnerModal, setShowRemovePartnerModal] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [notificationTime, setNotificationTime] = useState(reminderSettings.time);
   const [notificationsEnabled, setNotificationsEnabled] = useState(reminderSettings.enabled);
@@ -270,6 +272,51 @@ export default function SettingsPage() {
           </section>
         )}
 
+        {/* Accountability Partner */}
+        {activeProtocol && (
+          <section className="mb-8 bg-tactical-darkgray border border-tactical-lightgray p-6">
+            <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
+              <span>🤝</span>
+              <span>Accountability Partner</span>
+            </h2>
+
+            {activeProtocol.accountabilityPartner?.enabled ? (
+              <div className="space-y-4">
+                <div className="bg-tactical-gray border-l-4 border-tactical-green p-4">
+                  <p className="text-gray-300 leading-relaxed">
+                    <span className="text-tactical-green-bright font-bold">Active</span> — You have an accountability partner enabled.
+                    Progress sharing (days completed and missed only) is available on your protocol and mission pages.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-sm mb-3">
+                    Want to continue solo? You can remove your accountability partner at any time. This won&apos;t affect your progress.
+                  </p>
+                  <button
+                    onClick={() => setShowRemovePartnerModal(true)}
+                    className="bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-2 transition-colors text-sm"
+                  >
+                    Remove Accountability Partner
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-gray-400 text-sm">
+                  No accountability partner is currently set. Having someone who knows you&apos;re doing the work
+                  can increase your follow-through by up to 65%.
+                </p>
+                <button
+                  onClick={() => setAccountabilityPartner(true)}
+                  className="bg-tactical-darkgray border-2 border-tactical-orange hover:border-tactical-orange-bright text-white font-bold uppercase px-6 py-2 transition-colors text-sm"
+                >
+                  Enable Accountability Partner
+                </button>
+              </div>
+            )}
+          </section>
+        )}
+
         {/* Data Management */}
         <section className="mb-8 bg-tactical-darkgray border border-red-700 p-6">
           <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
@@ -391,6 +438,20 @@ export default function SettingsPage() {
         confirmText="Delete Everything"
         cancelText="Cancel"
         isDangerous={true}
+      />
+
+      {/* Remove Accountability Partner Modal */}
+      <ConfirmationModal
+        isOpen={showRemovePartnerModal}
+        onClose={() => setShowRemovePartnerModal(false)}
+        onConfirm={() => {
+          setAccountabilityPartner(false);
+          setShowRemovePartnerModal(false);
+        }}
+        title="Remove Accountability Partner?"
+        message="You'll no longer see the option to share progress with a partner. Your protocol progress won't be affected. You can re-enable this at any time."
+        confirmText="Remove Partner"
+        cancelText="Keep Partner"
       />
 
       <Footer />

@@ -18,12 +18,13 @@ import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getCurrentWorkingDay } from '@/utils/progressUtils';
 import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
+import ShareProgress from '@/components/ShareProgress';
 
 export default function ProtocolDetail() {
   const params = useParams();
   const router = useRouter();
   const protocolId = params.id as string;
-  const { startProtocol, activeProtocol } = useProgress();
+  const { startProtocol, activeProtocol, setAccountabilityPartner } = useProgress();
   
   const protocol = protocols.find(p => p.id === protocolId);
   const [selectedDuration, setSelectedDuration] = useState<ProtocolDuration | null>(null);
@@ -31,6 +32,7 @@ export default function ProtocolDetail() {
   const [showReplaceWarning, setShowReplaceWarning] = useState(false);
   const [showIntensitySelector, setShowIntensitySelector] = useState(false);
   const [showAccountabilityPrompt, setShowAccountabilityPrompt] = useState(false);
+  const [showRemovePartnerModal, setShowRemovePartnerModal] = useState(false);
   const [selectedIntensity, setSelectedIntensity] = useState<IntensityMode>('standard');
 
   // Check if this is the user's active protocol
@@ -83,9 +85,9 @@ export default function ProtocolDetail() {
     setShowAccountabilityPrompt(true);
   };
 
-  const handleStartProtocol = () => {
+  const handleStartProtocol = (withAccountabilityPartner?: boolean) => {
     if (!selectedDuration || !protocol) return;
-    startProtocol(protocol.id, selectedDuration, selectedIntensity);
+    startProtocol(protocol.id, selectedDuration, selectedIntensity, withAccountabilityPartner);
     router.push(`/protocol/${protocol.id}/mission/1?duration=${selectedDuration}`);
   };
 
@@ -218,6 +220,25 @@ export default function ProtocolDetail() {
                 </Link>
               </div>
             </div>
+
+            {/* Share Progress — only visible if accountability partner is enabled */}
+            {activeProtocol.accountabilityPartner?.enabled && (
+              <div className="mt-6">
+                <ShareProgress
+                  completedDays={activeProtocol.completedDays.length}
+                  totalDays={activeProtocol.duration}
+                  missedDays={Math.max(0,
+                    Math.min(
+                      Math.floor((Date.now() - new Date(activeProtocol.startDate).getTime()) / (1000 * 60 * 60 * 24)),
+                      activeProtocol.duration
+                    ) - activeProtocol.completedDays.length
+                  )}
+                  streak={activeProtocol.streak}
+                  variant="inline"
+                  onRemovePartner={() => setShowRemovePartnerModal(true)}
+                />
+              </div>
+            )}
           </section>
         ) : (
           <section className="mb-12">
@@ -408,11 +429,11 @@ export default function ProtocolDetail() {
         isOpen={showAccountabilityPrompt}
         onAccept={() => {
           setShowAccountabilityPrompt(false);
-          handleStartProtocol();
+          handleStartProtocol(true);
         }}
         onDecline={() => {
           setShowAccountabilityPrompt(false);
-          handleStartProtocol();
+          handleStartProtocol(false);
         }}
       />
 
@@ -426,6 +447,20 @@ export default function ProtocolDetail() {
           activeProtocolDuration={activeProtocol.duration}
         />
       )}
+
+      {/* Remove Accountability Partner Confirmation */}
+      <ConfirmationModal
+        isOpen={showRemovePartnerModal}
+        onClose={() => setShowRemovePartnerModal(false)}
+        onConfirm={() => {
+          setAccountabilityPartner(false);
+          setShowRemovePartnerModal(false);
+        }}
+        title="Remove Accountability Partner?"
+        message="You'll no longer see the option to share progress with a partner. Your protocol progress won't be affected. You can re-enable this at any time from Settings."
+        confirmText="Remove Partner"
+        cancelText="Keep Partner"
+      />
     </div>
   );
 }

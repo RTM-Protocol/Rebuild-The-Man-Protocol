@@ -16,6 +16,7 @@ import CommandersBrief from '@/components/CommandersBrief';
 import IntensitySelector from '@/components/IntensitySelector';
 import IntensityEscalationPrompt from '@/components/IntensityEscalationPrompt';
 import MissedDayPrompt from '@/components/MissedDayPrompt';
+import ShareProgress from '@/components/ShareProgress';
 import { shouldShowBrief, generateCommandersBrief } from '@/utils/briefGenerator';
 import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReason, getCompletionLimitMessage } from '@/utils/progressUtils';
 import StatCard from '@/components/StatCard';
@@ -31,6 +32,7 @@ export default function MissionPage() {
   const [showIntensityChange, setShowIntensityChange] = useState(false);
   const [showEscalationPrompt, setShowEscalationPrompt] = useState(false);
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
+  const [showShareProgress, setShowShareProgress] = useState(false);
   const [tempIntensity, setTempIntensity] = useState<IntensityMode>('standard');
   const params = useParams();
   const searchParams = useSearchParams();
@@ -485,6 +487,19 @@ export default function MissionPage() {
                 }}
                 onSkip={() => {}}
               />
+
+              {/* Share with Accountability Partner */}
+              {activeProtocol?.accountabilityPartner?.enabled && (
+                <div className="mt-6 text-center">
+                  <button
+                    onClick={() => setShowShareProgress(true)}
+                    className="inline-flex items-center gap-2 bg-tactical-darkgray border-2 border-tactical-green hover:border-tactical-green-bright text-white font-bold uppercase px-6 py-3 transition-all text-sm"
+                  >
+                    <span>📤</span>
+                    <span>Share Day {dayNumber} with Your Partner</span>
+                  </button>
+                </div>
+              )}
               
               <div className="flex gap-4 justify-center mt-6">
                 {dayNumber < duration && (
@@ -705,6 +720,23 @@ export default function MissionPage() {
         onClose={() => setShowSetbackModal(false)}
         currentDay={dayNumber}
       />
+
+      {/* Share Progress Modal */}
+      {showShareProgress && activeProtocol?.accountabilityPartner?.enabled && (
+        <ShareProgress
+          completedDays={activeProtocol.completedDays.length}
+          totalDays={duration}
+          missedDays={Math.max(0,
+            Math.min(
+              Math.floor((Date.now() - new Date(activeProtocol.startDate).getTime()) / (1000 * 60 * 60 * 24)),
+              activeProtocol.duration
+            ) - activeProtocol.completedDays.length
+          )}
+          streak={activeProtocol.streak}
+          variant="modal"
+          onClose={() => setShowShareProgress(false)}
+        />
+      )}
     </div>
   );
 }

@@ -17,7 +17,7 @@ interface ProgressContextType {
     longestStreak: number;
   };
   reminderSettings: ReminderSettings;
-  startProtocol: (protocolId: string, duration: ProtocolDuration, initialIntensity?: IntensityMode) => void;
+  startProtocol: (protocolId: string, duration: ProtocolDuration, initialIntensity?: IntensityMode, withAccountabilityPartner?: boolean) => void;
   completeDay: (day: number) => void;
   markSetback: (day: number, note?: string) => void;
   updateReminderSettings: (settings: Partial<ReminderSettings>) => void;
@@ -221,7 +221,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   }, [activeProtocol, completedProtocols, lifetimeStats, reminderSettings, isLoading, isSyncEnabled]);
 
-  const startProtocol = (protocolId: string, duration: ProtocolDuration, initialIntensity: IntensityMode = 'standard') => {
+  const startProtocol = (protocolId: string, duration: ProtocolDuration, initialIntensity: IntensityMode = 'standard', withAccountabilityPartner?: boolean) => {
     const newProgress: UserProgress = {
       protocolId,
       duration,
@@ -241,7 +241,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         changedAt: new Date().toISOString()
       }],
       lastEscalationPrompt: undefined,
-      declinedEscalation: null
+      declinedEscalation: null,
+      accountabilityPartner: withAccountabilityPartner !== undefined
+        ? { enabled: withAccountabilityPartner, declinedAt: withAccountabilityPartner ? undefined : new Date().toISOString() }
+        : undefined
     };
     setActiveProtocol(newProgress);
   };
