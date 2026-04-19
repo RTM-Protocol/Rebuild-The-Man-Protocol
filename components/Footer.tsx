@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-tactical-gray border-t border-tactical-lightgray py-6 mt-12">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-center gap-6 mb-4">
+        <div className="flex justify-center flex-wrap gap-x-6 gap-y-2 mb-4">
           <Link href="/emergency-tools" className="text-white hover:text-red-500 text-xs uppercase font-bold transition-colors">
             🚨 Emergency
           </Link>
@@ -13,6 +13,9 @@ export default function Footer() {
           </Link>
           <Link href="/settings" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
             Settings
+          </Link>
+          <Link href="/privacy" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
+            Privacy Policy
           </Link>
           <a href="mailto:support@rebuildthemanprotocol.com" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
             Contact

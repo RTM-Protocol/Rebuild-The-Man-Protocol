@@ -282,6 +282,24 @@ export default function FAQPage() {
               </h2>
             </div>
 
+            {category.id === 'privacy-data' && (
+              <div className="mb-6 bg-tactical-darkgray border-l-4 border-tactical-green p-5">
+                <p className="text-gray-200 leading-relaxed mb-3">
+                  <span className="text-tactical-green-bright font-bold">🔒 Full Privacy Policy:</span>{' '}
+                  For detailed information about how we collect, store, and protect your data under
+                  UK GDPR, including your rights and how to exercise them, read our full Privacy
+                  Policy.
+                </p>
+                <Link
+                  href="/privacy"
+                  className="inline-flex items-center gap-2 text-tactical-orange hover:text-tactical-orange-bright text-sm font-bold uppercase tracking-wide transition-colors"
+                >
+                  <span>Read the Privacy Policy</span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            )}
+
             <div className="space-y-3">
               {category.questions.map((item, index) => {
                 const key = `${category.id}-${index}`;

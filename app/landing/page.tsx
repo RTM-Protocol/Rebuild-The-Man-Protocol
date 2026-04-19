@@ -540,7 +540,7 @@ export default function LandingPage() {
               <h4 className="text-white font-bold uppercase text-sm mb-4">Legal</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="#disclaimer" className="hover:text-tactical-orange transition-colors">Disclaimer</a></li>
-                <li><a href="#privacy" className="hover:text-tactical-orange transition-colors">Privacy Policy</a></li>
+                <li><Link href="/privacy" className="hover:text-tactical-orange transition-colors">Privacy Policy</Link></li>
                 <li><a href="#terms" className="hover:text-tactical-orange transition-colors">Terms of Service</a></li>
               </ul>
             </div>
