@@ -107,78 +107,86 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-tactical-gray">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-tactical-gray">
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-grid opacity-20" />
-      
-      {/* Content */}
-      <div className="relative max-w-3xl w-full">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-tactical-orange font-mono text-sm uppercase">
-              Question {currentQuestion + 1} of {totalQuestions}
-            </div>
-            <button
-              onClick={onSkip}
-              className="text-gray-500 hover:text-tactical-orange transition-colors text-sm font-bold uppercase"
-            >
-              Skip Diagnostic →
-            </button>
-          </div>
-          
-          {/* Progress Bar */}
-          <div className="h-2 bg-tactical-gray overflow-hidden">
-            <div 
-              className="h-full bg-tactical-orange transition-all duration-300"
-              style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%` }}
-            />
-          </div>
-        </div>
+      <div className="fixed inset-0 bg-grid opacity-20 pointer-events-none" />
 
-        {/* Question Card */}
-        <div className="bg-tactical-darkgray border-2 border-tactical-orange p-8 mb-6">
-          <h2 className="text-3xl font-bold text-white mb-8 uppercase">
-            {currentQ.question}
-          </h2>
-
-          <div className={`grid gap-4 ${currentQ.id === 'q1' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
-            {currentQ.options.map((option) => (
+      {/* Content Wrapper — allows vertical scrolling when content exceeds viewport */}
+      <div className="relative min-h-full flex items-start sm:items-center justify-center px-3 sm:px-4 py-6 sm:py-10">
+        <div className="relative w-full max-w-3xl">
+          {/* Header */}
+          <div className="mb-5 sm:mb-6">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div className="text-tactical-orange font-mono text-xs sm:text-sm uppercase tracking-wide flex-shrink-0">
+                Question {currentQuestion + 1} of {totalQuestions}
+              </div>
               <button
-                key={option.value}
-                onClick={() => handleAnswer(option.value)}
-                className="bg-tactical-gray border-2 border-tactical-lightgray hover:border-tactical-orange hover:bg-tactical-lightgray p-6 text-left transition-all group"
+                onClick={onSkip}
+                className="text-gray-400 hover:text-tactical-orange transition-colors text-xs sm:text-sm font-bold uppercase flex-shrink-0"
               >
-                <div className="flex items-center gap-4">
-                  {'icon' in option && (
-                    <span className="text-4xl breathe-animation">
-                      {option.icon}
-                    </span>
-                  )}
-                  <span className="text-white font-bold text-lg group-hover:text-tactical-orange transition-colors">
-                    {option.label}
-                  </span>
-                </div>
+                Skip →
               </button>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          {currentQuestion > 0 ? (
-            <button
-              onClick={handleBack}
-              className="btn-secondary py-3 px-6"
+            {/* Progress Bar */}
+            <div className="h-1.5 bg-tactical-darkgray overflow-hidden">
+              <div
+                className="h-full bg-tactical-orange transition-all duration-300"
+                style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Question Card */}
+          <div className="bg-tactical-darkgray border-2 border-tactical-orange p-5 sm:p-6 md:p-8 mb-5">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-5 sm:mb-6 uppercase leading-tight">
+              {currentQ.question}
+            </h2>
+
+            <div
+              className={`grid gap-3 ${
+                currentQ.id === 'q1'
+                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+                  : 'grid-cols-1 sm:grid-cols-2'
+              }`}
             >
-              ← Back
-            </button>
-          ) : (
-            <div />
-          )}
-          
-          <div className="text-gray-500 text-sm">
-            Takes about 60 seconds
+              {currentQ.options.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleAnswer(option.value)}
+                  className="bg-tactical-gray border-2 border-tactical-lightgray hover:border-tactical-orange hover:bg-tactical-lightgray/50 p-3 sm:p-4 text-left transition-all group min-h-[60px] flex items-center"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    {'icon' in option && (
+                      <span className="text-2xl sm:text-3xl breathe-animation flex-shrink-0">
+                        {option.icon}
+                      </span>
+                    )}
+                    <span className="text-white font-bold text-sm sm:text-base group-hover:text-tactical-orange transition-colors leading-snug">
+                      {option.label}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between gap-3">
+            {currentQuestion > 0 ? (
+              <button
+                onClick={handleBack}
+                className="btn-secondary py-2.5 px-5 text-sm"
+              >
+                ← Back
+              </button>
+            ) : (
+              <div />
+            )}
+
+            <div className="text-gray-400 text-xs sm:text-sm text-right">
+              Takes about 60 seconds
+            </div>
           </div>
         </div>
       </div>
