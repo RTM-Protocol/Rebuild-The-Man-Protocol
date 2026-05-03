@@ -5,21 +5,33 @@ export default function Footer() {
     <footer className="bg-tactical-gray border-t border-tactical-lightgray py-6 mt-12">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-center flex-wrap gap-x-6 gap-y-2 mb-4">
-          <Link href="/emergency-tools" className="text-white hover:text-red-500 text-xs uppercase font-bold transition-colors">
+          <Link
+            href="/emergency-tools"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
+          >
             🚨 Emergency
           </Link>
-          <Link href="/faq" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
+          <Link
+            href="/faq"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
+          >
             FAQ
           </Link>
-          <Link href="/settings" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
+          <Link
+            href="/settings"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
+          >
             Settings
           </Link>
-          <Link href="/privacy" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
+          <Link
+            href="/privacy"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
+          >
             Privacy Policy
           </Link>
           <a
             href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
-            className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
             title="Business and general information: info@rebuildthemanprotocol.com"
             aria-label="Email info at rebuildthemanprotocol.com for general and business enquiries"
           >
@@ -27,7 +39,7 @@ export default function Footer() {
           </a>
           <a
             href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
-            className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors"
+            className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
             title="App and technical issues: support@rebuildthemanprotocol.com"
             aria-label="Email support at rebuildthemanprotocol.com for app help and technical issues"
           >
