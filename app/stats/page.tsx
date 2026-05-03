@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import { useProgress } from '@/contexts/ProgressContext';
 import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 
 export default function StatsPage() {
   const { activeProtocol, completedProtocols } = useProgress();
@@ -43,7 +44,13 @@ export default function StatsPage() {
             <h2 className="text-xl font-bold text-white uppercase mb-4">
               Current Protocol
             </h2>
-            <div className="bg-tactical-darkgray border-l-4 border-tactical-orange p-6 mb-6">
+            <div
+              className="bg-tactical-darkgray border-l-4 p-6 mb-6"
+              style={{
+                borderLeftColor:
+                  getProtocolVisualTheme(activeProtocol.protocolId)?.hex ?? '#ff6b35',
+              }}
+            >
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-2xl font-bold text-white">
                   {currentProtocol.title}
@@ -115,7 +122,11 @@ export default function StatsPage() {
                 return (
                   <div 
                     key={index}
-                    className="bg-tactical-darkgray border-l-4 border-tactical-green p-6 flex items-center justify-between"
+                    className="bg-tactical-darkgray border-l-4 p-6 flex items-center justify-between"
+                    style={{
+                      borderLeftColor:
+                        getProtocolVisualTheme(protocol.id)?.hex ?? '#4ade80',
+                    }}
                   >
                     <div className="flex items-center gap-4">
                       <div className="text-4xl breathe-animation">
@@ -130,7 +141,7 @@ export default function StatsPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-tactical-green-bright text-3xl">
+                    <div className="text-3xl" style={{ color: getProtocolVisualTheme(protocol.id)?.hex ?? '#4ade80' }}>
                       ✓
                     </div>
                   </div>

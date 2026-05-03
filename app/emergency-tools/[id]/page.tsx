@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { emergencyProtocols } from '@/data/emergencyProtocols';
+import ProtocolIconShell from '@/components/ProtocolIconShell';
+import { EMERGENCY_ICON_GLOW } from '@/lib/protocolVisualTheme';
 
 export default function EmergencyProtocolDetail() {
   const params = useParams();
@@ -46,7 +48,14 @@ export default function EmergencyProtocolDetail() {
           </div>
           
           <div className="flex items-start gap-4 mb-4">
-            <span className="text-6xl breathe-animation">{protocol.icon}</span>
+            <span className="text-6xl breathe-animation leading-none inline-flex">
+              <ProtocolIconShell
+                glow12={EMERGENCY_ICON_GLOW.glow12}
+                glow20={EMERGENCY_ICON_GLOW.glow20}
+              >
+                <span className="block leading-none">{protocol.icon}</span>
+              </ProtocolIconShell>
+            </span>
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white uppercase tracking-tight mb-2">
                 {protocol.name}

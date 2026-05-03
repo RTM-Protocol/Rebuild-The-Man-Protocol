@@ -22,6 +22,7 @@ import { shouldShowBrief, generateCommandersBrief } from '@/utils/briefGenerator
 import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReason, getCompletionLimitMessage } from '@/utils/progressUtils';
 import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 import { useState, useEffect } from 'react';
 import { IntensityMode } from '@/types';
 
@@ -136,6 +137,10 @@ export default function MissionPage() {
       </div>
     );
   }
+
+  const missionVisual = getProtocolVisualTheme(protocolId);
+  const missionAccent = missionVisual?.hex ?? '#ff6b35';
+  const missionProgressFill = missionVisual?.progressGradient;
 
   // Block access to inaccessible days
   if (!dayIsAccessible && activeProtocol) {
@@ -345,7 +350,7 @@ export default function MissionPage() {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-tactical-orange text-sm font-mono mb-1">
+              <div className="text-sm font-mono mb-1" style={{ color: missionAccent }}>
                 PROGRESS
               </div>
               <div className="text-white text-2xl font-bold">
@@ -363,7 +368,10 @@ export default function MissionPage() {
           <div className="progress-bar mt-4">
             <div 
               className="progress-fill"
-              style={{ width: `${completionPercentage}%` }}
+              style={{
+                width: `${completionPercentage}%`,
+                ...(missionProgressFill ? { background: missionProgressFill } : {}),
+              }}
             />
           </div>
         </div>

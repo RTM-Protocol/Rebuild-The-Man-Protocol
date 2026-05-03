@@ -211,6 +211,19 @@ body {
   display: inline-block;
 }
 
+/* Protocol / emergency icons: soft circular glow + hover (used with inline --protocol-icon-glow vars) */
+.protocol-icon-shell {
+  background-color: var(--protocol-icon-glow, transparent);
+  transition:
+    background-color 0.3s ease-out,
+    transform 0.3s ease-out;
+}
+
+.protocol-icon-shell:hover {
+  background-color: var(--protocol-icon-glow-hover, var(--protocol-icon-glow, transparent));
+  transform: scale(1.05);
+}
+
 @keyframes emergency-flash {
   0%, 100% { 
     opacity: 1;
@@ -708,6 +721,16 @@ textarea {
 .light-mode .breathe-animation {
   animation: breathe 2s ease-in-out infinite !important;
   display: inline-block !important;
+}
+
+.light-mode .protocol-icon-shell {
+  transition:
+    background-color 0.3s ease-out,
+    transform 0.3s ease-out !important;
+}
+
+.light-mode .protocol-icon-shell:hover {
+  transform: scale(1.05) !important;
 }
 
 /* Emergency Flash Animation */

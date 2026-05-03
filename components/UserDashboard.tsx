@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useProgress } from '@/contexts/ProgressContext';
 import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 import { getCurrentWorkingDay, canCompleteDay, hasCompletedMissionToday } from '@/utils/progressUtils';
 
 export default function UserDashboard() {
@@ -30,13 +31,23 @@ export default function UserDashboard() {
   const startDate = new Date(activeProtocol.startDate);
   const daysElapsed = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
+  const visual = getProtocolVisualTheme(protocol.id);
+  const accentHex = visual?.hex ?? '#ff6b35';
+  const progressFill = visual?.progressGradient;
+
   return (
-    <div className="bg-tactical-darkgray border-2 border-tactical-orange">
+    <div
+      className="bg-tactical-darkgray border-2"
+      style={{ borderColor: accentHex }}
+    >
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-tactical-darkgray to-tactical-gray p-6 border-b-2 border-tactical-orange">
+      <div
+        className="bg-gradient-to-r from-tactical-darkgray to-tactical-gray p-6 border-b-2"
+        style={{ borderBottomColor: accentHex }}
+      >
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <div className="text-xs text-tactical-orange font-mono uppercase mb-2">
+            <div className="text-xs font-mono uppercase mb-2" style={{ color: accentHex }}>
               ACTIVE PROTOCOL
             </div>
             <h2 className="text-3xl font-bold text-white uppercase tracking-tight mb-2">
@@ -62,7 +73,10 @@ export default function UserDashboard() {
           <div className="progress-bar">
             <div 
               className="progress-fill"
-              style={{ width: `${completionPercentage}%` }}
+              style={{
+                width: `${completionPercentage}%`,
+                ...(progressFill ? { background: progressFill } : {}),
+              }}
             />
           </div>
         </div>
@@ -119,7 +133,10 @@ export default function UserDashboard() {
               <h3 className="text-xl font-bold text-white uppercase">
                 {completedToday ? "Today's Mission (Completed)" : 'Next Mission'}
               </h3>
-              <span className="text-xs bg-tactical-orange text-white px-3 py-1 font-mono uppercase">
+              <span
+                className="text-xs text-white px-3 py-1 font-mono uppercase"
+                style={{ backgroundColor: accentHex }}
+              >
                 Day {workingDay}
               </span>
             </div>
@@ -135,7 +152,10 @@ export default function UserDashboard() {
               </div>
             )}
             
-            <div className="bg-tactical-gray border-l-4 border-tactical-orange p-4 mb-4">
+            <div
+              className="bg-tactical-gray border-l-4 p-4 mb-4"
+              style={{ borderLeftColor: accentHex }}
+            >
               <h4 className="text-lg font-bold text-white mb-2">
                 {todaysMission.title}
               </h4>
@@ -143,7 +163,7 @@ export default function UserDashboard() {
                 {todaysMission.description}
               </p>
               <div className="flex items-center gap-4 text-sm">
-                <div className="text-tactical-orange font-mono">
+                <div className="font-mono" style={{ color: accentHex }}>
                   ⏱️ {todaysMission.estimatedTime}
                 </div>
                 {activeProtocol.completedDays.includes(workingDay) && (

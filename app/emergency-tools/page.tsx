@@ -6,6 +6,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { emergencyProtocols } from '@/data/emergencyProtocols';
 import { crisisResources } from '@/data/crisisResources';
+import ProtocolIconShell from '@/components/ProtocolIconShell';
+import { EMERGENCY_ICON_GLOW } from '@/lib/protocolVisualTheme';
 
 export default function EmergencyToolsPage() {
   const [selectedCountry, setSelectedCountry] = useState('US');
@@ -61,8 +63,13 @@ export default function EmergencyToolsPage() {
               className="bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-red-600 p-6 transition-all hover:scale-105 group"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="text-5xl breathe-animation">
-                  {protocol.icon}
+                <div className="text-5xl breathe-animation leading-none">
+                  <ProtocolIconShell
+                    glow12={EMERGENCY_ICON_GLOW.glow12}
+                    glow20={EMERGENCY_ICON_GLOW.glow20}
+                  >
+                    <span className="block leading-none">{protocol.icon}</span>
+                  </ProtocolIconShell>
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-white uppercase mb-2 group-hover:text-red-500 transition-colors">

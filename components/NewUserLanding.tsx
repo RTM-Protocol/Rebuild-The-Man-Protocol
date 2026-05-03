@@ -1,6 +1,7 @@
 'use client';
 
 import BrandShieldIcon from '@/components/BrandShieldIcon';
+import ProtocolIcon from '@/components/ProtocolIcon';
 
 interface NewUserLandingProps {
   onStartDiagnostic: () => void;
@@ -96,8 +97,8 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-white p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl breathe-animation text-[#faf9f5]">
-                  <BrandShieldIcon title="" />
+                <div className="text-4xl breathe-animation">
+                  <ProtocolIcon protocolId="rebuild-the-man" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white uppercase mb-1.5 group-hover:text-white transition-colors">

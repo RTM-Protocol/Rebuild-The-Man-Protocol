@@ -1,16 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
 import { UserProgress } from '@/types';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 
 interface ProtocolLibraryProps {
   activeProtocol?: UserProgress | null;
 }
 
 export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps) {
+  const browsingAccent = activeProtocol
+    ? getProtocolVisualTheme(activeProtocol.protocolId)?.hex ?? '#ff6b35'
+    : undefined;
+
   return (
     <div>
       {/* Header */}
@@ -19,7 +23,10 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
           Protocol Library
         </h2>
         {activeProtocol ? (
-          <div className="bg-tactical-orange/10 border-l-4 border-tactical-orange p-4 text-left max-w-4xl mx-auto">
+          <div
+            className="bg-tactical-orange/10 border-l-4 p-4 text-left max-w-4xl mx-auto"
+            style={{ borderLeftColor: browsingAccent }}
+          >
             <p className="text-tactical-orange text-sm font-bold uppercase mb-1">
               Browsing Mode
             </p>
@@ -62,9 +69,9 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
           className="block bg-gradient-to-r from-tactical-darkgray to-tactical-gray border-2 border-tactical-green p-8 group transition-all hover:border-tactical-green-bright"
         >
           <div className="flex flex-col items-center text-center">
-            <div className="text-6xl mb-4 breathe-animation text-[#faf9f5]">
-              <BrandShieldIcon title="" />
-            </div>
+          <div className="text-6xl mb-4 breathe-animation">
+            <ProtocolIcon protocolId="rebuild-the-man" />
+          </div>
             <div className="w-full">
               <h3 className="font-brand text-3xl font-bold group-hover:text-tactical-orange transition-colors uppercase mb-2" style={{ color: '#faf9f5' }}>
                 Rebuild The Man

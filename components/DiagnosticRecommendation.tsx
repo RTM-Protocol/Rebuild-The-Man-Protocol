@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 
 interface DiagnosticRecommendationProps {
   primaryIssue: string;
@@ -29,6 +30,10 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
 
   const recommendedId = getRecommendedProtocol();
   const protocol = protocols.find(p => p.id === recommendedId);
+
+  const accentHex = protocol
+    ? getProtocolVisualTheme(protocol.id)?.hex ?? '#ff6b35'
+    : '#ff6b35';
 
   if (!protocol) {
     // Fallback to browsing all
@@ -71,7 +76,10 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
         </div>
 
         {/* Recommended Protocol Card */}
-        <div className="bg-tactical-darkgray border-4 border-tactical-orange p-8 mb-6">
+        <div
+          className="bg-tactical-darkgray border-4 p-8 mb-6"
+          style={{ borderColor: accentHex }}
+        >
           <div className="flex items-start gap-6 mb-6">
             <div className="text-7xl breathe-animation">
               <ProtocolIcon protocolId={protocol.id} />
@@ -89,7 +97,10 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
             </div>
           </div>
 
-          <div className="bg-tactical-gray border-l-4 border-tactical-orange p-6 mb-6">
+          <div
+            className="bg-tactical-gray border-l-4 p-6 mb-6"
+            style={{ borderLeftColor: accentHex }}
+          >
             <h3 className="text-white font-bold uppercase text-sm mb-3">
               Why This Protocol:
             </h3>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useProgress } from '@/contexts/ProgressContext';
 import { protocols } from '@/data/protocols';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 
 export default function ProgressDashboard() {
   const { activeProtocol, completedProtocols } = useProgress();
@@ -19,15 +20,24 @@ export default function ProgressDashboard() {
     ? Math.round((activeProtocol.completedDays.length / activeProtocol.duration) * 100)
     : 0;
 
+  const visual = activeProtocol
+    ? getProtocolVisualTheme(activeProtocol.protocolId)
+    : undefined;
+  const accentHex = visual?.hex ?? '#ff6b35';
+  const miniFill = visual?.progressGradient ?? '#4ade80';
+
   return (
-    <div className="bg-tactical-darkgray border-b-2 border-tactical-orange">
+    <div
+      className="bg-tactical-darkgray border-b-2"
+      style={{ borderBottomColor: accentHex }}
+    >
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Active Protocol Info */}
           {activeProtocol && currentProtocol && (
             <div className="flex items-center gap-6">
               <div>
-                <div className="text-xs text-tactical-orange font-mono uppercase mb-1">
+                <div className="text-xs font-mono uppercase mb-1" style={{ color: accentHex }}>
                   Active Protocol
                 </div>
                 <div className="text-white font-bold">
@@ -40,11 +50,11 @@ export default function ProgressDashboard() {
                 <div className="flex items-center gap-2">
                   <div className="w-32 h-2 bg-tactical-gray rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-tactical-green-bright transition-all"
-                      style={{ width: `${completionPercentage}%` }}
+                      className="h-full transition-all"
+                      style={{ width: `${completionPercentage}%`, background: miniFill }}
                     />
                   </div>
-                  <span className="text-tactical-green-bright text-sm font-bold">
+                  <span className="text-sm font-bold" style={{ color: accentHex }}>
                     {completionPercentage}%
                   </span>
                 </div>
@@ -59,7 +69,7 @@ export default function ProgressDashboard() {
 
               <div>
                 <div className="text-xs text-gray-400 mb-1">Streak</div>
-                <div className="text-tactical-orange font-bold">
+                <div className="font-bold" style={{ color: accentHex }}>
                   {activeProtocol.streak} {activeProtocol.streak === 1 ? 'day' : 'days'}
                 </div>
               </div>

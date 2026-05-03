@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import BrandShieldIcon from '@/components/BrandShieldIcon';
+import ProtocolIcon from '@/components/ProtocolIcon';
 
 interface DiagnosticAnswer {
   q1: string;
@@ -161,9 +161,7 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
                     {'icon' in option && (
                       <span className="text-2xl sm:text-3xl breathe-animation flex-shrink-0">
                         {option.icon === '__shield__' ? (
-                          <span className="inline-block text-[#faf9f5]">
-                            <BrandShieldIcon title="" />
-                          </span>
+                          <ProtocolIcon protocolId="rebuild-the-man" />
                         ) : (
                           option.icon
                         )}

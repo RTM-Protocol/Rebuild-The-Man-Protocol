@@ -1,9 +1,17 @@
 'use client';
 
 import { useProgress } from '@/contexts/ProgressContext';
+import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 
 export default function StatsOverview() {
-  const { activeProtocol, completedProtocols, lifetimeStats } = useProgress();
+  const { activeProtocol, lifetimeStats } = useProgress();
+
+  const activeVisual = activeProtocol
+    ? getProtocolVisualTheme(activeProtocol.protocolId)
+    : undefined;
+  const activeAccent = activeVisual?.hex ?? '#ff6b35';
+  const activeProgressGradient =
+    activeVisual?.progressGradient;
 
   const currentStreak = activeProtocol?.streak || 0;
   const protocolLongestStreak = activeProtocol?.longestStreak || 0;
@@ -21,8 +29,14 @@ export default function StatsOverview() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {/* Current Streak */}
-        <div className="bg-tactical-gray p-4 border-l-4 border-tactical-orange">
-          <div className="text-tactical-orange text-sm font-mono uppercase mb-1">
+        <div
+          className={`bg-tactical-gray p-4 border-l-4 ${!activeProtocol ? 'border-tactical-orange' : ''}`}
+          style={activeProtocol ? { borderLeftColor: activeAccent } : undefined}
+        >
+          <div
+            className={`text-sm font-mono uppercase mb-1 ${!activeProtocol ? 'text-tactical-orange' : ''}`}
+            style={activeProtocol ? { color: activeAccent } : undefined}
+          >
             Current Streak
           </div>
           <div className="text-white text-3xl font-bold">
@@ -87,8 +101,11 @@ export default function StatsOverview() {
 
         {/* Current Day */}
         {activeProtocol && (
-          <div className="bg-tactical-gray p-4 border-l-4 border-tactical-orange-bright">
-            <div className="text-tactical-orange-bright text-sm font-mono uppercase mb-1">
+          <div
+            className="bg-tactical-gray p-4 border-l-4"
+            style={{ borderLeftColor: activeAccent }}
+          >
+            <div className="text-sm font-mono uppercase mb-1" style={{ color: activeAccent }}>
               Current Day
             </div>
             <div className="text-white text-3xl font-bold">
@@ -108,7 +125,12 @@ export default function StatsOverview() {
             <div className="flex-1 progress-bar">
               <div 
                 className="progress-fill"
-                style={{ width: `${Math.min((currentStreak / 14) * 100, 100)}%` }}
+                style={{
+                  width: `${Math.min((currentStreak / 14) * 100, 100)}%`,
+                  ...(activeProgressGradient
+                    ? { background: activeProgressGradient }
+                    : {}),
+                }}
               />
             </div>
             <div className="text-sm font-mono text-gray-400">
