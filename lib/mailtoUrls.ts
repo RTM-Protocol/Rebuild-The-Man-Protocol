@@ -13,3 +13,7 @@ export const MAILTO_SUPPORT = `mailto:support@rebuildthemanprotocol.com?subject=
 export const MAILTO_FEEDBACK = `mailto:feedback@rebuildthemanprotocol.com?subject=${enc(
   'Rebuild The Man Protocol Feedback'
 )}`;
+
+export const MAILTO_REQUESTS = `mailto:requests@rebuildthemanprotocol.com?subject=${enc(
+  'Rebuild The Man Protocol - Data / privacy request'
+)}`;
