@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { protocols } from '@/data/protocols';
 import { useProgress } from '@/contexts/ProgressContext';
 import ActiveProtocolBlocker from './ActiveProtocolBlocker';
+import BrandShieldIcon from '@/components/BrandShieldIcon';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -195,12 +196,15 @@ export default function Navigation() {
             <Link 
               href="/" 
               className="flex items-center gap-3 group relative z-10 cursor-pointer"
+              aria-label="Rebuild The Man Protocol home"
               onClick={() => {
                 setIsMenuOpen(false);
                 setIsProtocolsSubMenuOpen(false);
               }}
             >
-              <span className="text-2xl">🔨</span>
+              <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
+                <BrandShieldIcon title="" />
+              </span>
               <div>
                 <div className="font-brand">
                   <span className="block text-lg font-bold uppercase tracking-tight leading-none group-hover:text-tactical-orange transition-colors" style={{ color: '#faf9f5' }}>Rebuild The Man</span>

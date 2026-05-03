@@ -1,42 +1,96 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import MailtoLink from '@/components/MailtoLink';
-import { MAILTO_SUPPORT } from '@/lib/mailtoUrls';
+import {
+  MAILTO_INFO,
+  MAILTO_REQUESTS,
+  MAILTO_SUPPORT,
+  MAILTO_SUPPORT_PRIMARY_CTA,
+  EMAIL_LINK_CLASS,
+  EMAIL_SUPPORT_BUTTON_CLASS,
+} from '@/lib/mailtoUrls';
 
-const commonIssues: { question: string; answer: string }[] = [
+const commonIssues: { question: string; answer: ReactNode }[] = [
   {
     question: "My progress isn't saving. What should I do?",
-    answer:
-      "Make sure you have a stable internet connection. If the issue persists, try logging out and logging back in. If it still doesn't work, contact us at support@rebuildthemanprotocol.com.",
+    answer: (
+      <>
+        Make sure you have a stable internet connection. If the issue persists, try logging out and
+        logging back in. If it still doesn&apos;t work, contact us at{' '}
+        <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+          support@rebuildthemanprotocol.com
+        </a>
+        .
+      </>
+    ),
   },
   {
     question: "I can't log in to my account.",
-    answer:
-      "On the login screen, click 'Forgot Password' and enter your email address. You'll receive a reset link within a few minutes. Check your spam folder if it doesn't arrive. If you still can't access your account, email support@rebuildthemanprotocol.com.",
+    answer: (
+      <>
+        On the login screen, click &apos;Forgot Password&apos; and enter your email address.
+        You&apos;ll receive a reset link within a few minutes. Check your spam folder if it
+        doesn&apos;t arrive. If you still can&apos;t access your account, email{' '}
+        <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+          support@rebuildthemanprotocol.com
+        </a>
+        .
+      </>
+    ),
   },
   {
     question: "The app isn't loading or is displaying errors.",
-    answer:
-      "Try refreshing the page or clearing your browser cache. If you're on mobile, try switching to a desktop browser. If the issue continues, email support@rebuildthemanprotocol.com with a screenshot of the error.",
+    answer: (
+      <>
+        Try refreshing the page or clearing your browser cache. If you&apos;re on mobile, try
+        switching to a desktop browser. If the issue continues, email{' '}
+        <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+          support@rebuildthemanprotocol.com
+        </a>{' '}
+        with a screenshot of the error.
+      </>
+    ),
   },
   {
     question: 'How do I change my email address or account details?',
-    answer:
-      "Email requests@rebuildthemanprotocol.com with the subject line 'Account Update Request' and let us know what you'd like changed.",
+    answer: (
+      <>
+        Email{' '}
+        <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
+          requests@rebuildthemanprotocol.com
+        </a>{' '}
+        with the subject line &apos;Account Update Request&apos; and let us know what you&apos;d
+        like changed.
+      </>
+    ),
   },
   {
     question: 'How do I delete my account and all my data?',
-    answer:
-      "Email requests@rebuildthemanprotocol.com with the subject line 'Account Deletion Request'. We will delete all your personal data within 30 days as required by UK GDPR.",
+    answer: (
+      <>
+        Email{' '}
+        <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
+          requests@rebuildthemanprotocol.com
+        </a>{' '}
+        with the subject line &apos;Account Deletion Request&apos;. We will delete all your
+        personal data within 30 days as required by UK GDPR.
+      </>
+    ),
   },
   {
     question: 'I have feedback or a feature suggestion.',
-    answer:
-      "We'd love to hear from you. Email info@rebuildthemanprotocol.com with the subject line 'Feedback' and tell us what you think.",
+    answer: (
+      <>
+        We&apos;d love to hear from you. Email{' '}
+        <a href={MAILTO_INFO} className={EMAIL_LINK_CLASS}>
+          info@rebuildthemanprotocol.com
+        </a>{' '}
+        with the subject line &apos;Feedback&apos; and tell us what you think.
+      </>
+    ),
   },
 ];
 
@@ -116,7 +170,7 @@ export default function SupportPage() {
                   </button>
                   {isOpen && (
                     <div className="px-5 sm:px-6 pb-6 pt-2 border-t border-tactical-lightgray">
-                      <p className="text-gray-300 leading-relaxed whitespace-pre-line">{item.answer}</p>
+                      <div className="text-gray-300 leading-relaxed">{item.answer}</div>
                     </div>
                   )}
                 </div>
@@ -130,12 +184,9 @@ export default function SupportPage() {
           <p className="text-gray-300 mb-6 leading-relaxed">
             If your issue isn&apos;t covered above, contact our support team directly.
           </p>
-          <MailtoLink
-            href={MAILTO_SUPPORT}
-            className="btn-primary inline-block text-base sm:text-lg py-4 px-10 uppercase tracking-wide"
-          >
+          <a href={MAILTO_SUPPORT_PRIMARY_CTA} className={EMAIL_SUPPORT_BUTTON_CLASS}>
             Email Support
-          </MailtoLink>
+          </a>
         </section>
       </main>
 

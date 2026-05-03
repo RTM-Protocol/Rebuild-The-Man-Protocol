@@ -1,5 +1,7 @@
 'use client';
 
+import BrandShieldIcon from '@/components/BrandShieldIcon';
+
 interface NewUserLandingProps {
   onStartDiagnostic: () => void;
   onBrowseProtocols: () => void;
@@ -29,7 +31,9 @@ export default function NewUserLanding({
               Protocol
             </div>
           </div>
-            <div className="text-4xl mb-3">🔨</div>
+            <div className="text-4xl mb-3 text-[#faf9f5]">
+              <BrandShieldIcon />
+            </div>
             <h2 className="text-2xl font-bold text-white uppercase tracking-tight mb-3">
               What Needs Fixing?
             </h2>
@@ -92,8 +96,8 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-white p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl breathe-animation">
-                  🔨
+                <div className="text-4xl breathe-animation text-[#faf9f5]">
+                  <BrandShieldIcon title="" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-white uppercase mb-1.5 group-hover:text-white transition-colors">

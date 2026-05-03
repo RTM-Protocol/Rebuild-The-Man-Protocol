@@ -3,8 +3,14 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { protocols } from '@/data/protocols';
-import MailtoLink from '@/components/MailtoLink';
-import { MAILTO_CONTACT, MAILTO_FEEDBACK, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
+import ProtocolIcon from '@/components/ProtocolIcon';
+import {
+  MAILTO_CONTACT,
+  MAILTO_FEEDBACK,
+  MAILTO_SUPPORT,
+  EMAIL_LINK_CLASS,
+} from '@/lib/mailtoUrls';
+import BrandShieldIcon from '@/components/BrandShieldIcon';
 
 export default function LandingPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -37,7 +43,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <span className="text-2xl">🔨</span>
+              <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
+                <BrandShieldIcon title="" />
+              </span>
               <div>
                 <div className="font-brand">
                   <span className="block text-lg font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
@@ -398,7 +406,7 @@ export default function LandingPage() {
                 className="protocol-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer group"
               >
                 <div className="text-5xl mb-4 breathe-animation">
-                  {protocol.icon}
+                  <ProtocolIcon protocolId={protocol.id} />
                 </div>
                 <h3 className="text-xl font-bold text-white uppercase mb-2 group-hover:text-tactical-orange transition-colors">
                   {protocol.title}
@@ -505,7 +513,9 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">🔨</span>
+                <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
+                <BrandShieldIcon title="" />
+              </span>
                 <div>
                   <div className="font-brand">
                     <span className="block text-sm font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
@@ -534,22 +544,22 @@ export default function LandingPage() {
                 <li><Link href="/faq" className="hover:text-tactical-orange transition-colors">FAQ</Link></li>
                 <li><a href="#about" className="hover:text-tactical-orange transition-colors">About</a></li>
                 <li>
-                  <MailtoLink href={MAILTO_CONTACT} className="hover:text-tactical-orange transition-colors">
+                  <a href={MAILTO_CONTACT} className={`${EMAIL_LINK_CLASS} hover:text-tactical-orange`}>
                     Contact
-                  </MailtoLink>
+                  </a>
                 </li>
                 <li>
-                  <MailtoLink href={MAILTO_SUPPORT} className="hover:text-tactical-orange transition-colors">
+                  <a href={MAILTO_SUPPORT} className={`${EMAIL_LINK_CLASS} hover:text-tactical-orange`}>
                     Support
-                  </MailtoLink>
+                  </a>
                 </li>
                 <li>
-                  <MailtoLink
+                  <a
                     href={MAILTO_FEEDBACK}
-                    className="hover:text-tactical-orange transition-colors"
+                    className={`${EMAIL_LINK_CLASS} hover:text-tactical-orange`}
                   >
                     Feedback
-                  </MailtoLink>
+                  </a>
                 </li>
               </ul>
             </div>

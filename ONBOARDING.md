@@ -50,7 +50,7 @@ Each step has:
 - **Full-screen modal**: Takes over entire viewport
 - **Technical grid background**: Subtle blueprint texture
 - **Angular design**: Corner cuts, sharp edges
-- **Large header**: Protocol icon (🔨) + title
+- **Large header**: Brand shield icon + title
 - **Progress indicators**: 3 horizontal bars (current = orange, completed = green, upcoming = gray)
 
 #### Navigation

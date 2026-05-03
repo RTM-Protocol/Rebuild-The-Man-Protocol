@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import MailtoLink from '@/components/MailtoLink';
+import { MAILTO_INFO, MAILTO_REQUESTS, MAILTO_SUPPORT, EMAIL_LINK_CLASS } from '@/lib/mailtoUrls';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Rebuild The Man Protocol',
@@ -141,12 +141,9 @@ export default function PrivacyPolicyPage() {
                   Contact Email:
                 </dt>
                 <dd>
-                  <MailtoLink
-                    href="mailto:info@rebuildthemanprotocol.com"
-                    className="text-white hover:text-tactical-orange transition-colors underline"
-                  >
+                  <a href={MAILTO_INFO} className={EMAIL_LINK_CLASS}>
                     info@rebuildthemanprotocol.com
-                  </MailtoLink>
+                  </a>
                   <span className="text-gray-400 text-sm">
                     {' '}
                     (general information and business contact)
@@ -158,12 +155,9 @@ export default function PrivacyPolicyPage() {
                   App Support:
                 </dt>
                 <dd>
-                  <MailtoLink
-                    href="mailto:support@rebuildthemanprotocol.com"
-                    className="text-white hover:text-tactical-orange transition-colors underline"
-                  >
+                  <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
                     support@rebuildthemanprotocol.com
-                  </MailtoLink>
+                  </a>
                   <span className="text-gray-400 text-sm">
                     {' '}
                     (app help and technical issues)
@@ -539,12 +533,9 @@ export default function PrivacyPolicyPage() {
             <div className="bg-tactical-darkgray border-l-4 border-tactical-orange p-5">
               <p>
                 To exercise any of these rights, email us at{' '}
-                <MailtoLink
-                  href="mailto:requests@rebuildthemanprotocol.com"
-                  className="text-tactical-orange hover:text-tactical-orange-bright font-bold underline"
-                >
+                <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
                   requests@rebuildthemanprotocol.com
-                </MailtoLink>
+                </a>
                 . We will respond within 30 days.
               </p>
             </div>
@@ -636,12 +627,9 @@ export default function PrivacyPolicyPage() {
                   Data &amp; privacy:
                 </dt>
                 <dd>
-                  <MailtoLink
-                    href="mailto:requests@rebuildthemanprotocol.com"
-                    className="text-white hover:text-tactical-orange transition-colors underline"
-                  >
+                  <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
                     requests@rebuildthemanprotocol.com
-                  </MailtoLink>
+                  </a>
                   <span className="text-gray-400 text-sm"> (privacy policy, your data, UK GDPR rights)</span>
                 </dd>
               </div>
@@ -650,12 +638,9 @@ export default function PrivacyPolicyPage() {
                   General contact:
                 </dt>
                 <dd>
-                  <MailtoLink
-                    href="mailto:info@rebuildthemanprotocol.com"
-                    className="text-white hover:text-tactical-orange transition-colors underline"
-                  >
+                  <a href={MAILTO_INFO} className={EMAIL_LINK_CLASS}>
                     info@rebuildthemanprotocol.com
-                  </MailtoLink>
+                  </a>
                 </dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-2">
@@ -663,12 +648,9 @@ export default function PrivacyPolicyPage() {
                   App support:
                 </dt>
                 <dd>
-                  <MailtoLink
-                    href="mailto:support@rebuildthemanprotocol.com"
-                    className="text-white hover:text-tactical-orange transition-colors underline"
-                  >
+                  <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
                     support@rebuildthemanprotocol.com
-                  </MailtoLink>
+                  </a>
                 </dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-2">

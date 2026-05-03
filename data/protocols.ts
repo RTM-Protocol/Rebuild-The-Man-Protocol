@@ -8,7 +8,7 @@ export const protocols: Protocol[] = [
     tagline: 'Complete Mental Reconstruction',
     problem: 'You\'ve lost your edge. Operating on autopilot. Going through motions without purpose. The foundation needs rebuilding from the ground up.',
     solution: 'A 14-day intensive protocol to reconstruct your mental framework, sharpen your mind, and reclaim your drive through deliberate action and deep reflection.',
-    icon: '🔨',
+    icon: '',
     durations: [14],
     missions: {
       7: [],
@@ -263,7 +263,7 @@ export const protocols: Protocol[] = [
     tagline: 'Pressure Release System',
     problem: 'Your stress response system is running at maximum capacity. Too many inputs, insufficient processing. System approaching critical failure.',
     solution: 'A 7-30 day protocol to recalibrate your stress response, clear the backlog, and install pressure release mechanisms.',
-    icon: '⚠️',
+    icon: '',
     durations: [7, 14, 30],
     missions: {
       7: [
@@ -391,7 +391,7 @@ export const protocols: Protocol[] = [
     tagline: 'Anger Regulation System',
     problem: 'Your anger response is misfiring. Small triggers causing massive reactions. Control system offline.',
     solution: 'Install early warning systems and release mechanisms before pressure becomes explosive.',
-    icon: '🔥',
+    icon: '',
     durations: [7, 14],
     missions: {
       7: [
@@ -423,7 +423,7 @@ export const protocols: Protocol[] = [
     tagline: 'Motivation System Reboot',
     problem: 'Engine won\'t turn over. No energy, no drive. All systems are functional but nothing fires up.',
     solution: 'Manual ignition sequence to get core systems back online, one component at a time.',
-    icon: '⚙️',
+    icon: '',
     durations: [14, 30],
     missions: {
       7: [],
@@ -455,7 +455,7 @@ export const protocols: Protocol[] = [
     tagline: 'Self-Assessment Recalibration',
     problem: 'Your internal assessment system is miscalibrated. Reading real competence as fraud. False negative error pattern.',
     solution: 'Recalibrate your self-assessment system using external data and evidence-based thinking.',
-    icon: '🎯',
+    icon: '',
     durations: [7, 14],
     missions: {
       7: [

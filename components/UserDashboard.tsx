@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useProgress } from '@/contexts/ProgressContext';
 import { protocols } from '@/data/protocols';
+import ProtocolIcon from '@/components/ProtocolIcon';
 import { getCurrentWorkingDay, canCompleteDay, hasCompletedMissionToday } from '@/utils/progressUtils';
 
 export default function UserDashboard() {
@@ -46,7 +47,7 @@ export default function UserDashboard() {
             </p>
           </div>
           <div className="text-6xl breathe-animation">
-            {protocol.icon}
+            <ProtocolIcon protocolId={protocol.id} />
           </div>
         </div>
 

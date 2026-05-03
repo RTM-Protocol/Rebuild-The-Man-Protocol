@@ -8,6 +8,7 @@ import CheckInHistory from '@/components/CheckInHistory';
 import Footer from '@/components/Footer';
 import { useProgress } from '@/contexts/ProgressContext';
 import { protocols } from '@/data/protocols';
+import ProtocolIcon from '@/components/ProtocolIcon';
 
 export default function StatsPage() {
   const { activeProtocol, completedProtocols } = useProgress();
@@ -117,7 +118,9 @@ export default function StatsPage() {
                     className="bg-tactical-darkgray border-l-4 border-tactical-green p-6 flex items-center justify-between"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="text-4xl breathe-animation">{protocol.icon}</div>
+                      <div className="text-4xl breathe-animation">
+                        <ProtocolIcon protocolId={protocol.id} />
+                      </div>
                       <div>
                         <h3 className="text-lg font-bold text-white">
                           {protocol.title}

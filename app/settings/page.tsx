@@ -6,8 +6,12 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useProgress } from '@/contexts/ProgressContext';
 import ConfirmationModal from '@/components/ConfirmationModal';
-import MailtoLink from '@/components/MailtoLink';
-import { MAILTO_CONTACT, MAILTO_FEEDBACK, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
+import {
+  MAILTO_CONTACT,
+  MAILTO_FEEDBACK,
+  MAILTO_SUPPORT,
+  EMAIL_ROW_BUTTON_CLASS,
+} from '@/lib/mailtoUrls';
 
 export default function SettingsPage() {
   const { 
@@ -390,24 +394,15 @@ export default function SettingsPage() {
             </p>
             
             <div className="space-y-3">
-              <MailtoLink
-                href={MAILTO_CONTACT}
-                className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
-              >
+              <a href={MAILTO_CONTACT} className={EMAIL_ROW_BUTTON_CLASS}>
                 📮 General &amp; business contact
-              </MailtoLink>
-              <MailtoLink
-                href={MAILTO_SUPPORT}
-                className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
-              >
+              </a>
+              <a href={MAILTO_SUPPORT} className={EMAIL_ROW_BUTTON_CLASS}>
                 🆘 App support &amp; technical issues
-              </MailtoLink>
-              <MailtoLink
-                href={MAILTO_FEEDBACK}
-                className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
-              >
+              </a>
+              <a href={MAILTO_FEEDBACK} className={EMAIL_ROW_BUTTON_CLASS}>
                 📧 Send feedback
-              </MailtoLink>
+              </a>
             </div>
 
             <p className="text-gray-400 text-xs">

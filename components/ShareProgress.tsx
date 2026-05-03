@@ -39,17 +39,14 @@ export default function ShareProgress({
 
   const encodedMessage = encodeURIComponent(shareMessage);
 
+  const mailtoShareHref = `mailto:?subject=${encodeURIComponent('Rebuild The Man Protocol — My Progress')}&body=${encodedMessage}`;
+
   const shareToWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
   };
 
   const shareToTelegram = () => {
     window.open(`https://t.me/share/url?text=${encodedMessage}`, '_blank');
-  };
-
-  const shareViaEmail = () => {
-    const subject = encodeURIComponent('Rebuild The Man Protocol — My Progress');
-    window.open(`mailto:?subject=${subject}&body=${encodedMessage}`, '_blank');
   };
 
   const copyToClipboard = async () => {
@@ -108,15 +105,15 @@ export default function ShareProgress({
           Share via Telegram
         </button>
 
-        <button
-          onClick={shareViaEmail}
-          className="flex items-center justify-center gap-3 w-full py-3 px-4 bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-tactical-orange text-white font-bold uppercase tracking-wide text-sm transition-colors"
+        <a
+          href={mailtoShareHref}
+          className="flex items-center justify-center gap-3 w-full py-3 px-4 bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-tactical-orange text-tactical-orange hover:text-tactical-orange-bright font-bold uppercase tracking-wide text-sm transition-colors cursor-pointer"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
           </svg>
           Share via Email
-        </button>
+        </a>
 
         <button
           onClick={copyToClipboard}

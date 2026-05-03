@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { protocols } from '@/data/protocols';
+import ProtocolIcon from '@/components/ProtocolIcon';
 
 interface DiagnosticRecommendationProps {
   primaryIssue: string;
@@ -72,7 +73,9 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
         {/* Recommended Protocol Card */}
         <div className="bg-tactical-darkgray border-4 border-tactical-orange p-8 mb-6">
           <div className="flex items-start gap-6 mb-6">
-            <div className="text-7xl breathe-animation">{protocol.icon}</div>
+            <div className="text-7xl breathe-animation">
+              <ProtocolIcon protocolId={protocol.id} />
+            </div>
             <div className="flex-1">
               <div className="text-tactical-orange font-mono text-xs uppercase mb-2">
                 Recommended Protocol

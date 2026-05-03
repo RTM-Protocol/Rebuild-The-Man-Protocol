@@ -210,7 +210,7 @@ shadow-inset-tactical: // Recessed elements
 ←  Arrow/Back
 📊 Stats/Analytics
 📅 Calendar/Schedule
-🔨 Rebuild/Construct
+🛡️ Rebuild/Construct (brand shield in app UI)
 🔥 Streak/Fire
 ```
 

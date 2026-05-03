@@ -2,8 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import MailtoLink from '@/components/MailtoLink';
-import { MAILTO_CONTACT, MAILTO_REQUESTS, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
+import {
+  MAILTO_INFO,
+  MAILTO_REQUESTS,
+  MAILTO_SUPPORT,
+  EMAIL_LINK_CLASS,
+} from '@/lib/mailtoUrls';
 
 export const metadata: Metadata = {
   title: 'Contact Us | The Rebuild Protocol',
@@ -16,7 +20,7 @@ const blocks = [
     heading: 'General Enquiries',
     description:
       'For general information, business enquiries, and partnership opportunities.',
-    href: MAILTO_CONTACT,
+    href: MAILTO_INFO,
     email: 'info@rebuildthemanprotocol.com',
   },
   {
@@ -83,13 +87,10 @@ export default function ContactPage() {
                     {block.description}
                   </p>
                   <div>
-                    <MailtoLink
-                      href={block.href}
-                      className="inline-flex items-center gap-2 text-tactical-orange hover:text-tactical-orange-bright font-bold text-sm sm:text-base underline underline-offset-4"
-                    >
+                    <a href={block.href} className={`${EMAIL_LINK_CLASS} inline-flex items-center gap-2`}>
                       <span aria-hidden="true">✉️</span>
                       {block.email}
-                    </MailtoLink>
+                    </a>
                   </div>
                 </div>
               </div>

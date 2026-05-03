@@ -20,6 +20,7 @@ import { getCurrentWorkingDay } from '@/utils/progressUtils';
 import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
 import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
+import ProtocolIcon from '@/components/ProtocolIcon';
 
 export default function ProtocolDetail() {
   const params = useParams();
@@ -127,7 +128,9 @@ export default function ProtocolDetail() {
       >
         {/* Protocol Icon */}
         <div className="text-center mb-8">
-          <div className="text-7xl mb-4 breathe-animation">{protocol.icon}</div>
+          <div className="text-7xl mb-4 breathe-animation">
+            <ProtocolIcon protocolId={protocol.id} />
+          </div>
         </div>
 
         {/* Problem Statement */}

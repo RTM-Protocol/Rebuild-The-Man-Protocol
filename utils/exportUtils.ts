@@ -324,7 +324,12 @@ export function generateHTMLForExport(progress: UserProgress): string {
     </head>
     <body>
       <div class="header">
-        <div class="title">🔨 Rebuild The Man Protocol</div>
+        <div class="title" style="display:flex;align-items:center;justify-content:center;gap:12px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6.5 5.5H17.5L19.25 8v5L12 20.25 4.75 13V8L6.5 5.5z" stroke="#ff6b35" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+          <span>Rebuild The Man Protocol</span>
+        </div>
         <div class="subtitle">Mission Export Report</div>
       </div>
 

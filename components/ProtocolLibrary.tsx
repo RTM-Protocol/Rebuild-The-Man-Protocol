@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { protocols } from '@/data/protocols';
+import ProtocolIcon from '@/components/ProtocolIcon';
 import { UserProgress } from '@/types';
 
 interface ProtocolLibraryProps {
@@ -60,7 +62,9 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
           className="block bg-gradient-to-r from-tactical-darkgray to-tactical-gray border-2 border-tactical-green p-8 group transition-all hover:border-tactical-green-bright"
         >
           <div className="flex flex-col items-center text-center">
-            <div className="text-6xl mb-4 breathe-animation">🔨</div>
+            <div className="text-6xl mb-4 breathe-animation text-[#faf9f5]">
+              <BrandShieldIcon title="" />
+            </div>
             <div className="w-full">
               <h3 className="font-brand text-3xl font-bold group-hover:text-tactical-orange transition-colors uppercase mb-2" style={{ color: '#faf9f5' }}>
                 Rebuild The Man
@@ -111,7 +115,9 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
             >
               {/* Icon & Title */}
               <div className="flex flex-col items-center text-center mb-4">
-                <div className="text-4xl mb-3 breathe-animation">{protocol.icon}</div>
+                <div className="text-4xl mb-3 breathe-animation">
+                  <ProtocolIcon protocolId={protocol.id} />
+                </div>
                 <div className="w-full">
                   <h3 className="text-xl font-bold text-white group-hover:text-tactical-green-bright transition-colors uppercase">
                     {protocol.title}

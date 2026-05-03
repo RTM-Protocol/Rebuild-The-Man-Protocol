@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
+import BrandShieldIcon from '@/components/BrandShieldIcon';
 import UserDashboard from '@/components/UserDashboard';
 import ProtocolLibrary from '@/components/ProtocolLibrary';
 import ReminderPrompt from '@/components/ReminderPrompt';
@@ -79,7 +80,9 @@ export default function Home() {
         <Navigation />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="text-4xl mb-4">🔨</div>
+            <div className="text-4xl mb-4 text-[#faf9f5]">
+              <BrandShieldIcon title="" />
+            </div>
             <div className="text-white font-bold uppercase">Loading...</div>
           </div>
         </div>

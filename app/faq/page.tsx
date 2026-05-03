@@ -1,15 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import MailtoLink from '@/components/MailtoLink';
-import { MAILTO_CONTACT, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
+import {
+  MAILTO_CONTACT,
+  MAILTO_FEEDBACK,
+  MAILTO_SUPPORT,
+  MAILTO_TEAM,
+  EMAIL_LINK_CLASS,
+} from '@/lib/mailtoUrls';
 
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: ReactNode;
 }
 
 interface FAQCategory {
@@ -164,7 +169,19 @@ export default function FAQPage() {
         },
         {
           question: 'What if I have technical issues?',
-          answer: "For app bugs, playback issues, or technical help, email support@rebuildthemanprotocol.com. For general information or business enquiries, use info@rebuildthemanprotocol.com. Common issues are usually browser-related—try updating your browser or clearing cache first. Make sure JavaScript is enabled."
+          answer: (
+            <>
+              For app bugs, playback issues, or technical help, email{' '}
+              <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+                support@rebuildthemanprotocol.com
+              </a>
+              . For general information or business enquiries, use{' '}
+              <a href={MAILTO_CONTACT} className={EMAIL_LINK_CLASS}>
+                info@rebuildthemanprotocol.com
+              </a>
+              . Common issues are usually browser-related—try updating your browser or clearing cache first. Make sure JavaScript is enabled.
+            </>
+          ),
         }
       ]
     },
@@ -200,7 +217,15 @@ export default function FAQPage() {
       questions: [
         {
           question: 'I have feedback or suggestions. How do I share them?',
-          answer: "We want to hear from you. Email us at feedback@rebuildthemanprotocol.com. We read everything and use it to improve the protocols. Your input directly shapes future updates."
+          answer: (
+            <>
+              We want to hear from you. Email us at{' '}
+              <a href={MAILTO_FEEDBACK} className={EMAIL_LINK_CLASS}>
+                feedback@rebuildthemanprotocol.com
+              </a>
+              . We read everything and use it to improve the protocols. Your input directly shapes future updates.
+            </>
+          ),
         },
         {
           question: 'Why specifically for men?',
@@ -212,7 +237,17 @@ export default function FAQPage() {
         },
         {
           question: 'Are you hiring or looking for contributors?',
-          answer: "We're a small team focused on building the best possible protocols. If you're a licensed therapist, content creator, or developer interested in contributing, email us at team@rebuildthemanprotocol.com with your background and what you'd like to help with."
+          answer: (
+            <>
+              We&apos;re a small team focused on building the best possible protocols. If you&apos;re
+              a licensed therapist, content creator, or developer interested in contributing, email us
+              at{' '}
+              <a href={MAILTO_TEAM} className={EMAIL_LINK_CLASS}>
+                team@rebuildthemanprotocol.com
+              </a>{' '}
+              with your background and what you&apos;d like to help with.
+            </>
+          ),
         }
       ]
     }
@@ -326,7 +361,9 @@ export default function FAQPage() {
 
                     {isOpen && (
                       <div className="px-6 pb-6 pt-2 border-t border-tactical-lightgray">
-                        <div className="text-gray-300 leading-relaxed whitespace-pre-line">
+                        <div
+                          className={`text-gray-300 leading-relaxed ${typeof item.answer === 'string' ? 'whitespace-pre-line' : ''}`}
+                        >
                           {item.answer}
                         </div>
                       </div>
@@ -346,21 +383,15 @@ export default function FAQPage() {
           <p className="text-gray-300 mb-6 text-lg leading-relaxed">
             <span className="block mb-2">
               App support:{' '}
-              <MailtoLink
-                href={MAILTO_SUPPORT}
-                className="text-tactical-orange hover:text-tactical-orange-bright font-bold"
-              >
+              <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
                 support@rebuildthemanprotocol.com
-              </MailtoLink>
+              </a>
             </span>
             <span className="block">
               General &amp; business:{' '}
-              <MailtoLink
-                href={MAILTO_CONTACT}
-                className="text-tactical-orange hover:text-tactical-orange-bright font-bold"
-              >
+              <a href={MAILTO_CONTACT} className={EMAIL_LINK_CLASS}>
                 info@rebuildthemanprotocol.com
-              </MailtoLink>
+              </a>
             </span>
           </p>
           <div className="border-t border-tactical-lightgray pt-6 mt-6">

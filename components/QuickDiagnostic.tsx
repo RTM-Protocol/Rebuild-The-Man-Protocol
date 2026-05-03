@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import BrandShieldIcon from '@/components/BrandShieldIcon';
 
 interface DiagnosticAnswer {
   q1: string;
@@ -38,7 +39,7 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
         { value: 'relationship', label: 'Relationship problems', icon: '💬' as const },
         { value: 'depression', label: 'Depressed / no motivation', icon: '⚙️' as const },
         { value: 'anxiety', label: 'Anxious / overthinking', icon: '🌀' as const },
-        { value: 'multiple', label: 'Not sure / multiple issues', icon: '🔨' as const }
+        { value: 'multiple', label: 'Not sure / multiple issues', icon: '__shield__' as const }
       ]
     },
     {
@@ -159,7 +160,13 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
                   <div className="flex items-center gap-3 w-full">
                     {'icon' in option && (
                       <span className="text-2xl sm:text-3xl breathe-animation flex-shrink-0">
-                        {option.icon}
+                        {option.icon === '__shield__' ? (
+                          <span className="inline-block text-[#faf9f5]">
+                            <BrandShieldIcon title="" />
+                          </span>
+                        ) : (
+                          option.icon
+                        )}
                       </span>
                     )}
                     <span className="text-white font-bold text-sm sm:text-base group-hover:text-tactical-orange transition-colors leading-snug">
