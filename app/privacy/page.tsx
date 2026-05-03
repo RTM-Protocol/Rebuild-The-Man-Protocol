@@ -146,6 +146,27 @@ export default function PrivacyPolicyPage() {
                   >
                     info@rebuildthemanprotocol.com
                   </a>
+                  <span className="text-gray-400 text-sm">
+                    {' '}
+                    (general information and business contact)
+                  </span>
+                </dd>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:gap-2">
+                <dt className="text-tactical-orange font-mono text-sm uppercase sm:w-40">
+                  App Support:
+                </dt>
+                <dd>
+                  <a
+                    href="mailto:support@rebuildthemanprotocol.com"
+                    className="text-white hover:text-tactical-orange transition-colors underline"
+                  >
+                    support@rebuildthemanprotocol.com
+                  </a>
+                  <span className="text-gray-400 text-sm">
+                    {' '}
+                    (app help and technical issues)
+                  </span>
                 </dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-2">
@@ -610,8 +631,8 @@ export default function PrivacyPolicyPage() {
             </p>
             <dl className="bg-tactical-darkgray border-l-4 border-tactical-green p-5 space-y-2 mb-6">
               <div className="flex flex-col sm:flex-row sm:gap-2">
-                <dt className="text-tactical-orange font-mono text-sm uppercase sm:w-24">
-                  Email:
+                <dt className="text-tactical-orange font-mono text-sm uppercase sm:min-w-[11rem]">
+                  Data &amp; privacy:
                 </dt>
                 <dd>
                   <a
@@ -619,6 +640,33 @@ export default function PrivacyPolicyPage() {
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     requests@rebuildthemanprotocol.com
+                  </a>
+                  <span className="text-gray-400 text-sm"> (privacy policy, your data, UK GDPR rights)</span>
+                </dd>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:gap-2">
+                <dt className="text-tactical-orange font-mono text-sm uppercase sm:min-w-[11rem]">
+                  General contact:
+                </dt>
+                <dd>
+                  <a
+                    href="mailto:info@rebuildthemanprotocol.com"
+                    className="text-white hover:text-tactical-orange transition-colors underline"
+                  >
+                    info@rebuildthemanprotocol.com
+                  </a>
+                </dd>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:gap-2">
+                <dt className="text-tactical-orange font-mono text-sm uppercase sm:min-w-[11rem]">
+                  App support:
+                </dt>
+                <dd>
+                  <a
+                    href="mailto:support@rebuildthemanprotocol.com"
+                    className="text-white hover:text-tactical-orange transition-colors underline"
+                  >
+                    support@rebuildthemanprotocol.com
                   </a>
                 </dd>
               </div>

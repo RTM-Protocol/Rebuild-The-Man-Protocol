@@ -531,7 +531,22 @@ export default function LandingPage() {
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><Link href="/faq" className="hover:text-tactical-orange transition-colors">FAQ</Link></li>
                 <li><a href="#about" className="hover:text-tactical-orange transition-colors">About</a></li>
-                <li><a href="mailto:feedback@rebuildthemanprotocol.com" className="hover:text-tactical-orange transition-colors">Contact</a></li>
+                <li>
+                  <a
+                    href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
+                    className="hover:text-tactical-orange transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
+                    className="hover:text-tactical-orange transition-colors"
+                  >
+                    Support
+                  </a>
+                </li>
                 <li><a href="mailto:feedback@rebuildthemanprotocol.com" className="hover:text-tactical-orange transition-colors">Feedback</a></li>
               </ul>
             </div>

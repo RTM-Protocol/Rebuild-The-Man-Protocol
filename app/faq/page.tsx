@@ -162,7 +162,7 @@ export default function FAQPage() {
         },
         {
           question: 'What if I have technical issues?',
-          answer: "Contact us at support@rebuildthemanprotocol.com. We'll help you troubleshoot. Common issues are usually browser-related—try updating your browser or clearing cache first. Make sure JavaScript is enabled."
+          answer: "For app bugs, playback issues, or technical help, email support@rebuildthemanprotocol.com. For general information or business enquiries, use info@rebuildthemanprotocol.com. Common issues are usually browser-related—try updating your browser or clearing cache first. Make sure JavaScript is enabled."
         }
       ]
     },
@@ -341,8 +341,19 @@ export default function FAQPage() {
           <h2 className="text-2xl font-bold text-white uppercase mb-4">
             Still Have Questions?
           </h2>
-          <p className="text-gray-300 mb-6 text-lg">
-            Email us at <a href="mailto:support@rebuildthemanprotocol.com" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">support@rebuildthemanprotocol.com</a>
+          <p className="text-gray-300 mb-6 text-lg leading-relaxed">
+            <span className="block mb-2">
+              App support:{' '}
+              <a href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">
+                support@rebuildthemanprotocol.com
+              </a>
+            </span>
+            <span className="block">
+              General &amp; business:{' '}
+              <a href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">
+                info@rebuildthemanprotocol.com
+              </a>
+            </span>
           </p>
           <div className="border-t border-tactical-lightgray pt-6 mt-6">
             <p className="text-white font-bold text-xl mb-4 uppercase">

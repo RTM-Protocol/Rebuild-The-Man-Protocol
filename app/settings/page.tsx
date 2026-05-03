@@ -389,17 +389,22 @@ export default function SettingsPage() {
             
             <div className="space-y-3">
               <a
-                href="mailto:feedback@rebuildthemanprotocol.com?subject=Rebuild The Man Protocol Feedback"
+                href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
                 className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
               >
-                📧 Send Feedback
+                📮 General &amp; business contact
               </a>
-              
               <a
-                href="mailto:support@rebuildthemanprotocol.com?subject=Support Request"
+                href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
                 className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
               >
-                🆘 Get Support
+                🆘 App support &amp; technical issues
+              </a>
+              <a
+                href="mailto:feedback@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20Feedback"
+                className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
+              >
+                📧 Send feedback
               </a>
             </div>
 

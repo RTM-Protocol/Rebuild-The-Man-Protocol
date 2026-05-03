@@ -17,8 +17,21 @@ export default function Footer() {
           <Link href="/privacy" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
             Privacy Policy
           </Link>
-          <a href="mailto:support@rebuildthemanprotocol.com" className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors">
+          <a
+            href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
+            className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors"
+            title="Business and general information: info@rebuildthemanprotocol.com"
+            aria-label="Email info at rebuildthemanprotocol.com for general and business enquiries"
+          >
             Contact
+          </a>
+          <a
+            href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
+            className="text-white hover:text-tactical-orange text-xs uppercase font-bold transition-colors"
+            title="App and technical issues: support@rebuildthemanprotocol.com"
+            aria-label="Email support at rebuildthemanprotocol.com for app help and technical issues"
+          >
+            Support
           </a>
         </div>
         <p className="font-brand text-xs mb-2 text-center">
