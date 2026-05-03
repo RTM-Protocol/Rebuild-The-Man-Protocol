@@ -6,9 +6,21 @@ interface PreMissionCheckInProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete: (data: { stressLevel: number; angerLevel: number; focusLevel: number }) => void;
+  /** When true, show a control to open privacy-safe partner sharing (parent opens ShareProgress). */
+  accountabilityPartnerEnabled?: boolean;
+  onOpenPartnerShare?: () => void;
+  /** Lets users turn on partner mode from this screen; parent should persist via ProgressContext. */
+  onEnableAccountabilityPartner?: () => void;
 }
 
-export default function PreMissionCheckIn({ isOpen, onClose, onComplete }: PreMissionCheckInProps) {
+export default function PreMissionCheckIn({
+  isOpen,
+  onClose,
+  onComplete,
+  accountabilityPartnerEnabled = false,
+  onOpenPartnerShare,
+  onEnableAccountabilityPartner,
+}: PreMissionCheckInProps) {
   const [stressLevel, setStressLevel] = useState(5);
   const [angerLevel, setAngerLevel] = useState(5);
   const [focusLevel, setFocusLevel] = useState(5);
@@ -21,8 +33,8 @@ export default function PreMissionCheckIn({ isOpen, onClose, onComplete }: PreMi
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-tactical-darkgray border-2 border-tactical-orange max-w-lg w-full p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto border-2 border-tactical-orange bg-tactical-darkgray p-6">
         <h2 className="text-2xl font-bold text-white uppercase mb-2">
           Pre-Mission Check-In
         </h2>
@@ -105,12 +117,49 @@ export default function PreMissionCheckIn({ isOpen, onClose, onComplete }: PreMi
           </div>
         </div>
 
-        <div className="flex gap-4">
+        {accountabilityPartnerEnabled && onOpenPartnerShare && (
+          <div className="mb-6 border border-tactical-green/40 bg-tactical-black/40 p-4">
+            <p className="mb-3 text-sm leading-relaxed text-gray-300">
+              <span className="font-bold text-tactical-green-bright">Accountability partner is on.</span>{' '}
+              Send a privacy-safe update (days completed, streak, progress % only — never these sliders or
+              your notes).
+            </p>
+            <button
+              type="button"
+              onClick={onOpenPartnerShare}
+              className="w-full border-2 border-tactical-green py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-tactical-green-bright hover:bg-tactical-green/10"
+            >
+              📤 Share safe progress with partner
+            </button>
+          </div>
+        )}
+
+        {!accountabilityPartnerEnabled && onEnableAccountabilityPartner && (
+          <div className="mb-6 border border-tactical-lightgray bg-tactical-black/40 p-4">
+            <p className="mb-3 text-sm leading-relaxed text-gray-300">
+              Want someone in your corner? Enable an accountability partner to share day counts only — not
+              protocol details or anything you enter here.
+            </p>
+            <button
+              type="button"
+              onClick={onEnableAccountabilityPartner}
+              className="w-full border-2 border-tactical-orange py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-tactical-orange-bright hover:bg-tactical-orange/10"
+            >
+              Enable accountability partner
+            </button>
+          </div>
+        )}
+
+        <div className="space-y-2">
+          <p className="text-center font-mono text-xs uppercase tracking-[0.18em] text-tactical-green-bright">
+            Next — start the mission
+          </p>
           <button
+            type="button"
             onClick={handleSubmit}
-            className="btn-primary flex-1"
+            className="btn-primary w-full border-2 border-tactical-orange-bright py-3 text-base font-extrabold uppercase tracking-wide shadow-lg shadow-tactical-orange/20 ring-2 ring-tactical-orange/50 sm:py-4"
           >
-            BEGIN MISSION
+            Begin mission →
           </button>
         </div>
       </div>

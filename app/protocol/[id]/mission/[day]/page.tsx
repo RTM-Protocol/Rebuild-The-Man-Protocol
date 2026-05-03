@@ -637,10 +637,16 @@ export default function MissionPage() {
       </main>
 
       {/* Pre-Mission Check-In */}
-      <PreMissionCheckIn 
+      <PreMissionCheckIn
         isOpen={showPreCheckIn}
         onClose={() => setShowPreCheckIn(false)}
         onComplete={handlePreCheckInComplete}
+        accountabilityPartnerEnabled={!!activeProtocol?.accountabilityPartner?.enabled}
+        onOpenPartnerShare={() => setShowShareProgress(true)}
+        onEnableAccountabilityPartner={() => {
+          setAccountabilityPartner(true);
+          setShowShareProgress(true);
+        }}
       />
 
       {/* Post-Mission Check-In */}

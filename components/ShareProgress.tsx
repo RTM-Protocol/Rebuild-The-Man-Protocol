@@ -130,7 +130,7 @@ export default function ShareProgress({
 
   if (variant === 'modal') {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90">
+      <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90">
         <div className="bg-tactical-darkgray border-2 border-tactical-lightgray max-w-lg w-full p-8 animate-fade-in max-h-[90vh] overflow-y-auto">
           <div className="text-center mb-6">
             <div className="text-5xl mb-4">📤</div>

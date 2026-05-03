@@ -115,7 +115,11 @@ export default function ProtocolDetail() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main
+        className={`max-w-4xl mx-auto px-4 py-12 ${
+          !isActiveProtocol && selectedDuration ? 'pb-28 sm:pb-32' : ''
+        }`}
+      >
         {/* Protocol Icon */}
         <div className="text-center mb-8">
           <div className="text-7xl mb-4 breathe-animation">{protocol.icon}</div>
@@ -283,21 +287,27 @@ export default function ProtocolDetail() {
 
             {/* Quick Start Button - appears after duration selection */}
             {selectedDuration && (
-              <div className="mt-8 text-center bg-tactical-darkgray border-2 border-tactical-orange p-6">
+              <div className="mt-8 border-2 border-tactical-orange bg-tactical-darkgray p-6 text-center">
                 <div className="mb-4">
-                  <div className="text-tactical-green-bright font-mono text-sm mb-2">
+                  <div className="mb-2 font-mono text-sm text-tactical-green-bright">
                     ✓ DURATION SELECTED: {selectedDuration} DAYS
                   </div>
-                  <div className="text-gray-300 text-sm">
-                    Ready to begin? Start immediately or scroll for mission details.
+                  <div className="text-sm text-gray-300">
+                    Ready to begin? Use the bar at the bottom or continue here.
                   </div>
                 </div>
-                <button
-                  onClick={handleStartClick}
-                  className="btn-primary text-lg py-4 px-12 animate-pulse hover:animate-none"
-                >
-                  🚀 QUICK START PROTOCOL
-                </button>
+                <div className="space-y-2">
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-tactical-green-bright">
+                    Next — commit to the protocol
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleStartClick}
+                    className="btn-primary border-2 border-tactical-orange-bright px-12 py-4 text-lg font-extrabold uppercase tracking-wide shadow-lg shadow-tactical-orange/20 ring-2 ring-tactical-orange/50"
+                  >
+                    🚀 Quick start protocol →
+                  </button>
+                </div>
               </div>
             )}
           </section>
@@ -370,15 +380,20 @@ export default function ProtocolDetail() {
         {/* Start Button - Only show if NOT active protocol */}
         {!isActiveProtocol && (
           <div className="text-center">
+            <div className="mb-2 font-mono text-xs uppercase tracking-[0.15em] text-tactical-green-bright">
+              {selectedDuration ? 'Next — same action as the fixed bar below' : 'Choose a duration above'}
+            </div>
             <button
+              type="button"
               onClick={handleStartClick}
               disabled={!selectedDuration}
               className={`
-                btn-primary text-lg py-4 px-12
-                ${!selectedDuration ? 'opacity-40 cursor-not-allowed' : ''}
+                btn-primary border-2 px-12 py-4 text-lg font-extrabold uppercase tracking-wide
+                ${selectedDuration ? 'border-tactical-orange-bright shadow-lg shadow-tactical-orange/20 ring-2 ring-tactical-orange/50' : 'border-transparent'}
+                ${!selectedDuration ? 'cursor-not-allowed opacity-40' : ''}
               `}
             >
-              {selectedDuration ? 'START PROTOCOL' : 'SELECT DURATION FIRST'}
+              {selectedDuration ? 'START PROTOCOL →' : 'SELECT DURATION FIRST'}
             </button>
             
             {selectedDuration && (
@@ -402,6 +417,24 @@ export default function ProtocolDetail() {
           </ul>
         </div>
       </main>
+
+      {/* Sticky next-step bar — visible while scrolling mission details */}
+      {!isActiveProtocol && selectedDuration && (
+        <div className="fixed bottom-0 left-0 right-0 z-40 border-t-2 border-tactical-orange bg-tactical-darkgray/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_40px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+          <div className="mx-auto flex max-w-4xl flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+            <p className="text-center font-mono text-xs uppercase tracking-[0.18em] text-tactical-green-bright sm:text-left">
+              Next — commit &amp; choose intensity
+            </p>
+            <button
+              type="button"
+              onClick={handleStartClick}
+              className="btn-primary border-2 border-tactical-orange-bright px-6 py-3 text-sm font-extrabold uppercase tracking-wide shadow-lg shadow-tactical-orange/25 ring-2 ring-tactical-orange/50 sm:shrink-0 sm:px-8 sm:py-3.5"
+            >
+              Continue →
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Modal */}
       <ConfirmationModal
