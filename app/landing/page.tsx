@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { protocols } from '@/data/protocols';
+import MailtoLink from '@/components/MailtoLink';
+import { MAILTO_CONTACT, MAILTO_FEEDBACK, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
 
 export default function LandingPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -532,22 +534,23 @@ export default function LandingPage() {
                 <li><Link href="/faq" className="hover:text-tactical-orange transition-colors">FAQ</Link></li>
                 <li><a href="#about" className="hover:text-tactical-orange transition-colors">About</a></li>
                 <li>
-                  <a
-                    href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
-                    className="hover:text-tactical-orange transition-colors"
-                  >
+                  <MailtoLink href={MAILTO_CONTACT} className="hover:text-tactical-orange transition-colors">
                     Contact
-                  </a>
+                  </MailtoLink>
                 </li>
                 <li>
-                  <a
-                    href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
+                  <MailtoLink href={MAILTO_SUPPORT} className="hover:text-tactical-orange transition-colors">
+                    Support
+                  </MailtoLink>
+                </li>
+                <li>
+                  <MailtoLink
+                    href={MAILTO_FEEDBACK}
                     className="hover:text-tactical-orange transition-colors"
                   >
-                    Support
-                  </a>
+                    Feedback
+                  </MailtoLink>
                 </li>
-                <li><a href="mailto:feedback@rebuildthemanprotocol.com" className="hover:text-tactical-orange transition-colors">Feedback</a></li>
               </ul>
             </div>
 

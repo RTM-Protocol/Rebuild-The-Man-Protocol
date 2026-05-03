@@ -6,6 +6,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useProgress } from '@/contexts/ProgressContext';
 import ConfirmationModal from '@/components/ConfirmationModal';
+import MailtoLink from '@/components/MailtoLink';
+import { MAILTO_CONTACT, MAILTO_FEEDBACK, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
 
 export default function SettingsPage() {
   const { 
@@ -388,24 +390,24 @@ export default function SettingsPage() {
             </p>
             
             <div className="space-y-3">
-              <a
-                href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
+              <MailtoLink
+                href={MAILTO_CONTACT}
                 className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
               >
                 📮 General &amp; business contact
-              </a>
-              <a
-                href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
+              </MailtoLink>
+              <MailtoLink
+                href={MAILTO_SUPPORT}
                 className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
               >
                 🆘 App support &amp; technical issues
-              </a>
-              <a
-                href="mailto:feedback@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20Feedback"
+              </MailtoLink>
+              <MailtoLink
+                href={MAILTO_FEEDBACK}
                 className="block bg-tactical-gray hover:bg-tactical-lightgray border border-tactical-lightgray text-white font-bold uppercase px-6 py-3 transition-colors text-center"
               >
                 📧 Send feedback
-              </a>
+              </MailtoLink>
             </div>
 
             <p className="text-gray-400 text-xs">

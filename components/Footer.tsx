@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import MailtoLink from '@/components/MailtoLink';
+import { MAILTO_CONTACT, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
 
 export default function Footer() {
   return (
@@ -29,22 +31,22 @@ export default function Footer() {
           >
             Privacy Policy
           </Link>
-          <a
-            href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry"
+          <MailtoLink
+            href={MAILTO_CONTACT}
             className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
             title="Business and general information: info@rebuildthemanprotocol.com"
             aria-label="Email info at rebuildthemanprotocol.com for general and business enquiries"
           >
             Contact
-          </a>
-          <a
-            href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support"
+          </MailtoLink>
+          <MailtoLink
+            href={MAILTO_SUPPORT}
             className="text-tactical-orange hover:text-tactical-orange-bright text-xs uppercase font-bold transition-colors"
             title="App and technical issues: support@rebuildthemanprotocol.com"
             aria-label="Email support at rebuildthemanprotocol.com for app help and technical issues"
           >
             Support
-          </a>
+          </MailtoLink>
         </div>
         <p className="font-brand text-xs mb-2 text-center">
           © 2026 <span style={{ color: '#faf9f5' }}>Rebuild The Man</span> <span style={{ color: '#cc6119' }}>Protocol</span>. All rights reserved.

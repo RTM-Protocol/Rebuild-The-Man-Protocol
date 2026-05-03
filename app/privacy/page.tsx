@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import MailtoLink from '@/components/MailtoLink';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Rebuild The Man Protocol',
@@ -140,12 +141,12 @@ export default function PrivacyPolicyPage() {
                   Contact Email:
                 </dt>
                 <dd>
-                  <a
+                  <MailtoLink
                     href="mailto:info@rebuildthemanprotocol.com"
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     info@rebuildthemanprotocol.com
-                  </a>
+                  </MailtoLink>
                   <span className="text-gray-400 text-sm">
                     {' '}
                     (general information and business contact)
@@ -157,12 +158,12 @@ export default function PrivacyPolicyPage() {
                   App Support:
                 </dt>
                 <dd>
-                  <a
+                  <MailtoLink
                     href="mailto:support@rebuildthemanprotocol.com"
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     support@rebuildthemanprotocol.com
-                  </a>
+                  </MailtoLink>
                   <span className="text-gray-400 text-sm">
                     {' '}
                     (app help and technical issues)
@@ -538,12 +539,12 @@ export default function PrivacyPolicyPage() {
             <div className="bg-tactical-darkgray border-l-4 border-tactical-orange p-5">
               <p>
                 To exercise any of these rights, email us at{' '}
-                <a
+                <MailtoLink
                   href="mailto:requests@rebuildthemanprotocol.com"
                   className="text-tactical-orange hover:text-tactical-orange-bright font-bold underline"
                 >
                   requests@rebuildthemanprotocol.com
-                </a>
+                </MailtoLink>
                 . We will respond within 30 days.
               </p>
             </div>
@@ -635,12 +636,12 @@ export default function PrivacyPolicyPage() {
                   Data &amp; privacy:
                 </dt>
                 <dd>
-                  <a
+                  <MailtoLink
                     href="mailto:requests@rebuildthemanprotocol.com"
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     requests@rebuildthemanprotocol.com
-                  </a>
+                  </MailtoLink>
                   <span className="text-gray-400 text-sm"> (privacy policy, your data, UK GDPR rights)</span>
                 </dd>
               </div>
@@ -649,12 +650,12 @@ export default function PrivacyPolicyPage() {
                   General contact:
                 </dt>
                 <dd>
-                  <a
+                  <MailtoLink
                     href="mailto:info@rebuildthemanprotocol.com"
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     info@rebuildthemanprotocol.com
-                  </a>
+                  </MailtoLink>
                 </dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-2">
@@ -662,12 +663,12 @@ export default function PrivacyPolicyPage() {
                   App support:
                 </dt>
                 <dd>
-                  <a
+                  <MailtoLink
                     href="mailto:support@rebuildthemanprotocol.com"
                     className="text-white hover:text-tactical-orange transition-colors underline"
                   >
                     support@rebuildthemanprotocol.com
-                  </a>
+                  </MailtoLink>
                 </dd>
               </div>
               <div className="flex flex-col sm:flex-row sm:gap-2">

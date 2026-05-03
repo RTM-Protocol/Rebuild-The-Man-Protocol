@@ -17,6 +17,7 @@ import IntensitySelector from '@/components/IntensitySelector';
 import IntensityEscalationPrompt from '@/components/IntensityEscalationPrompt';
 import MissedDayPrompt from '@/components/MissedDayPrompt';
 import ShareProgress from '@/components/ShareProgress';
+import Footer from '@/components/Footer';
 import { shouldShowBrief, generateCommandersBrief } from '@/utils/briefGenerator';
 import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReason, getCompletionLimitMessage } from '@/utils/progressUtils';
 import StatCard from '@/components/StatCard';
@@ -743,6 +744,7 @@ export default function MissionPage() {
           onClose={() => setShowShareProgress(false)}
         />
       )}
+      <Footer />
     </div>
   );
 }

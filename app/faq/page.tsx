@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import MailtoLink from '@/components/MailtoLink';
+import { MAILTO_CONTACT, MAILTO_SUPPORT } from '@/lib/mailtoUrls';
 
 interface FAQItem {
   question: string;
@@ -344,15 +346,21 @@ export default function FAQPage() {
           <p className="text-gray-300 mb-6 text-lg leading-relaxed">
             <span className="block mb-2">
               App support:{' '}
-              <a href="mailto:support@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20App%20support" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">
+              <MailtoLink
+                href={MAILTO_SUPPORT}
+                className="text-tactical-orange hover:text-tactical-orange-bright font-bold"
+              >
                 support@rebuildthemanprotocol.com
-              </a>
+              </MailtoLink>
             </span>
             <span className="block">
               General &amp; business:{' '}
-              <a href="mailto:info@rebuildthemanprotocol.com?subject=Rebuild%20The%20Man%20Protocol%20-%20General%20enquiry" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">
+              <MailtoLink
+                href={MAILTO_CONTACT}
+                className="text-tactical-orange hover:text-tactical-orange-bright font-bold"
+              >
                 info@rebuildthemanprotocol.com
-              </a>
+              </MailtoLink>
             </span>
           </p>
           <div className="border-t border-tactical-lightgray pt-6 mt-6">

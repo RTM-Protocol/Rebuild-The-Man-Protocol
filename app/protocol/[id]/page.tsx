@@ -19,6 +19,7 @@ import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getCurrentWorkingDay } from '@/utils/progressUtils';
 import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
 import ShareProgress from '@/components/ShareProgress';
+import Footer from '@/components/Footer';
 
 export default function ProtocolDetail() {
   const params = useParams();
@@ -92,7 +93,11 @@ export default function ProtocolDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-tactical-black">
+    <div
+      className={`min-h-screen bg-tactical-black ${
+        !isActiveProtocol && selectedDuration ? 'pb-24 sm:pb-28' : ''
+      }`}
+    >
       {/* Navigation */}
       <Navigation />
 
@@ -494,6 +499,8 @@ export default function ProtocolDetail() {
         confirmText="Remove Partner"
         cancelText="Keep Partner"
       />
+
+      <Footer />
     </div>
   );
 }
