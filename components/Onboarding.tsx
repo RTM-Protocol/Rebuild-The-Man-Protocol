@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
+import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -178,7 +179,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
         <div className="bg-gradient-to-r from-tactical-carbon to-tactical-steel p-8 border-b-2 border-tactical-orange">
           <div className="flex items-center justify-between mb-4">
             <div className="text-6xl text-[#faf9f5]">
-              <BrandShieldIcon />
+              <BrandShieldIcon strokeColor={BRAND_ORANGE_HEX} />
             </div>
             <button
               onClick={handleSkip}

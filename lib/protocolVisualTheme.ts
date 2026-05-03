@@ -6,6 +6,9 @@ export type ProtocolVisualTheme = {
   progressGradient: string;
 };
 
+/** Nav + wordmark “Protocol” orange — same as Tailwind `tactical-orange`. */
+export const BRAND_ORANGE_HEX = '#cc6119';
+
 export const PROTOCOL_VISUAL_THEMES: Record<string, ProtocolVisualTheme> = {
   'pressure-valve': {
     hex: '#E85A3A',
@@ -40,7 +43,7 @@ export const PROTOCOL_VISUAL_THEMES: Record<string, ProtocolVisualTheme> = {
       'linear-gradient(to right, #2563eb, #3B82F6, #7ab8ff)',
   },
   'rebuild-the-man': {
-    hex: '#cc6119',
+    hex: BRAND_ORANGE_HEX,
     glow12: 'rgba(204, 97, 25, 0.12)',
     glow20: 'rgba(204, 97, 25, 0.2)',
     fillSoft: 'rgba(204, 97, 25, 0.14)',

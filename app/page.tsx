@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
+import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 import UserDashboard from '@/components/UserDashboard';
 import ProtocolLibrary from '@/components/ProtocolLibrary';
 import ReminderPrompt from '@/components/ReminderPrompt';
@@ -80,8 +81,8 @@ export default function Home() {
         <Navigation />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <div className="text-4xl mb-4 text-[#faf9f5]">
-              <BrandShieldIcon title="" />
+            <div className="text-4xl mb-4">
+              <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
             </div>
             <div className="text-white font-bold uppercase">Loading...</div>
           </div>

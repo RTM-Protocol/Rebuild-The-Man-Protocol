@@ -3,7 +3,7 @@
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import ProtocolIconShell from '@/components/ProtocolIconShell';
 import { protocols } from '@/data/protocols';
-import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
+import { getProtocolVisualTheme, BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 const svgBase = 'block h-[1em] w-[1em] max-h-none max-w-none shrink-0';
 
@@ -136,7 +136,11 @@ export default function ProtocolIcon({ protocolId }: { protocolId: string }) {
       const t = getProtocolVisualTheme(protocolId)!;
       return (
         <ProtocolIconShell glow12={t.glow12} glow20={t.glow20}>
-          <BrandShieldIcon title="" strokeColor={t.hex} softFill={t.fillSoft} />
+          <BrandShieldIcon
+            title=""
+            strokeColor={BRAND_ORANGE_HEX}
+            softFill={t.fillSoft}
+          />
         </ProtocolIconShell>
       );
     }

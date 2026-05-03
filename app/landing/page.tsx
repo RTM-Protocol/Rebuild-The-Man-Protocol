@@ -11,6 +11,7 @@ import {
   EMAIL_LINK_CLASS,
 } from '@/lib/mailtoUrls';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
+import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 export default function LandingPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -43,8 +44,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
-                <BrandShieldIcon title="" />
+              <span className="text-2xl leading-none">
+                <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
               </span>
               <div>
                 <div className="font-brand">
@@ -513,9 +514,9 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
-                <BrandShieldIcon title="" />
-              </span>
+                <span className="text-2xl leading-none">
+                  <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
+                </span>
                 <div>
                   <div className="font-brand">
                     <span className="block text-sm font-bold uppercase tracking-tight leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>

@@ -7,6 +7,7 @@ import { protocols } from '@/data/protocols';
 import { useProgress } from '@/contexts/ProgressContext';
 import ActiveProtocolBlocker from './ActiveProtocolBlocker';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
+import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -202,8 +203,8 @@ export default function Navigation() {
                 setIsProtocolsSubMenuOpen(false);
               }}
             >
-              <span className="text-2xl leading-none text-[#faf9f5]" aria-hidden>
-                <BrandShieldIcon title="" />
+              <span className="text-2xl leading-none" aria-hidden>
+                <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
               </span>
               <div>
                 <div className="font-brand">
