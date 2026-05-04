@@ -1,8 +1,6 @@
 'use client';
 
-import BrandShieldIcon from '@/components/BrandShieldIcon';
 import ProtocolIcon from '@/components/ProtocolIcon';
-import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 interface NewUserLandingProps {
   onStartDiagnostic: () => void;
@@ -33,8 +31,10 @@ export default function NewUserLanding({
               Protocol
             </div>
           </div>
-            <div className="text-4xl mb-3">
-              <BrandShieldIcon strokeColor={BRAND_ORANGE_HEX} />
+            <div className="mb-4 flex w-full justify-center items-center">
+              <div className="text-6xl breathe-animation">
+                <ProtocolIcon protocolId="rebuild-the-man" />
+              </div>
             </div>
             <h2 className="text-2xl font-bold text-white uppercase tracking-tight mb-3">
               What Needs Fixing?

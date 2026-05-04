@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
+import ProtocolIcon from '@/components/ProtocolIcon';
 import UserDashboard from '@/components/UserDashboard';
 import ProtocolLibrary from '@/components/ProtocolLibrary';
 import ReminderPrompt from '@/components/ReminderPrompt';
@@ -132,6 +133,11 @@ export default function Home() {
         <header className="bg-tactical-darkgray border-b-2 border-tactical-orange">
           <div className="max-w-7xl mx-auto px-4 py-12 text-center">
             <div className="max-w-3xl mx-auto">
+              <div className="mb-6 flex w-full justify-center items-center">
+                <div className="text-6xl breathe-animation">
+                  <ProtocolIcon protocolId="rebuild-the-man" />
+                </div>
+              </div>
               <h1 className="font-brand mb-4">
                 <span className="block text-5xl font-bold tracking-tight uppercase leading-none" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
                 <span className="block text-2xl font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#cc6119' }}>Protocol</span>
