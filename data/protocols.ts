@@ -1,4 +1,24 @@
 import { Protocol } from '@/types';
+import {
+  pressureValveMissions7,
+  pressureValveMissions14,
+  pressureValveMissions30,
+} from './pressureValveMissions';
+import {
+  systemOverloadMissions7,
+  systemOverloadMissions14,
+  systemOverloadMissions30,
+} from './systemOverloadMissions';
+import {
+  engineRestartMissions7,
+  engineRestartMissions14,
+  engineRestartMissions30,
+} from './engineRestartMissions';
+import {
+  realityCalibrationMissions7,
+  realityCalibrationMissions14,
+  realityCalibrationMissions30,
+} from './realityCalibrationMissions';
 
 export const protocols: Protocol[] = [
   {
@@ -260,128 +280,15 @@ export const protocols: Protocol[] = [
     id: 'system-overload',
     title: 'System Overload Protocol',
     category: 'stress',
-    tagline: 'Pressure Release System',
+    tagline: 'Stress Management System',
     problem: 'Your stress response system is running at maximum capacity. Too many inputs, insufficient processing. System approaching critical failure.',
     solution: 'A 7-30 day protocol to recalibrate your stress response, clear the backlog, and install pressure release mechanisms.',
     icon: '',
     durations: [7, 14, 30],
     missions: {
-      7: [
-        {
-          day: 1,
-          title: 'System Diagnostic',
-          description: 'Identify what\'s overloading your system',
-          instructions: [
-            'Grab a piece of paper or open a notes app',
-            'Set a timer for 10 minutes',
-            'Write down every single thing currently taking up mental bandwidth - work deadlines, family issues, money concerns, everything',
-            'Don\'t filter, don\'t organize, just dump it all out',
-            'When timer ends, count the items. That\'s your system load.'
-          ],
-          whyItWorks: 'Your brain uses the same mental RAM for remembering tasks as it does for thinking. Writing things down frees up processing power. Studies show this "cognitive offloading" reduces anxiety and improves focus within minutes.',
-          proTip: 'Do this every morning for the next 7 days. You\'ll notice patterns in what stresses you most.',
-          affirmation: 'I release what I cannot control and focus on what I can.',
-          estimatedTime: '10 minutes'
-        },
-        {
-          day: 2,
-          title: 'Pressure Valve Installation',
-          description: 'Install a daily release mechanism',
-          instructions: [
-            'Pick one physical activity: 20 pushups, 5-minute walk, or 30 jumping jacks',
-            'Set 3 alarms throughout your day (morning, lunch, evening)',
-            'When alarm goes off, drop everything and do the activity',
-            'No negotiation, no "later" - immediate execution',
-            'Log completion in your phone'
-          ],
-          whyItWorks: 'Physical activity triggers the completion of the stress response cycle. Your body literally needs to move to process stress chemicals. Small bursts throughout the day prevent accumulation.',
-          proTip: 'The activity matters less than the consistency. Pick something so easy you can\'t make excuses.',
-          affirmation: 'My body is built to handle stress. I give it what it needs to process and release.',
-          estimatedTime: '5 minutes, 3x daily'
-        },
-        {
-          day: 3,
-          title: 'Input Reduction',
-          description: 'Cut unnecessary system inputs',
-          instructions: [
-            'Review your "system load" list from Day 1',
-            'Identify 3 things that are optional stressors (social media, news, toxic group chats, etc.)',
-            'Delete the apps or leave the groups. Today. Right now.',
-            'Block news websites if needed',
-            'Tell someone you\'re doing this for accountability'
-          ],
-          whyItWorks: 'Most stress isn\'t from your actual life - it\'s from consuming other people\'s problems. Your brain can\'t distinguish between real threats and digital ones. Less input = less overload.',
-          proTip: 'You won\'t miss anything important. If it matters, someone will tell you directly.',
-          affirmation: 'I protect my mental space from unnecessary noise. My attention is valuable.',
-          estimatedTime: '15 minutes'
-        },
-        {
-          day: 4,
-          title: 'Sleep System Recalibration',
-          description: 'Fix your recovery protocol',
-          instructions: [
-            'Calculate what time you need to wake up tomorrow',
-            'Count back 8 hours - that\'s your shutdown time',
-            'Set an alarm for 30 minutes before shutdown',
-            'When it goes off: no more screens, dim the lights',
-            'Read something boring or do light stretching until shutdown time'
-          ],
-          whyItWorks: 'Sleep is when your brain processes and files away stress. Skipping it is like never emptying the trash. Blue light and stimulation right before bed keeps your stress system activated.',
-          proTip: 'One night of good sleep won\'t fix you, but it breaks the cycle. Do this for 3 nights and you\'ll notice a difference.',
-          affirmation: 'Rest is not weakness. It is essential maintenance for peak performance.',
-          estimatedTime: 'Full night (8 hours)'
-        },
-        {
-          day: 5,
-          title: 'No Protocol Day',
-          description: 'System cooldown - maintain basics only',
-          instructions: [
-            'Today you only do 2 things:',
-            'Continue your 3 pressure valve sessions from Day 2',
-            'Avoid the inputs you cut from Day 3',
-            'That\'s it. No new tasks. Let the system stabilize.'
-          ],
-          whyItWorks: 'Recovery requires rest, not more activity. This day lets previous changes integrate without adding new load.',
-          proTip: 'Notice what you\'re NOT feeling today compared to 5 days ago.',
-          affirmation: 'Progress happens in rest as much as in action. I trust the process.',
-          estimatedTime: 'Minimal'
-        },
-        {
-          day: 6,
-          title: 'Single-Tasking Calibration',
-          description: 'Stop fragmentation, increase efficiency',
-          instructions: [
-            'Choose your 3 most important tasks for today',
-            'Set a timer for 25 minutes',
-            'Work on ONLY task #1 - close all other tabs, silence phone',
-            'When timer ends, take a 5-minute break',
-            'Repeat for task #2, then #3',
-            'Everything else can wait'
-          ],
-          whyItWorks: 'Task-switching creates massive mental overhead. Your brain needs 20+ minutes to fully focus on something. Three focused hours beats eight scattered hours.',
-          proTip: 'This feels uncomfortable at first. That\'s your addiction to distraction. Push through.',
-          affirmation: 'I am capable of deep focus. My mind is stronger than my distractions.',
-          estimatedTime: '90 minutes total'
-        },
-        {
-          day: 7,
-          title: 'System Status Check',
-          description: 'Evaluate and lock in gains',
-          instructions: [
-            'Review your Day 1 system load list',
-            'Rate your current stress level 1-10 vs Day 1',
-            'Identify which protocol step helped most',
-            'Decide: continue for 7 more days or run a different protocol?',
-            'If continuing, keep the habits that worked, drop what didn\'t'
-          ],
-          whyItWorks: 'Measuring progress reinforces that the work is paying off. Conscious evaluation prevents sliding back into old patterns.',
-          proTip: 'If you\'re not at least 20% better, you skipped steps. Be honest with yourself.',
-          affirmation: 'I acknowledge my progress and commit to continued growth.',
-          estimatedTime: '15 minutes'
-        }
-      ],
-      14: [],
-      30: []
+      7: systemOverloadMissions7,
+      14: systemOverloadMissions14,
+      30: systemOverloadMissions30,
     }
   },
   {
@@ -394,90 +301,39 @@ export const protocols: Protocol[] = [
     icon: '',
     durations: [7, 14, 30],
     missions: {
-      7: [
-        {
-          day: 1,
-          title: 'Trigger Mapping',
-          description: 'Identify what lights the fuse',
-          instructions: [
-            'For the next 24 hours, notice every time you feel anger rising',
-            'Immediately note: what happened, who was there, what time',
-            'Rate the anger 1-10',
-            'Don\'t judge it, just observe and record',
-            'Tomorrow review for patterns'
-          ],
-          whyItWorks: 'Anger feels random but it\'s not. Specific patterns trigger it. You can\'t fix what you can\'t see. Awareness is the first circuit breaker.',
-          proTip: 'The goal isn\'t to stop anger - it\'s to see it coming.',
-          affirmation: 'I observe my anger without becoming it. I am in control.',
-          estimatedTime: '2 minutes per incident'
-        }
-      ],
-      14: [],
-      30: []
+      7: pressureValveMissions7,
+      14: pressureValveMissions14,
+      30: pressureValveMissions30,
     }
   },
   {
     id: 'engine-restart',
     title: 'Engine Restart Protocol',
     category: 'depression',
-    tagline: 'Motivation System Reboot',
+    tagline: 'Motivation System',
     problem: 'Engine won\'t turn over. No energy, no drive. All systems are functional but nothing fires up.',
     solution: 'Manual ignition sequence to get core systems back online, one component at a time.',
     icon: '',
     durations: [7, 14, 30],
     missions: {
-      7: [],
-      14: [
-        {
-          day: 1,
-          title: 'Minimal Viable Action',
-          description: 'Prove the engine can still fire',
-          instructions: [
-            'Pick the smallest possible win: make your bed, drink a glass of water, shower',
-            'Do it before you allow yourself to overthink',
-            'Immediately after, say out loud: "Engine test successful"',
-            'Write down what you did and the exact time',
-            'That\'s it for today'
-          ],
-          whyItWorks: 'Depression tells you nothing will help. Proof defeats that lie faster than belief. Action creates evidence. Evidence creates momentum.',
-          proTip: 'It will feel pointless. Do it anyway. You\'re collecting data, not fixing everything.',
-          affirmation: 'I am capable of action, even when I don\'t feel like it. Small steps count.',
-          estimatedTime: '5 minutes'
-        }
-      ],
-      30: []
+      7: engineRestartMissions7,
+      14: engineRestartMissions14,
+      30: engineRestartMissions30,
     }
   },
   {
     id: 'calibration-protocol',
     title: 'Reality Calibration Protocol',
     category: 'imposter',
-    tagline: 'Self-Assessment Recalibration',
+    tagline: 'Imposter Syndrome System',
     problem: 'Your internal assessment system is miscalibrated. Reading real competence as fraud. False negative error pattern.',
     solution: 'Recalibrate your self-assessment system using external data and evidence-based thinking.',
     icon: '',
     durations: [7, 14, 30],
     missions: {
-      7: [
-        {
-          day: 1,
-          title: 'Evidence Collection',
-          description: 'Gather objective performance data',
-          instructions: [
-            'Make a list of 10 things you\'ve accomplished in your field',
-            'Include: projects completed, problems solved, skills learned',
-            'Write ONLY facts - things that happened, not how you feel about them',
-            'Ask yourself: would these count if someone else did them?',
-            'Save this list - you\'ll need it'
-          ],
-          whyItWorks: 'Imposter syndrome is a feeling arguing with facts. Facts win when you force the comparison. Your brain is lying to you - data doesn\'t.',
-          proTip: 'If you think "anyone could do that" - prove it. Show me everyone else who did.',
-          affirmation: 'My accomplishments are real. I earned my place through effort and skill.',
-          estimatedTime: '15 minutes'
-        }
-      ],
-      14: [],
-      30: []
+      7: realityCalibrationMissions7,
+      14: realityCalibrationMissions14,
+      30: realityCalibrationMissions30,
     }
   }
 ];
