@@ -18,8 +18,13 @@ const commonIssues: { question: string; answer: ReactNode }[] = [
     question: "My progress isn't saving. What should I do?",
     answer: (
       <>
-        Make sure you have a stable internet connection. If the issue persists, try logging out and
-        logging back in. If it still doesn&apos;t work, contact us at{' '}
+        Your progress is stored on this device first. If cloud sync is enabled, it also syncs in the
+        background when you&apos;re online. Try a stable connection, refresh the page, and check that
+        you haven&apos;t blocked site storage for your browser. You can use{' '}
+        <Link href="/settings" className="text-tactical-orange hover:text-tactical-orange-bright font-bold underline">
+          Settings
+        </Link>{' '}
+        to review your setup. If it still fails, contact{' '}
         <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
           support@rebuildthemanprotocol.com
         </a>
@@ -28,12 +33,14 @@ const commonIssues: { question: string; answer: ReactNode }[] = [
     ),
   },
   {
-    question: "I can't log in to my account.",
+    question: "I can't access my data / something looks wrong after I came back to the site.",
     answer: (
       <>
-        On the login screen, click &apos;Forgot Password&apos; and enter your email address.
-        You&apos;ll receive a reset link within a few minutes. Check your spam folder if it
-        doesn&apos;t arrive. If you still can&apos;t access your account, email{' '}
+        The app uses device-based access: there is no separate login or password in this version of
+        the app. Your progress is saved on your device and, when available, synced to the cloud. If
+        something looks off, try refreshing the page or clearing your browser cache for this site, then
+        open the app again. Don&apos;t clear site data unless you intend to remove local progress. If the
+        issue persists, email{' '}
         <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
           support@rebuildthemanprotocol.com
         </a>
@@ -55,28 +62,39 @@ const commonIssues: { question: string; answer: ReactNode }[] = [
     ),
   },
   {
-    question: 'How do I change my email address or account details?',
+    question: 'How do I update my information or exercise my privacy rights?',
     answer: (
       <>
-        Email{' '}
+        This app doesn&apos;t offer an in-app profile or email-login account to edit. For privacy
+        requests, corrections, or UK GDPR rights (including questions about data we hold if you
+        contact us by email), email{' '}
         <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
           requests@rebuildthemanprotocol.com
         </a>{' '}
-        with the subject line &apos;Account Update Request&apos; and let us know what you&apos;d
-        like changed.
+        with a clear subject line and we&apos;ll respond as set out in our{' '}
+        <Link href="/privacy" className="text-tactical-orange hover:text-tactical-orange-bright font-bold underline">
+          Privacy Policy
+        </Link>
+        .
       </>
     ),
   },
   {
-    question: 'How do I delete my account and all my data?',
+    question: 'How do I delete my saved progress and data in the app?',
     answer: (
       <>
-        Email{' '}
+        To clear data on this device, use{' '}
+        <Link href="/settings" className="text-tactical-orange hover:text-tactical-orange-bright font-bold underline">
+          Settings
+        </Link>{' '}
+        to reset your active protocol or clear all progress, as described there. That removes locally
+        stored progress. If you also use cloud sync and need help removing associated data from our
+        systems, email{' '}
         <a href={MAILTO_REQUESTS} className={EMAIL_LINK_CLASS}>
           requests@rebuildthemanprotocol.com
         </a>{' '}
-        with the subject line &apos;Account Deletion Request&apos;. We will delete all your
-        personal data within 30 days as required by UK GDPR.
+        with the subject line &apos;Data Deletion Request&apos;. We will handle personal data we
+        process in line with UK GDPR.
       </>
     ),
   },

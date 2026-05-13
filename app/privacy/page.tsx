@@ -29,6 +29,11 @@ const sections = [
   { id: 'contact', title: '14. Contact Us' },
 ];
 
+// TODO: Privacy policy references Google Sign-In, Stripe payments, and password
+// authentication which are not yet implemented. Update this policy to match
+// actual features when auth and payments are added, or remove references
+// to features not yet live.
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-tactical-black scroll-smooth">

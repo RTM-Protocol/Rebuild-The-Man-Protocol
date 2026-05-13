@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { protocols } from '@/data/protocols';
 import { ProtocolDuration } from '@/types';
+import {
+  parseDurationParam,
+  resolveMissionDuration,
+  getMissionForProtocolDay,
+} from '@/utils/missionUtils';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import DayNavigation from '@/components/DayNavigation';
 import Navigation from '@/components/Navigation';
@@ -23,7 +28,7 @@ import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReaso
 import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { IntensityMode } from '@/types';
 
 export default function MissionPage() {
@@ -42,11 +47,32 @@ export default function MissionPage() {
   const { activeProtocol, completeDay, savePreMissionCheckIn, savePostMissionCheckIn, saveFieldNotes, saveWeeklyBrief, changeIntensity, declineEscalation, getCheckIn, setAccountabilityPartner, dismissAccountabilityPrompt } = useProgress();
   
   const protocolId = params.id as string;
-  const dayNumber = parseInt(params.day as string);
-  const duration = parseInt(searchParams.get('duration') || '7') as ProtocolDuration;
-  
-  const protocol = protocols.find(p => p.id === protocolId);
-  const mission = protocol?.missions[duration]?.[dayNumber - 1];
+  const dayNumber = parseInt(params.day as string, 10);
+  const paramDuration = parseDurationParam(searchParams.get('duration'));
+
+  const protocol = useMemo(() => protocols.find((p) => p.id === protocolId), [protocolId]);
+
+  const duration = useMemo(() => {
+    if (!protocol) return 14 as ProtocolDuration;
+    return resolveMissionDuration({
+      protocol,
+      paramDuration,
+      activeProtocol,
+      protocolId,
+    });
+  }, [protocol, paramDuration, activeProtocol, protocolId]);
+
+  const mission = useMemo(() => {
+    if (!protocol || Number.isNaN(dayNumber)) return null;
+    return getMissionForProtocolDay(protocol, duration, dayNumber);
+  }, [protocol, duration, dayNumber]);
+
+  useEffect(() => {
+    if (!protocol || Number.isNaN(dayNumber)) return;
+    const fromUrl = searchParams.get('duration');
+    if (fromUrl === String(duration)) return;
+    router.replace(`/protocol/${protocolId}/mission/${dayNumber}?duration=${duration}`);
+  }, [protocol, protocolId, dayNumber, duration, searchParams, router]);
 
   const missionCompleted = activeProtocol?.completedDays.includes(dayNumber) || false;
   const progress = activeProtocol;
@@ -125,13 +151,53 @@ export default function MissionPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProtocol, dayNumber, missionCompleted]);
 
-  if (!protocol || !mission) {
+  if (!protocol || Number.isNaN(dayNumber)) {
     return (
-      <div className="min-h-screen bg-tactical-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl text-white mb-4">MISSION NOT FOUND</h1>
+      <div className="min-h-screen bg-tactical-black flex items-center justify-center px-4">
+        <div className="text-center max-w-lg">
+          <h1 className="text-2xl text-white mb-4">Mission not found</h1>
+          <p className="text-gray-300 text-left text-sm font-mono space-y-1 mb-6">
+            <span className="block">
+              Protocol: <span className="text-tactical-orange">{protocolId || '—'}</span>
+            </span>
+            <span className="block">
+              Day: <span className="text-white">{Number.isNaN(dayNumber) ? 'invalid' : dayNumber}</span>
+            </span>
+            <span className="block">
+              Track: <span className="text-white">{paramDuration ?? 'not set (resolved default)'}</span> days
+            </span>
+          </p>
+          <p className="text-gray-400 text-sm mb-6">
+            Check the URL includes <span className="text-white">?duration=7|14|30</span> for this protocol. If
+            you have an active run, open today&apos;s mission from the dashboard so the track matches your
+            saved progress.
+          </p>
           <Link href="/" className="btn-primary inline-block">
             Return to Base
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!mission) {
+    return (
+      <div className="min-h-screen bg-tactical-black flex items-center justify-center px-4">
+        <div className="text-center max-w-lg">
+          <h1 className="text-2xl text-white mb-4">Mission not found</h1>
+          <p className="text-gray-300 text-left text-sm font-mono space-y-1 mb-6">
+            <span className="block">
+              Protocol: <span className="text-tactical-orange">{protocol.title}</span> ({protocol.id})
+            </span>
+            <span className="block">
+              Day: <span className="text-white">{dayNumber}</span> (valid range 1–{duration})
+            </span>
+            <span className="block">
+              Track: <span className="text-white">{duration}</span> days
+            </span>
+          </p>
+          <Link href={`/protocol/${protocolId}?duration=${duration}`} className="btn-primary inline-block">
+            Protocol overview
           </Link>
         </div>
       </div>
@@ -196,7 +262,9 @@ export default function MissionPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Completed Days:</span>
-                  <span className="text-white font-bold">{activeProtocol.completedDays.length} / {duration}</span>
+                  <span className="text-white font-bold">
+                    {activeProtocol.completedDays.length} / {activeProtocol.duration}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Current Streak:</span>
@@ -261,7 +329,9 @@ export default function MissionPage() {
         setShowCommandersBrief(true);
       } else {
         // Check if this will complete the protocol
-        const willCompleteProtocol = activeProtocol.completedDays.length + 1 === duration;
+        const willCompleteProtocol =
+          activeProtocol.protocolId === protocolId &&
+          activeProtocol.completedDays.length + 1 === activeProtocol.duration;
 
         // If protocol completed, redirect after a short delay
         if (willCompleteProtocol) {
@@ -273,9 +343,10 @@ export default function MissionPage() {
     }
   };
 
-  const completionPercentage = progress 
-    ? Math.round((progress.completedDays.length / duration) * 100)
-    : 0;
+  const completionPercentage =
+    progress && progress.protocolId === protocolId
+      ? Math.round((progress.completedDays.length / progress.duration) * 100)
+      : 0;
 
   const getIntensityLabel = (mode: IntensityMode) => {
     const labels = {
@@ -716,7 +787,7 @@ export default function MissionPage() {
             return Math.max(0, expected - activeProtocol.completedDays.length);
           })()}
           completedCount={activeProtocol.completedDays.length}
-          totalDays={duration}
+          totalDays={activeProtocol.duration}
           onAddPartner={() => {
             setAccountabilityPartner(true);
             dismissAccountabilityPrompt();
@@ -740,7 +811,7 @@ export default function MissionPage() {
       {showShareProgress && activeProtocol?.accountabilityPartner?.enabled && (
         <ShareProgress
           completedDays={activeProtocol.completedDays.length}
-          totalDays={duration}
+          totalDays={activeProtocol.duration}
           missedDays={Math.max(0,
             Math.min(
               Math.floor((Date.now() - new Date(activeProtocol.startDate).getTime()) / (1000 * 60 * 60 * 24)),

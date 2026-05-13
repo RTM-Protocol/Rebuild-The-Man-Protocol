@@ -17,6 +17,7 @@ import RebuildStatus from '@/components/RebuildStatus';
 import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getCurrentWorkingDay } from '@/utils/progressUtils';
+import { resolveMissionList } from '@/utils/missionUtils';
 import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
 import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
@@ -259,7 +260,8 @@ export default function ProtocolDetail() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {protocol.durations.map((duration) => {
-                const isAvailable = protocol.missions[duration]?.length > 0;
+                const resolvedMissions = resolveMissionList(protocol, duration);
+                const isAvailable = resolvedMissions.length > 0;
                 const isSelected = selectedDuration === duration;
                 
                 return (
@@ -327,7 +329,7 @@ export default function ProtocolDetail() {
         </section>
 
         {/* What to Expect */}
-        {selectedDuration && protocol.missions[selectedDuration]?.length > 0 && (
+        {selectedDuration && resolveMissionList(protocol, selectedDuration).length > 0 && (
           <>
             <section className="mb-12 bg-tactical-gray p-6">
               <h2 className="text-white font-bold uppercase tracking-wide mb-4 text-xl">
@@ -336,7 +338,7 @@ export default function ProtocolDetail() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
                   <div className="text-tactical-orange font-mono mb-1">TOTAL MISSIONS</div>
-                  <div className="text-white text-2xl font-bold">{protocol.missions[selectedDuration]?.length || 0}</div>
+                  <div className="text-white text-2xl font-bold">{resolveMissionList(protocol, selectedDuration).length}</div>
                 </div>
                 <div>
                   <div className="text-tactical-orange font-mono mb-1">TIME COMMITMENT</div>

@@ -9,7 +9,7 @@ export const protocols: Protocol[] = [
     problem: 'You\'ve lost your edge. Operating on autopilot. Going through motions without purpose. The foundation needs rebuilding from the ground up.',
     solution: 'A 14-day intensive protocol to reconstruct your mental framework, sharpen your mind, and reclaim your drive through deliberate action and deep reflection.',
     icon: '',
-    durations: [14],
+    durations: [7, 14, 30],
     missions: {
       7: [],
       14: [
@@ -392,7 +392,7 @@ export const protocols: Protocol[] = [
     problem: 'Your anger response is misfiring. Small triggers causing massive reactions. Control system offline.',
     solution: 'Install early warning systems and release mechanisms before pressure becomes explosive.',
     icon: '',
-    durations: [7, 14],
+    durations: [7, 14, 30],
     missions: {
       7: [
         {
@@ -424,7 +424,7 @@ export const protocols: Protocol[] = [
     problem: 'Engine won\'t turn over. No energy, no drive. All systems are functional but nothing fires up.',
     solution: 'Manual ignition sequence to get core systems back online, one component at a time.',
     icon: '',
-    durations: [14, 30],
+    durations: [7, 14, 30],
     missions: {
       7: [],
       14: [
@@ -456,7 +456,7 @@ export const protocols: Protocol[] = [
     problem: 'Your internal assessment system is miscalibrated. Reading real competence as fraud. False negative error pattern.',
     solution: 'Recalibrate your self-assessment system using external data and evidence-based thinking.',
     icon: '',
-    durations: [7, 14],
+    durations: [7, 14, 30],
     missions: {
       7: [
         {

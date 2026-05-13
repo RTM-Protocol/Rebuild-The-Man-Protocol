@@ -20,7 +20,8 @@ export default function SettingsPage() {
     resetProtocol, 
     resetAllProgress,
     activeProtocol,
-    setAccountabilityPartner
+    setAccountabilityPartner,
+    cloudSyncDisplay,
   } = useProgress();
 
   const [showResetProtocolModal, setShowResetProtocolModal] = useState(false);
@@ -182,6 +183,93 @@ export default function SettingsPage() {
               </div>
             )}
           </div>
+        </section>
+
+        {/* Data & Sync */}
+        <section className="mb-8 bg-tactical-darkgray border border-tactical-lightgray p-6" aria-labelledby="data-sync-heading">
+          <h2 id="data-sync-heading" className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
+            <span>☁️</span>
+            <span>Data &amp; Sync</span>
+          </h2>
+          <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+            Your protocol progress is always saved on this device. When cloud backup is enabled,
+            updates are synced in the background while you&apos;re online.
+          </p>
+          {(() => {
+            const d = cloudSyncDisplay;
+            const fmt = (iso: string | null) =>
+              iso
+                ? new Date(iso).toLocaleString(undefined, {
+                    dateStyle: 'short',
+                    timeStyle: 'short',
+                  })
+                : null;
+            if (!d.isOnline) {
+              return (
+                <div className="flex items-start gap-3 py-1">
+                  <span
+                    className="mt-2 h-2.5 w-2.5 rounded-full bg-gray-500 shrink-0"
+                    aria-hidden
+                  />
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="text-white font-semibold">Offline — data saved locally</p>
+                    <p className="text-gray-400 text-xs mt-1">
+                      You can keep using the app. Sync will retry when the connection returns.
+                    </p>
+                  </div>
+                </div>
+              );
+            }
+            if (!d.isSyncEnabled) {
+              return (
+                <div className="flex items-start gap-3 py-1">
+                  <span
+                    className="mt-2 h-2.5 w-2.5 rounded-full bg-gray-500 shrink-0"
+                    aria-hidden
+                  />
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="text-white font-semibold">Cloud sync unavailable</p>
+                    <p className="text-gray-400 text-xs mt-1">
+                      Progress stays on this device. Cloud backup is not active in this environment.
+                    </p>
+                  </div>
+                </div>
+              );
+            }
+            if (d.hasSyncFailure) {
+              return (
+                <div className="flex items-start gap-3 py-1">
+                  <span
+                    className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-500 shrink-0"
+                    aria-hidden
+                  />
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="text-amber-200 font-semibold">Sync failed — using local data</p>
+                    <p className="text-gray-400 text-xs mt-1">
+                      {d.lastFailureAt ? `Last issue: ${fmt(d.lastFailureAt)}. ` : ''}
+                      Your work is still stored on this device.
+                    </p>
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <div className="flex items-start gap-3 py-1">
+                <span
+                  className="mt-2 h-2.5 w-2.5 rounded-full bg-tactical-green-bright shrink-0"
+                  aria-hidden
+                />
+                <div className="min-h-[44px] flex flex-col justify-center">
+                  <p className="text-tactical-green-bright font-semibold">Synced</p>
+                  <p className="text-gray-400 text-xs mt-1">
+                    {d.lastSuccessAt
+                      ? `Last successful sync: ${fmt(d.lastSuccessAt)}`
+                      : 'Cloud connection ready. Changes will sync automatically.'}
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
         </section>
 
         {/* Appearance */}

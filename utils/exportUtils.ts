@@ -4,6 +4,7 @@
 
 import { UserProgress } from '@/types';
 import { protocols } from '@/data/protocols';
+import { getMissionForProtocolDay } from '@/utils/missionUtils';
 
 export type ExportFormat = 'pdf' | 'csv' | 'txt' | 'json' | 'png' | 'jpeg';
 
@@ -29,7 +30,7 @@ export function generateCSV(progress: UserProgress): string {
   const rows = [];
   
   for (let day = 1; day <= progress.duration; day++) {
-    const mission = protocol.missions[progress.duration]?.[day - 1];
+    const mission = getMissionForProtocolDay(protocol, progress.duration, day);
     const checkIn = progress.checkIns.find(c => c.day === day);
     const completed = progress.completedDays.includes(day);
     
@@ -91,7 +92,7 @@ export function generateTextExport(progress: UserProgress): string {
 
   // Mission details
   for (let day = 1; day <= progress.duration; day++) {
-    const mission = protocol.missions[progress.duration]?.[day - 1];
+    const mission = getMissionForProtocolDay(protocol, progress.duration, day);
     const checkIn = progress.checkIns.find(c => c.day === day);
     const completed = progress.completedDays.includes(day);
     
@@ -172,7 +173,9 @@ export function generateJSONExport(progress: UserProgress): string {
       intensityMode: progress.intensityMode
     },
     missions: progress.checkIns.map(checkIn => {
-      const mission = protocol?.missions[progress.duration]?.[checkIn.day - 1];
+      const mission = protocol
+        ? getMissionForProtocolDay(protocol, progress.duration, checkIn.day)
+        : null;
       return {
         day: checkIn.day,
         title: mission?.title || 'Unknown',
@@ -363,7 +366,7 @@ export function generateHTMLForExport(progress: UserProgress): string {
 
   // Add missions
   for (let day = 1; day <= progress.duration; day++) {
-    const mission = protocol.missions[progress.duration]?.[day - 1];
+    const mission = getMissionForProtocolDay(protocol, progress.duration, day);
     const checkIn = progress.checkIns.find(c => c.day === day);
     const completed = progress.completedDays.includes(day);
 

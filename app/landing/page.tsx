@@ -543,7 +543,11 @@ export default function LandingPage() {
               <h4 className="text-white font-bold uppercase text-sm mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><Link href="/faq" className="hover:text-tactical-orange transition-colors">FAQ</Link></li>
-                <li><a href="#about" className="hover:text-tactical-orange transition-colors">About</a></li>
+                <li>
+                  <Link href="/support" className="hover:text-tactical-orange transition-colors">
+                    About
+                  </Link>
+                </li>
                 <li>
                   <a href={MAILTO_CONTACT} className={`${EMAIL_LINK_CLASS} hover:text-tactical-orange`}>
                     Contact
@@ -570,13 +574,17 @@ export default function LandingPage() {
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="#disclaimer" className="hover:text-tactical-orange transition-colors">Disclaimer</a></li>
                 <li><Link href="/privacy" className="hover:text-tactical-orange transition-colors">Privacy Policy</Link></li>
-                <li><a href="#terms" className="hover:text-tactical-orange transition-colors">Terms of Service</a></li>
+                <li>
+                  <Link href="/privacy" className="hover:text-tactical-orange transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
 
           {/* Disclaimer */}
-          <div className="border-t border-tactical-lightgray pt-8 mb-8">
+          <div id="disclaimer" className="border-t border-tactical-lightgray pt-8 mb-8 scroll-mt-8">
             <div className="bg-tactical-darkgray border-l-4 border-tactical-orange p-6">
               <h4 className="text-white font-bold uppercase text-sm mb-3 flex items-center gap-2">
                 <span>⚠️</span>

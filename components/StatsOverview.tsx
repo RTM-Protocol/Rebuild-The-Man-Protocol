@@ -19,6 +19,8 @@ export default function StatsOverview() {
   const totalMissions = lifetimeStats.totalMissionsCompleted;
   const totalProtocols = lifetimeStats.totalProtocolsCompleted;
   const currentDayNumber = activeProtocol?.currentDay || 0;
+  const streakMilestone = activeProtocol?.duration ?? 14;
+  const streakRemaining = Math.max(0, streakMilestone - currentStreak);
 
   return (
     <div className="bg-tactical-darkgray border border-tactical-lightgray p-6">
@@ -126,7 +128,7 @@ export default function StatsOverview() {
               <div 
                 className="progress-fill"
                 style={{
-                  width: `${Math.min((currentStreak / 14) * 100, 100)}%`,
+                  width: `${Math.min((currentStreak / streakMilestone) * 100, 100)}%`,
                   ...(activeProgressGradient
                     ? { background: activeProgressGradient }
                     : {}),
@@ -134,7 +136,9 @@ export default function StatsOverview() {
               />
             </div>
             <div className="text-sm font-mono text-gray-400">
-              {currentStreak >= 14 ? '🔥 ON FIRE!' : `${14 - currentStreak} to milestone`}
+              {currentStreak >= streakMilestone
+                ? '🔥 ON FIRE!'
+                : `${streakRemaining} ${streakRemaining === 1 ? 'day' : 'days'} to complete`}
             </div>
           </div>
         </div>

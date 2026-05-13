@@ -1,8 +1,16 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { UserProgress, ProtocolDuration, ReminderSettings, IntensityMode } from '@/types';
-import { syncService, type SyncData } from '@/lib/syncService';
+import { syncService, type SyncData, type SyncStatusEvent } from '@/lib/syncService';
+
+export interface CloudSyncDisplay {
+  isOnline: boolean;
+  isSyncEnabled: boolean;
+  lastSuccessAt: string | null;
+  lastFailureAt: string | null;
+  hasSyncFailure: boolean;
+}
 
 interface ProgressContextType {
   activeProtocol: UserProgress | null;
@@ -33,6 +41,7 @@ interface ProgressContextType {
   getCheckIn: (day: number) => any;
   setAccountabilityPartner: (enabled: boolean) => void;
   dismissAccountabilityPrompt: () => void;
+  cloudSyncDisplay: CloudSyncDisplay;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -56,6 +65,59 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncEnabled, setIsSyncEnabled] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
+  const [cloudSyncTimestamps, setCloudSyncTimestamps] = useState<{
+    lastSuccessAt: string | null;
+    lastFailureAt: string | null;
+    hasSyncFailure: boolean;
+  }>({
+    lastSuccessAt: null,
+    lastFailureAt: null,
+    hasSyncFailure: false,
+  });
+
+  useEffect(() => {
+    const onOnline = () => setIsOnline(true);
+    const offOnline = () => setIsOnline(false);
+    if (typeof window !== 'undefined') {
+      setIsOnline(navigator.onLine);
+      window.addEventListener('online', onOnline);
+      window.addEventListener('offline', offOnline);
+    }
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', offOnline);
+    };
+  }, []);
+
+  useEffect(() => {
+    return syncService.subscribeSyncStatus((e: SyncStatusEvent) => {
+      if (e.type === 'success') {
+        setCloudSyncTimestamps((s) => ({
+          lastSuccessAt: e.at,
+          lastFailureAt: s.lastFailureAt,
+          hasSyncFailure: false,
+        }));
+      } else if (e.type === 'failure') {
+        setCloudSyncTimestamps((s) => ({
+          lastSuccessAt: s.lastSuccessAt,
+          lastFailureAt: e.at,
+          hasSyncFailure: true,
+        }));
+      }
+    });
+  }, []);
+
+  const cloudSyncDisplay = useMemo<CloudSyncDisplay>(
+    () => ({
+      isOnline,
+      isSyncEnabled,
+      lastSuccessAt: cloudSyncTimestamps.lastSuccessAt,
+      lastFailureAt: cloudSyncTimestamps.lastFailureAt,
+      hasSyncFailure: cloudSyncTimestamps.hasSyncFailure,
+    }),
+    [isOnline, isSyncEnabled, cloudSyncTimestamps],
+  );
 
   // Load progress from localStorage and sync with cloud on mount
   useEffect(() => {
@@ -211,10 +273,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           reminderSettings
         };
         
-        syncService.syncToCloud(syncData).catch(error => {
-          console.error('Background sync failed:', error);
-          // Fail silently - localStorage is still updated
-        });
+        syncService.syncToCloud(syncData);
       }, 1000); // Wait 1 second after last change
 
       return () => clearTimeout(syncTimeout);
@@ -521,9 +580,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         declineEscalation,
         getCheckIn,
         setAccountabilityPartner,
-        dismissAccountabilityPrompt
+        dismissAccountabilityPrompt,
+        cloudSyncDisplay,
       }}
-    >
+>
       {children}
     </ProgressContext.Provider>
   );

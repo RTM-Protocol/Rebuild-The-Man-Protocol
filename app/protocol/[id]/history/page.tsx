@@ -1,25 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { protocols } from '@/data/protocols';
 import { ProtocolDuration } from '@/types';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { useProgress } from '@/contexts/ProgressContext';
 import ExportModal from '@/components/ExportModal';
+import {
+  parseDurationParam,
+  resolveMissionDuration,
+  resolveMissionList,
+} from '@/utils/missionUtils';
 
 export default function ProtocolHistoryPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { activeProtocol } = useProgress();
   const [showExportModal, setShowExportModal] = useState(false);
   
   const protocolId = params.id as string;
-  const duration = parseInt(searchParams.get('duration') || '7') as ProtocolDuration;
+  const paramDuration = parseDurationParam(searchParams.get('duration'));
   
-  const protocol = protocols.find(p => p.id === protocolId);
+  const protocol = useMemo(() => protocols.find(p => p.id === protocolId), [protocolId]);
+
+  const duration = useMemo(() => {
+    if (!protocol) return 14 as ProtocolDuration;
+    return resolveMissionDuration({
+      protocol,
+      paramDuration,
+      activeProtocol,
+      protocolId,
+    });
+  }, [protocol, paramDuration, activeProtocol, protocolId]);
+
+  useEffect(() => {
+    if (!protocol) return;
+    const fromUrl = searchParams.get('duration');
+    if (fromUrl === String(duration)) return;
+    router.replace(`/protocol/${protocolId}/history?duration=${duration}`);
+  }, [protocol, protocolId, duration, searchParams, router]);
+
   const isActiveProtocol = activeProtocol?.protocolId === protocolId && activeProtocol?.duration === duration;
 
   if (!protocol) {
@@ -52,7 +76,7 @@ export default function ProtocolHistoryPage() {
     );
   }
 
-  const missions = protocol.missions[duration] || [];
+  const missions = resolveMissionList(protocol, duration);
   const completedDays = activeProtocol.completedDays || [];
   const checkIns = activeProtocol.checkIns || [];
   const weeklyBriefs = activeProtocol.weeklyBriefs || [];

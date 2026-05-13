@@ -6,6 +6,7 @@ import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
 import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
 import { getCurrentWorkingDay, canCompleteDay, hasCompletedMissionToday } from '@/utils/progressUtils';
+import { getMissionForProtocolDay } from '@/utils/missionUtils';
 
 export default function UserDashboard() {
   const { activeProtocol } = useProgress();
@@ -22,7 +23,7 @@ export default function UserDashboard() {
   const canComplete = canCompleteDay(workingDay, activeProtocol);
   const completedToday = hasCompletedMissionToday(activeProtocol);
   
-  const todaysMission = protocol.missions[activeProtocol.duration]?.[workingDay - 1];
+  const todaysMission = getMissionForProtocolDay(protocol, activeProtocol.duration, workingDay);
   const completionPercentage = Math.round(
     (activeProtocol.completedDays.length / activeProtocol.duration) * 100
   );

@@ -2,6 +2,7 @@
 
 import { useProgress } from '@/contexts/ProgressContext';
 import { Protocol, ProtocolDuration } from '@/types';
+import { resolveMissionList } from '@/utils/missionUtils';
 
 interface CalendarViewProps {
   protocol: Protocol;
@@ -14,9 +15,9 @@ export default function CalendarView({ protocol, duration }: CalendarViewProps) 
   const isActiveProtocol = activeProtocol?.protocolId === protocol.id && activeProtocol?.duration === duration;
   const completedDays = activeProtocol?.completedDays || [];
   const setbacks = activeProtocol?.setbacks || [];
-  const missions = protocol.missions[duration];
+  const missions = resolveMissionList(protocol, duration);
 
-  if (!missions || missions.length === 0) {
+  if (missions.length === 0) {
     return null;
   }
 

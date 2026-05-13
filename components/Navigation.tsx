@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { protocols } from '@/data/protocols';
@@ -9,109 +9,226 @@ import ActiveProtocolBlocker from './ActiveProtocolBlocker';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
+/** Tailwind `md` breakpoint — keep in sync with tailwind.config */
+const MD_MIN_PX = 768;
+
 export default function Navigation() {
   const pathname = usePathname();
   const { activeProtocol } = useProgress();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProtocolsSubMenuOpen, setIsProtocolsSubMenuOpen] = useState(false);
   const [showBlocker, setShowBlocker] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const navRootRef = useRef<HTMLDivElement>(null);
+  /** After closing via click on desktop, ignore hover-open until the pointer leaves the menu root (avoids stuck-closed while still hovered). */
+  const suppressHoverOpenRef = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${MD_MIN_PX}px)`);
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    setIsProtocolsSubMenuOpen(false);
+  };
+
+  useEffect(() => {
+    if (isDesktop || !isMenuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (navRootRef.current && !navRootRef.current.contains(e.target as Node)) {
+        closeMenu();
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown, true);
+    return () => document.removeEventListener('pointerdown', onPointerDown, true);
+  }, [isMenuOpen, isDesktop]);
 
   const handleProtocolClick = (e: React.MouseEvent, protocolId: string) => {
-    // Only block if there's an active protocol AND it's a different protocol
     if (activeProtocol && activeProtocol.protocolId !== protocolId) {
       e.preventDefault();
       setShowBlocker(true);
-      setIsMenuOpen(false);
-      setIsProtocolsSubMenuOpen(false);
+      closeMenu();
     }
-    // If it's the same protocol, allow navigation (user is just viewing their current protocol)
   };
+
+  const hoverRootHandlers = isDesktop
+    ? {
+        onMouseEnter: () => {
+          if (suppressHoverOpenRef.current) return;
+          setIsMenuOpen(true);
+        },
+        onMouseLeave: () => {
+          suppressHoverOpenRef.current = false;
+          setIsMenuOpen(false);
+          setIsProtocolsSubMenuOpen(false);
+        },
+      }
+    : {};
+
+  const protocolsHoverHandlers = isDesktop
+    ? {
+        onMouseEnter: () => setIsProtocolsSubMenuOpen(true),
+        onMouseLeave: () => setIsProtocolsSubMenuOpen(false),
+      }
+    : {};
+
+  const menuItemClass = `
+    flex items-center min-h-[44px] px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all
+  `;
 
   return (
     <>
-      <nav className="bg-tactical-darkgray border-b border-tactical-lightgray relative">
+      <nav className="bg-tactical-darkgray border-b border-tactical-lightgray relative z-[60]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            {/* Collapsible Menu Button */}
-            <div 
-              className="relative"
-              onMouseEnter={() => {
-                setIsMenuOpen(true);
-              }}
-              onMouseLeave={() => {
-                setIsMenuOpen(false);
-                setIsProtocolsSubMenuOpen(false);
-              }}
-            >
+            <div ref={navRootRef} className="relative" {...hoverRootHandlers}>
               <button
-                className="flex items-center gap-2 px-4 py-2 bg-tactical-gray hover:bg-tactical-orange text-white font-bold uppercase text-sm transition-colors border border-tactical-lightgray"
+                type="button"
+                className="flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] md:min-w-0 px-3 md:px-4 bg-tactical-gray hover:bg-tactical-orange text-white font-bold uppercase text-sm transition-colors border border-tactical-lightgray"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMenuOpen((open) => {
+                    const next = !open;
+                    if (!next) {
+                      setIsProtocolsSubMenuOpen(false);
+                      if (isDesktop) suppressHoverOpenRef.current = true;
+                    } else if (isDesktop) {
+                      suppressHoverOpenRef.current = false;
+                    }
+                    return next;
+                  });
+                }}
+                aria-expanded={isMenuOpen}
+                aria-controls="site-nav-menu"
+                aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               >
-                <span>Menu</span>
-                <span className={`transform transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}>
+                <span className="md:hidden flex flex-col justify-center gap-1.5 w-6 shrink-0" aria-hidden>
+                  <span className="h-0.5 w-full bg-white rounded-full" />
+                  <span className="h-0.5 w-full bg-white rounded-full" />
+                  <span className="h-0.5 w-full bg-white rounded-full" />
+                </span>
+                <span className="hidden md:inline">Menu</span>
+                <span
+                  className={`hidden md:inline transform transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
+                  aria-hidden
+                >
                   ▼
                 </span>
               </button>
 
-              {/* Dropdown Menu */}
+              {isMenuOpen && !isDesktop && (
+                <div
+                  className="fixed inset-0 top-16 z-40 bg-black/50 md:hidden"
+                  aria-hidden
+                  onClick={closeMenu}
+                />
+              )}
+
               {isMenuOpen && (
-                <div className="absolute left-0 top-full pt-2 w-56 z-50">
-                  <div className="bg-tactical-darkgray border-2 border-tactical-orange shadow-2xl animate-fade-in">
-                    <div className="py-2">
-                      {/* All Protocols with Sub-Menu */}
-                      <div
-                        className="relative"
-                        onMouseEnter={() => setIsProtocolsSubMenuOpen(true)}
-                        onMouseLeave={() => setIsProtocolsSubMenuOpen(false)}
+                <div
+                  id="site-nav-menu"
+                  className={`
+                    z-50 animate-fade-in
+                    fixed left-0 right-0 top-16 max-h-[min(calc(100dvh-4rem),80vh)] overflow-y-auto px-3 pb-6
+                    md:max-h-none md:overflow-visible md:px-0 md:pb-0
+                    md:absolute md:left-0 md:top-full md:pt-2 md:w-56
+                  `}
+                  role="navigation"
+                  aria-label="Main menu"
+                >
+                  <div className="bg-tactical-darkgray border-2 border-tactical-orange shadow-2xl md:border-2">
+                    <div className="md:hidden flex items-center justify-between gap-2 border-b border-tactical-lightgray px-2 min-h-[48px]">
+                      <span className="text-white font-bold uppercase text-sm tracking-wide pl-2">Menu</span>
+                      <button
+                        type="button"
+                        onClick={closeMenu}
+                        className="min-h-[44px] min-w-[44px] shrink-0 flex items-center justify-center text-white text-2xl leading-none hover:text-tactical-orange transition-colors"
+                        aria-label="Close menu"
                       >
+                        ×
+                      </button>
+                    </div>
+
+                    <div className="py-2">
+                      <div className="relative" {...protocolsHoverHandlers}>
                         <Link
                           href="/"
-                          onClick={() => {
-                            setIsMenuOpen(false);
-                            setIsProtocolsSubMenuOpen(false);
-                          }}
+                          onClick={closeMenu}
                           className={`
-                            block px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all
-                            ${pathname === '/' 
-                              ? 'bg-tactical-orange text-white' 
-                              : 'text-white hover:bg-tactical-gray hover:text-tactical-orange hover:pl-8'
+                            ${menuItemClass}
+                            hidden md:flex
+                            ${pathname === '/'
+                              ? 'bg-tactical-orange text-white'
+                              : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
                             }
                           `}
                         >
-                          <span className="flex items-center justify-between">
+                          <span className="flex items-center justify-between w-full">
                             <span>All Protocols</span>
                             <span className="text-xs ml-2">→</span>
                           </span>
                         </Link>
 
-                        {/* Protocols Sub-Menu */}
+                        <button
+                          type="button"
+                          className={`
+                            ${menuItemClass}
+                            md:hidden w-full text-left justify-between
+                            text-white hover:bg-tactical-gray hover:text-tactical-orange
+                          `}
+                          onClick={() => setIsProtocolsSubMenuOpen((v) => !v)}
+                          aria-expanded={isProtocolsSubMenuOpen}
+                        >
+                          <span>All Protocols</span>
+                          <span className="text-xs shrink-0" aria-hidden>
+                            {isProtocolsSubMenuOpen ? '▲' : '▼'}
+                          </span>
+                        </button>
+
                         {isProtocolsSubMenuOpen && (
-                          <div className="absolute left-full top-0 pl-2 w-64">
-                            <div className="bg-tactical-gray border-2 border-tactical-green shadow-2xl animate-fade-in max-h-96 overflow-y-auto">
-                              <div className="py-2">
+                          <div
+                            className="
+                              md:absolute md:left-full md:top-0 md:pl-2 md:w-64
+                              w-full
+                            "
+                          >
+                            <div className="bg-tactical-gray border-2 border-tactical-green shadow-2xl max-h-64 md:max-h-96 overflow-y-auto">
+                              <div className="py-1 md:py-2">
+                                <Link
+                                  href="/"
+                                  onClick={closeMenu}
+                                  className={`${menuItemClass} text-tactical-green-bright hover:bg-tactical-darkgray text-xs md:text-sm`}
+                                >
+                                  <span className="w-full">View protocol library (home)</span>
+                                </Link>
                                 {protocols.map((protocol) => (
                                   <Link
                                     key={protocol.id}
                                     href={`/protocol/${protocol.id}`}
                                     onClick={(e) => {
                                       handleProtocolClick(e, protocol.id);
-                                      // Only close menu if not blocked
                                       if (!activeProtocol || activeProtocol.protocolId === protocol.id) {
-                                        setIsMenuOpen(false);
-                                        setIsProtocolsSubMenuOpen(false);
+                                        closeMenu();
                                       }
                                     }}
                                     className={`
-                                      block px-6 py-3 text-xs font-bold uppercase tracking-wide transition-all
+                                      ${menuItemClass} text-xs md:text-sm
                                       ${activeProtocol && activeProtocol.protocolId !== protocol.id
-                                        ? 'text-gray-500 hover:bg-tactical-darkgray hover:text-tactical-orange hover:pl-8 cursor-pointer'
-                                        : 'text-white hover:bg-tactical-darkgray hover:text-tactical-green-bright hover:pl-8'
+                                        ? 'text-gray-500 hover:bg-tactical-darkgray hover:text-tactical-orange'
+                                        : 'text-white hover:bg-tactical-darkgray hover:text-tactical-green-bright'
                                       }
                                     `}
                                   >
-                                    {protocol.title}
-                                    {activeProtocol && activeProtocol.protocolId === protocol.id && (
-                                      <span className="ml-2 text-tactical-green-bright">✓</span>
-                                    )}
+                                    <span className="w-full">
+                                      {protocol.title}
+                                      {activeProtocol && activeProtocol.protocolId === protocol.id && (
+                                        <span className="ml-2 text-tactical-green-bright">✓</span>
+                                      )}
+                                    </span>
                                   </Link>
                                 ))}
                               </div>
@@ -119,97 +236,91 @@ export default function Navigation() {
                           </div>
                         )}
                       </div>
-                    
-                    <Link
-                      href="/emergency-tools"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsProtocolsSubMenuOpen(false);
-                      }}
-                      className={`
-                        block px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all
-                        ${pathname?.startsWith('/emergency-tools')
-                          ? 'bg-red-900 text-white' 
-                          : 'text-gray-300 hover:bg-red-900/30 hover:text-red-400 hover:pl-8'
-                        }
-                      `}
-                    >
-                      <span className="emergency-light inline-block">🚨</span> Emergency
-                    </Link>
 
-                    <Link
-                      href="/stats"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsProtocolsSubMenuOpen(false);
-                      }}
-                      className={`
-                        block px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all
-                        ${pathname === '/stats' 
-                          ? 'bg-tactical-orange text-white' 
-                          : 'text-white hover:bg-tactical-gray hover:text-tactical-orange hover:pl-8'
-                        }
-                      `}
-                    >
-                      📊 Stats
-                    </Link>
-                    
-                    <Link
-                      href="/faq"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsProtocolsSubMenuOpen(false);
-                      }}
-                      className={`
-                        block px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all
-                        ${pathname === '/faq' 
-                          ? 'bg-tactical-orange text-white' 
-                          : 'text-white hover:bg-tactical-gray hover:text-tactical-orange hover:pl-8'
-                        }
-                      `}
-                    >
-                      FAQ
-                    </Link>
+                      <Link
+                        href="/emergency-tools"
+                        onClick={closeMenu}
+                        className={`
+                          ${menuItemClass}
+                          ${pathname?.startsWith('/emergency-tools')
+                            ? 'bg-red-900 text-white'
+                            : 'text-gray-300 hover:bg-red-900/30 hover:text-red-400'
+                          }
+                        `}
+                      >
+                        <span className="emergency-light inline-block">🚨</span>&nbsp;Emergency
+                      </Link>
 
-                    <Link
-                      href="/settings"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsProtocolsSubMenuOpen(false);
-                      }}
-                      className={`
-                        block px-6 py-3 text-sm font-bold uppercase tracking-wide transition-all
-                        ${pathname === '/settings' 
-                          ? 'bg-tactical-orange text-white' 
-                          : 'text-white hover:bg-tactical-gray hover:text-tactical-orange hover:pl-8'
-                        }
-                      `}
-                    >
-                      ⚙️ Settings
-                    </Link>
+                      <Link
+                        href="/stats"
+                        onClick={closeMenu}
+                        className={`
+                          ${menuItemClass}
+                          ${pathname === '/stats'
+                            ? 'bg-tactical-orange text-white'
+                            : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
+                          }
+                        `}
+                      >
+                        📊 Stats
+                      </Link>
+
+                      <Link
+                        href="/faq"
+                        onClick={closeMenu}
+                        className={`
+                          ${menuItemClass}
+                          ${pathname === '/faq'
+                            ? 'bg-tactical-orange text-white'
+                            : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
+                          }
+                        `}
+                      >
+                        FAQ
+                      </Link>
+
+                      <Link
+                        href="/settings"
+                        onClick={closeMenu}
+                        className={`
+                          ${menuItemClass}
+                          ${pathname === '/settings'
+                            ? 'bg-tactical-orange text-white'
+                            : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
+                          }
+                        `}
+                      >
+                        ⚙️ Settings
+                      </Link>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Logo/Brand */}
-            <Link 
-              href="/" 
-              className="flex items-center gap-3 group relative z-10 cursor-pointer"
+            <Link
+              href="/"
+              className="flex items-center gap-3 group relative z-10 cursor-pointer min-h-[44px]"
               aria-label="Rebuild The Man Protocol home"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsProtocolsSubMenuOpen(false);
-              }}
+              onClick={closeMenu}
             >
               <span className="text-2xl leading-none" aria-hidden>
                 <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
               </span>
               <div>
                 <div className="font-brand">
-                  <span className="block text-lg font-bold uppercase tracking-tight leading-none group-hover:text-tactical-orange transition-colors" style={{ color: '#faf9f5' }}>Rebuild The Man</span>
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.25em] leading-tight" style={{ color: '#cc6119' }}>Protocol</span>
+                  <span
+                    className="block text-lg font-bold uppercase tracking-tight leading-none group-hover:text-tactical-orange transition-colors"
+                    style={{ color: '#faf9f5' }}
+                  >
+                    Rebuild The Man
+                  </span>
+                  <span
+                    className="block text-[10px] font-semibold uppercase tracking-[0.25em] leading-tight"
+                    style={{ color: '#cc6119' }}
+                  >
+                    Protocol
+                  </span>
                 </div>
               </div>
             </Link>
@@ -217,7 +328,6 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Active Protocol Blocker */}
       {activeProtocol && (
         <ActiveProtocolBlocker
           isOpen={showBlocker}
@@ -230,4 +340,3 @@ export default function Navigation() {
     </>
   );
 }
-

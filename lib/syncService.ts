@@ -8,13 +8,37 @@ export interface SyncData {
   reminderSettings: ReminderSettings;
 }
 
+/** Emitted after init, pull, or push so UI can show non-intrusive sync health. */
+export type SyncStatusEvent =
+  | { type: 'success'; at: string; source: 'push' | 'pull' | 'auth' }
+  | { type: 'failure'; at: string; source: 'push' | 'pull' | 'auth' }
+  | { type: 'local_only'; at: string };
+
+type SyncStatusListener = (event: SyncStatusEvent) => void;
+
 export class SyncService {
   private static instance: SyncService;
   private userId: string | null = null;
   private isSyncing = false;
   private syncQueue: (() => Promise<void>)[] = [];
+  private syncStatusListeners = new Set<SyncStatusListener>();
 
   private constructor() {}
+
+  subscribeSyncStatus(listener: SyncStatusListener): () => void {
+    this.syncStatusListeners.add(listener);
+    return () => this.syncStatusListeners.delete(listener);
+  }
+
+  private emitSyncStatus(event: SyncStatusEvent) {
+    this.syncStatusListeners.forEach((fn) => {
+      try {
+        fn(event);
+      } catch (e) {
+        console.error('sync status listener error:', e);
+      }
+    });
+  }
 
   static getInstance(): SyncService {
     if (!SyncService.instance) {
@@ -29,6 +53,7 @@ export class SyncService {
   async initialize(): Promise<boolean> {
     if (!isSupabaseConfigured()) {
       console.log('Supabase not configured - using localStorage only');
+      this.emitSyncStatus({ type: 'local_only', at: new Date().toISOString() });
       return false;
     }
 
@@ -39,6 +64,7 @@ export class SyncService {
       if (session) {
         this.userId = session.user.id;
         console.log('Existing session found');
+        this.emitSyncStatus({ type: 'success', at: new Date().toISOString(), source: 'auth' });
         return true;
       }
 
@@ -47,14 +73,17 @@ export class SyncService {
 
       if (error) {
         console.error('Anonymous sign-in failed:', error);
+        this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'auth' });
         return false;
       }
 
       this.userId = data.user?.id || null;
       console.log('Anonymous user created');
+      this.emitSyncStatus({ type: 'success', at: new Date().toISOString(), source: 'auth' });
       return true;
     } catch (error) {
       console.error('Sync initialization failed:', error);
+      this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'auth' });
       return false;
     }
   }
@@ -63,8 +92,12 @@ export class SyncService {
    * Sync data to Supabase
    */
   async syncToCloud(data: SyncData): Promise<boolean> {
-    if (!isSupabaseConfigured() || !this.userId) {
-      return false; // Silently fail if not configured
+    if (!isSupabaseConfigured()) {
+      return false;
+    }
+    if (!this.userId) {
+      this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'push' });
+      return false;
     }
 
     // Add to queue to prevent concurrent syncs
@@ -85,15 +118,19 @@ export class SyncService {
               onConflict: 'user_id'
             });
 
+          const at = new Date().toISOString();
           if (error) {
             console.error('Sync to cloud failed:', error);
+            this.emitSyncStatus({ type: 'failure', at, source: 'push' });
             resolve(false);
           } else {
             console.log('✅ Data synced to cloud');
+            this.emitSyncStatus({ type: 'success', at, source: 'push' });
             resolve(true);
           }
         } catch (error) {
           console.error('Sync error:', error);
+          this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'push' });
           resolve(false);
         }
       });
@@ -121,9 +158,11 @@ export class SyncService {
         if (error.code === 'PGRST116') {
           // No data found - first time user
           console.log('No cloud data found - new user');
+          this.emitSyncStatus({ type: 'success', at: new Date().toISOString(), source: 'pull' });
           return null;
         }
         console.error('Load from cloud failed:', error);
+        this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'pull' });
         return null;
       }
 
@@ -132,6 +171,7 @@ export class SyncService {
       }
 
       console.log('✅ Data loaded from cloud');
+      this.emitSyncStatus({ type: 'success', at: new Date().toISOString(), source: 'pull' });
       return {
         activeProtocol: data.active_protocol,
         completedProtocols: data.completed_protocols || [],
@@ -148,6 +188,7 @@ export class SyncService {
       };
     } catch (error) {
       console.error('Load error:', error);
+      this.emitSyncStatus({ type: 'failure', at: new Date().toISOString(), source: 'pull' });
       return null;
     }
   }

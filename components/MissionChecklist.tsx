@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useProgress } from '@/contexts/ProgressContext';
 import { Protocol, ProtocolDuration } from '@/types';
 import { getCurrentWorkingDay, isDayAccessible } from '@/utils/progressUtils';
+import { resolveMissionList } from '@/utils/missionUtils';
 
 interface MissionChecklistProps {
   protocol: Protocol;
@@ -15,12 +16,12 @@ export default function MissionChecklist({ protocol, duration }: MissionChecklis
   const { activeProtocol } = useProgress();
   const [hoveredMission, setHoveredMission] = useState<number | null>(null);
   
-  const missions = protocol.missions[duration];
+  const missions = resolveMissionList(protocol, duration);
   const isActiveProtocol = activeProtocol?.protocolId === protocol.id && activeProtocol?.duration === duration;
   const completedDays = activeProtocol?.completedDays || [];
   const currentWorkingDay = activeProtocol && isActiveProtocol ? getCurrentWorkingDay(activeProtocol) : 1;
 
-  if (!missions || missions.length === 0) {
+  if (missions.length === 0) {
     return null;
   }
 
