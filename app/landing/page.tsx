@@ -12,6 +12,8 @@ import {
 } from '@/lib/mailtoUrls';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
+import LandingCTA from '@/components/landing/LandingCTA';
+import LandingAuthButtons from '@/components/landing/LandingAuthButtons';
 
 export default function LandingPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -61,12 +63,7 @@ export default function LandingPage() {
               >
                 🚨 Emergency
               </Link>
-              <Link
-                href="/"
-                className="btn-primary text-sm py-2 px-6"
-              >
-                Launch App
-              </Link>
+              <LandingAuthButtons />
             </div>
           </div>
         </div>
@@ -94,12 +91,10 @@ export default function LandingPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link
-                href="/"
+              <LandingCTA
                 className="btn-primary text-lg py-4 px-8 text-center"
-              >
-                Start Your Rebuild →
-              </Link>
+                loggedOutLabel="Start Your Rebuild →"
+              />
               <a
                 href="#how-it-works"
                 className="btn-secondary text-lg py-4 px-8 text-center"
@@ -111,7 +106,7 @@ export default function LandingPage() {
             <div className="flex flex-wrap items-center gap-6 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-tactical-green-bright" />
-                <span>No credit card required</span>
+                <span>14-day money-back guarantee</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-tactical-green-bright" />
@@ -221,12 +216,10 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              <Link
-                href="/"
+              <LandingCTA
                 className="btn-primary inline-block"
-              >
-                Get Started Now
-              </Link>
+                loggedOutLabel="Get Started Now"
+              />
             </div>
 
             {/* App Interface Preview */}
@@ -424,12 +417,11 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link
-              href="/"
+            <LandingCTA
               className="btn-primary inline-block text-lg py-4 px-8"
-            >
-              View All Protocols →
-            </Link>
+              loggedOutLabel="View All Protocols →"
+              paidLabel="View All Protocols →"
+            />
           </div>
         </div>
       </section>
@@ -494,15 +486,13 @@ export default function LandingPage() {
             No fluff. No endless talking. Just the work.
           </p>
           
-          <Link
-            href="/"
+          <LandingCTA
             className="btn-primary inline-block text-xl py-5 px-12 mb-6"
-          >
-            Launch the Protocol
-          </Link>
-          
+            loggedOutLabel="Launch the Protocol"
+          />
+
           <p className="text-gray-400">
-            Free to start. No credit card required. Start rebuilding today.
+            One-time payment for lifetime access. 14-day money-back guarantee.
           </p>
         </div>
       </section>

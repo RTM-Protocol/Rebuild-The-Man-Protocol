@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { protocols } from '@/data/protocols';
 import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/contexts/AuthContext';
 import ActiveProtocolBlocker from './ActiveProtocolBlocker';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
@@ -15,6 +16,7 @@ const MD_MIN_PX = 768;
 export default function Navigation() {
   const pathname = usePathname();
   const { activeProtocol } = useProgress();
+  const { user, signOut, hasPaid } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProtocolsSubMenuOpen, setIsProtocolsSubMenuOpen] = useState(false);
   const [showBlocker, setShowBlocker] = useState(false);
@@ -292,6 +294,70 @@ export default function Navigation() {
                       >
                         ⚙️ Settings
                       </Link>
+
+                      <div className="border-t border-tactical-lightgray my-2" />
+
+                      {user ? (
+                        <>
+                          <Link
+                            href="/account"
+                            onClick={closeMenu}
+                            className={`
+                              ${menuItemClass}
+                              ${pathname === '/account'
+                                ? 'bg-tactical-orange text-white'
+                                : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
+                              }
+                            `}
+                          >
+                            👤 Account
+                            {!hasPaid && (
+                              <span className="ml-auto text-[10px] font-bold uppercase tracking-widest text-tactical-orange-bright">
+                                Free
+                              </span>
+                            )}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              closeMenu();
+                              await signOut();
+                            }}
+                            className={`${menuItemClass} w-full text-left text-gray-300 hover:bg-tactical-gray hover:text-tactical-orange`}
+                          >
+                            ↩ Sign Out
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            href="/login"
+                            onClick={closeMenu}
+                            className={`
+                              ${menuItemClass}
+                              ${pathname === '/login'
+                                ? 'bg-tactical-orange text-white'
+                                : 'text-white hover:bg-tactical-gray hover:text-tactical-orange'
+                              }
+                            `}
+                          >
+                            → Log In
+                          </Link>
+                          <Link
+                            href="/signup"
+                            onClick={closeMenu}
+                            className={`
+                              ${menuItemClass}
+                              ${pathname === '/signup'
+                                ? 'bg-tactical-orange text-white'
+                                : 'text-tactical-orange-bright hover:bg-tactical-gray hover:text-tactical-orange'
+                              }
+                            `}
+                          >
+                            ★ Sign Up
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

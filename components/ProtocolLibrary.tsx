@@ -5,12 +5,27 @@ import { protocols } from '@/data/protocols';
 import ProtocolIcon from '@/components/ProtocolIcon';
 import { UserProgress } from '@/types';
 import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ProtocolLibraryProps {
   activeProtocol?: UserProgress | null;
 }
 
+function LockBadge() {
+  return (
+    <span
+      className="inline-flex items-center gap-1 bg-tactical-orange/15 border border-tactical-orange/60 text-tactical-orange-bright text-[10px] font-bold uppercase tracking-widest px-2 py-0.5"
+      title="Lifetime access required"
+    >
+      <span aria-hidden>🔒</span>
+      <span>Locked</span>
+    </span>
+  );
+}
+
 export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps) {
+  const { hasPaid } = useAuth();
+  const showLocks = !hasPaid;
   const browsingAccent = activeProtocol
     ? getProtocolVisualTheme(activeProtocol.protocolId)?.hex ?? '#ff6b35'
     : undefined;
@@ -73,9 +88,12 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
             <ProtocolIcon protocolId="rebuild-the-man" />
           </div>
             <div className="w-full">
-              <h3 className="font-brand text-3xl font-bold group-hover:text-tactical-orange transition-colors uppercase mb-2" style={{ color: '#faf9f5' }}>
-                Rebuild The Man
-              </h3>
+              <div className="flex items-center justify-center gap-3 mb-2 flex-wrap">
+                <h3 className="font-brand text-3xl font-bold group-hover:text-tactical-orange transition-colors uppercase" style={{ color: '#faf9f5' }}>
+                  Rebuild The Man
+                </h3>
+                {showLocks && <LockBadge />}
+              </div>
               <p className="text-tactical-green-bright font-mono text-sm mb-4">
                 COMPLETE MENTAL RECONSTRUCTION // 14 DAYS
               </p>
@@ -126,9 +144,12 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
                   <ProtocolIcon protocolId={protocol.id} />
                 </div>
                 <div className="w-full">
-                  <h3 className="text-xl font-bold text-white group-hover:text-tactical-green-bright transition-colors uppercase">
-                    {protocol.title}
-                  </h3>
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                    <h3 className="text-xl font-bold text-white group-hover:text-tactical-green-bright transition-colors uppercase">
+                      {protocol.title}
+                    </h3>
+                    {showLocks && <LockBadge />}
+                  </div>
                   <p className="text-tactical-orange text-sm font-mono mt-1">
                     {protocol.tagline}
                   </p>

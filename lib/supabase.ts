@@ -5,11 +5,14 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 // Create Supabase client
+// detectSessionInUrl: true is required so Supabase can pick up the session
+// after Google OAuth redirects and password-reset email links.
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: true,
+    flowType: 'pkce',
     storage: typeof window !== 'undefined' ? window.localStorage : undefined,
   },
 });
@@ -20,6 +23,20 @@ export const isSupabaseConfigured = () => {
 };
 
 // Database types
+export type PurchaseStatus = 'completed' | 'refunded';
+
+export interface PurchaseRow {
+  id: string;
+  user_id: string;
+  stripe_checkout_session_id: string | null;
+  stripe_customer_id: string | null;
+  amount_paid: number;
+  currency: string;
+  status: PurchaseStatus;
+  purchased_at: string;
+  refunded_at: string | null;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -56,6 +73,31 @@ export type Database = {
           last_synced?: string;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      purchases: {
+        Row: PurchaseRow;
+        Insert: {
+          id?: string;
+          user_id: string;
+          stripe_checkout_session_id?: string | null;
+          stripe_customer_id?: string | null;
+          amount_paid: number;
+          currency?: string;
+          status?: PurchaseStatus;
+          purchased_at?: string;
+          refunded_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          stripe_checkout_session_id?: string | null;
+          stripe_customer_id?: string | null;
+          amount_paid?: number;
+          currency?: string;
+          status?: PurchaseStatus;
+          purchased_at?: string;
+          refunded_at?: string | null;
         };
       };
     };
