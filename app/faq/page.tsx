@@ -49,7 +49,18 @@ export default function FAQPage() {
         },
         {
           question: 'How much does it cost?',
-          answer: "The app is free to use. All protocols are available at no cost. We built this to be accessible—mental health tools shouldn't have paywalls. If you find value in it, you can support the project through donations, but it's not required."
+          answer: (
+            <>
+              Lifetime access is a one-time payment &mdash; no subscriptions, no recurring charges.
+              Your purchase includes all four protocols, Emergency Tools, progress tracking, and
+              every future update. We offer a 14-day money-back guarantee. If it&apos;s not for
+              you, email{' '}
+              <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+                support@rebuildthemanprotocol.com
+              </a>{' '}
+              within 14 days for a full refund. No questions asked.
+            </>
+          ),
         }
       ]
     },
@@ -135,7 +146,17 @@ export default function FAQPage() {
         },
         {
           question: 'What if it doesn\'t work for me?',
-          answer: "First, evaluate honestly: Did you actually complete the daily missions or just think about them? Were you consistent or sporadic? If you genuinely did the work and saw no improvement, you might need a different approach or professional help. Not every tool works for everyone."
+          answer: (
+            <>
+              We offer a 14-day money-back guarantee. If you try the App and decide it&apos;s not
+              for you, email{' '}
+              <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>
+                support@rebuildthemanprotocol.com
+              </a>{' '}
+              within 14 days of purchase and you&apos;ll receive a full refund. No questions asked.
+              No forms to fill out. Just an email.
+            </>
+          ),
         },
         {
           question: 'Can I track my progress?',

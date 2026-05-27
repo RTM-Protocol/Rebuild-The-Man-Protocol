@@ -575,7 +575,7 @@ export default function LandingPage() {
                 <li><a href="#disclaimer" className="hover:text-tactical-orange transition-colors">Disclaimer</a></li>
                 <li><Link href="/privacy" className="hover:text-tactical-orange transition-colors">Privacy Policy</Link></li>
                 <li>
-                  <Link href="/privacy" className="hover:text-tactical-orange transition-colors">
+                  <Link href="/terms" className="hover:text-tactical-orange transition-colors">
                     Terms of Service
                   </Link>
                 </li>

@@ -145,7 +145,12 @@ export default function SitemapPage() {
             <h2 className="text-white font-bold uppercase text-lg mb-4 flex items-center gap-2">
               <span className="text-tactical-orange">▸</span> Legal
             </h2>
-            <LinkList items={[{ href: '/privacy', label: 'Privacy Policy' }]} />
+            <LinkList
+              items={[
+                { href: '/privacy', label: 'Privacy Policy' },
+                { href: '/terms', label: 'Terms of Service' },
+              ]}
+            />
           </section>
         </div>
       </main>
