@@ -129,7 +129,7 @@ export default function StatsPage() {
                     }}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="text-4xl breathe-animation">
+                      <div className={`text-4xl ${protocol.id !== 'rebuild-the-man' ? 'breathe-animation' : ''}`}>
                         <ProtocolIcon protocolId={protocol.id} />
                       </div>
                       <div>

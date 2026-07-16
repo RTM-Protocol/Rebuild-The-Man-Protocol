@@ -32,7 +32,7 @@ export default function NewUserLanding({
             </div>
           </div>
             <div className="mb-4 flex w-full justify-center items-center">
-              <div className="text-6xl breathe-animation">
+              <div className="text-6xl">
                 <ProtocolIcon protocolId="rebuild-the-man" />
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function NewUserLanding({
               className="w-full bg-tactical-darkgray border-2 border-tactical-lightgray hover:border-white p-6 text-left transition-all hover:scale-[1.02] group"
             >
               <div className="flex items-start gap-5">
-                <div className="text-4xl breathe-animation">
+                <div className="text-4xl">
                   <ProtocolIcon protocolId="rebuild-the-man" />
                 </div>
                 <div className="flex-1">

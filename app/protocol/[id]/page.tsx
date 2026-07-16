@@ -129,7 +129,7 @@ export default function ProtocolDetail() {
       >
         {/* Protocol Icon */}
         <div className="text-center mb-8">
-          <div className="text-7xl mb-4 breathe-animation">
+          <div className={`text-7xl mb-4 ${protocol.id !== 'rebuild-the-man' ? 'breathe-animation' : ''}`}>
             <ProtocolIcon protocolId={protocol.id} />
           </div>
         </div>

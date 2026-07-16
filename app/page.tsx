@@ -134,7 +134,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 py-12 text-center">
             <div className="max-w-3xl mx-auto">
               <div className="mb-6 flex w-full justify-center items-center">
-                <div className="text-6xl breathe-animation">
+                <div className="text-6xl">
                   <ProtocolIcon protocolId="rebuild-the-man" />
                 </div>
               </div>

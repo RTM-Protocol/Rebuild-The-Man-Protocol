@@ -58,7 +58,7 @@ export default function UserDashboard() {
               {protocol.tagline}
             </p>
           </div>
-          <div className="text-6xl breathe-animation">
+          <div className={`text-6xl ${protocol.id !== 'rebuild-the-man' ? 'breathe-animation' : ''}`}>
             <ProtocolIcon protocolId={protocol.id} />
           </div>
         </div>
