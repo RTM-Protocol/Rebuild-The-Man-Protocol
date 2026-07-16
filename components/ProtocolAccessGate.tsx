@@ -40,7 +40,7 @@ export default function ProtocolAccessGate({ children }: ProtocolAccessGateProps
         <Navigation />
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="text-center">
-            <div className="text-4xl mb-4">
+            <div className="text-4xl mb-4 breathe-animation">
               <BrandShieldIcon title="" strokeColor={BRAND_ORANGE_HEX} />
             </div>
             <p className="text-white font-bold uppercase tracking-widest text-sm">

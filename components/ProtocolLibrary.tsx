@@ -84,7 +84,7 @@ export default function ProtocolLibrary({ activeProtocol }: ProtocolLibraryProps
           className="block bg-gradient-to-r from-tactical-darkgray to-tactical-gray border-2 border-tactical-green p-8 group transition-all hover:border-tactical-green-bright"
         >
           <div className="flex flex-col items-center text-center">
-          <div className="text-6xl mb-4">
+          <div className="text-6xl mb-4 breathe-animation">
             <ProtocolIcon protocolId="rebuild-the-man" />
           </div>
             <div className="w-full">

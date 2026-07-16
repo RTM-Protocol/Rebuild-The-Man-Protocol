@@ -2,24 +2,31 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { protocols } from '@/data/protocols';
 import { useProgress } from '@/contexts/ProgressContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ActiveProtocolBlocker from './ActiveProtocolBlocker';
+import ConfirmationModal from './ConfirmationModal';
 import BrandShieldIcon from '@/components/BrandShieldIcon';
 import { BRAND_ORANGE_HEX } from '@/lib/protocolVisualTheme';
 
 /** Tailwind `md` breakpoint — keep in sync with tailwind.config */
 const MD_MIN_PX = 768;
 
+type OnboardingPromptMode = 'active-protocol' | 'already-onboarded';
+
 export default function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
   const { activeProtocol } = useProgress();
   const { user, signOut, hasPaid } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProtocolsSubMenuOpen, setIsProtocolsSubMenuOpen] = useState(false);
   const [showBlocker, setShowBlocker] = useState(false);
+  const [showOnboardingPrompt, setShowOnboardingPrompt] = useState(false);
+  const [onboardingPromptMode, setOnboardingPromptMode] =
+    useState<OnboardingPromptMode>('already-onboarded');
   const [isDesktop, setIsDesktop] = useState(false);
   const navRootRef = useRef<HTMLDivElement>(null);
   /** After closing via click on desktop, ignore hover-open until the pointer leaves the menu root (avoids stuck-closed while still hovered). */
@@ -55,6 +62,47 @@ export default function Navigation() {
       setShowBlocker(true);
       closeMenu();
     }
+  };
+
+  const restartOnboarding = () => {
+    localStorage.removeItem('onboarding_completed');
+    localStorage.removeItem('onboarding_path');
+    setShowOnboardingPrompt(false);
+    if (pathname === '/') {
+      window.location.reload();
+      return;
+    }
+    window.location.href = '/';
+  };
+
+  const handleOnboardingClick = () => {
+    closeMenu();
+
+    if (activeProtocol) {
+      setOnboardingPromptMode('active-protocol');
+      setShowOnboardingPrompt(true);
+      return;
+    }
+
+    const hasOnboarded =
+      typeof window !== 'undefined' && localStorage.getItem('onboarding_completed');
+
+    if (hasOnboarded) {
+      setOnboardingPromptMode('already-onboarded');
+      setShowOnboardingPrompt(true);
+      return;
+    }
+
+    router.push('/');
+  };
+
+  const handleOnboardingPromptConfirm = () => {
+    if (onboardingPromptMode === 'active-protocol') {
+      setShowOnboardingPrompt(false);
+      router.push('/settings');
+      return;
+    }
+    restartOnboarding();
   };
 
   const hoverRootHandlers = isDesktop
@@ -281,6 +329,14 @@ export default function Navigation() {
                         FAQ
                       </Link>
 
+                      <button
+                        type="button"
+                        onClick={handleOnboardingClick}
+                        className={`${menuItemClass} w-full text-left text-white hover:bg-tactical-gray hover:text-tactical-orange`}
+                      >
+                        🛡️ Onboarding
+                      </button>
+
                       <Link
                         href="/settings"
                         onClick={closeMenu}
@@ -393,6 +449,26 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
+
+      <ConfirmationModal
+        isOpen={showOnboardingPrompt}
+        onClose={() => setShowOnboardingPrompt(false)}
+        onConfirm={handleOnboardingPromptConfirm}
+        title={
+          onboardingPromptMode === 'active-protocol'
+            ? 'Skip Onboarding — Protocol Active'
+            : 'Return to Onboarding?'
+        }
+        message={
+          onboardingPromptMode === 'active-protocol'
+            ? "You've already onboarded and started a protocol. Skip returning to onboarding while a protocol is in progress. To start over, go to Settings and reset your current protocol first."
+            : "You've already completed onboarding. You can review the welcome screens again, or stay where you are."
+        }
+        confirmText={
+          onboardingPromptMode === 'active-protocol' ? 'Go to Settings' : 'View Onboarding'
+        }
+        cancelText="Cancel"
+      />
 
       {activeProtocol && (
         <ActiveProtocolBlocker

@@ -399,7 +399,7 @@ export default function LandingPage() {
                 key={protocol.id}
                 className="protocol-card p-6 hover:scale-105 transition-all duration-300 cursor-pointer group"
               >
-                <div className={`text-5xl mb-4 ${protocol.id !== 'rebuild-the-man' ? 'breathe-animation' : ''}`}>
+                <div className="text-5xl mb-4 breathe-animation">
                   <ProtocolIcon protocolId={protocol.id} />
                 </div>
                 <h3 className="text-xl font-bold text-white uppercase mb-2 group-hover:text-tactical-orange transition-colors">

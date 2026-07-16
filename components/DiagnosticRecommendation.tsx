@@ -81,7 +81,7 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
           style={{ borderColor: accentHex }}
         >
           <div className="flex items-start gap-6 mb-6">
-            <div className={`text-7xl ${protocol.id !== 'rebuild-the-man' ? 'breathe-animation' : ''}`}>
+            <div className="text-7xl breathe-animation">
               <ProtocolIcon protocolId={protocol.id} />
             </div>
             <div className="flex-1">

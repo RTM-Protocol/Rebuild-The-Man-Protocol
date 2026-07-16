@@ -159,7 +159,7 @@ export default function QuickDiagnostic({ onComplete, onSkip }: QuickDiagnosticP
                 >
                   <div className="flex items-center gap-3 w-full">
                     {'icon' in option && (
-                      <span className={`text-2xl sm:text-3xl flex-shrink-0 ${option.icon !== '__shield__' ? 'breathe-animation' : ''}`}>
+                      <span className="text-2xl sm:text-3xl breathe-animation flex-shrink-0">
                         {option.icon === '__shield__' ? (
                           <ProtocolIcon protocolId="rebuild-the-man" />
                         ) : (

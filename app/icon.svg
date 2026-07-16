@@ -1,9 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-  <path
-    d="M6.5 5.5H17.5L19.25 8v5L12 20.25 4.75 13V8L6.5 5.5z"
-    stroke="#cc6119"
-    stroke-width="1.5"
-    stroke-linejoin="round"
-    stroke-linecap="round"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#cc6119" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter">
+  <path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z" fill="#cc6119" fill-opacity="0.12"/>
+  <path d="M12 8v6M9 11h6"/>
 </svg>
