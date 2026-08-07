@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { startCheckout } from '@/lib/checkout';
-import { LIFETIME_PRICE_DISPLAY } from '@/lib/stripe';
+import { PURCHASE_URL } from '@/lib/purchaseUrl';
 import { MAILTO_SUPPORT, EMAIL_LINK_CLASS } from '@/lib/mailtoUrls';
 
 interface PaywallProps {
@@ -24,24 +22,7 @@ const INCLUDED_ITEMS = [
 
 export default function Paywall({ headline = 'Unlock All Protocols', embedded = false }: PaywallProps) {
   const { user, isLoading } = useAuth();
-  const [working, setWorking] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleBuy = async () => {
-    setError(null);
-    if (!user) {
-      // Redirect to signup, then return to the paywall after auth.
-      window.location.assign('/signup?redirect=/paywall');
-      return;
-    }
-    setWorking(true);
-    const errMsg = await startCheckout();
-    if (errMsg) {
-      setError(errMsg);
-      setWorking(false);
-    }
-    // On success, startCheckout() does window.location.assign() — no need to reset state.
-  };
+  const ctaClass = 'btn-primary w-full text-base sm:text-lg py-4 block text-center';
 
   return (
     <div className={embedded ? '' : 'min-h-screen bg-tactical-black flex items-center justify-center px-4 py-10 sm:py-16'}>
@@ -57,15 +38,13 @@ export default function Paywall({ headline = 'Unlock All Protocols', embedded = 
             One payment. Lifetime access. No subscriptions.
           </p>
 
-          {/* Price */}
+          {/* Pricing is tier-dependent and lives on the landing site — never quote it here. */}
           <div className="bg-tactical-black border-2 border-tactical-lightgray p-6 mb-8 text-center">
-            <div className="font-brand">
-              <span className="block text-6xl sm:text-7xl font-bold text-white leading-none">
-                {LIFETIME_PRICE_DISPLAY}
-              </span>
-            </div>
+            <p className="font-brand text-2xl sm:text-3xl font-bold text-white leading-tight">
+              One payment. Yours for life.
+            </p>
             <p className="text-gray-400 text-xs font-mono uppercase tracking-widest mt-3">
-              one-time payment · lifetime access
+              see current pricing on our main site
             </p>
           </div>
 
@@ -106,23 +85,24 @@ export default function Paywall({ headline = 'Unlock All Protocols', embedded = 
             </div>
           </div>
 
-          {error && (
-            <div className="mb-4 bg-red-900/20 border-l-4 border-red-600 text-red-200 px-4 py-3 text-sm leading-relaxed">
-              {error}
-            </div>
+          {isLoading ? (
+            <span className={`${ctaClass} opacity-60 cursor-not-allowed`} aria-hidden>
+              Loading…
+            </span>
+          ) : user ? (
+            <a href={PURCHASE_URL} className={ctaClass} rel="noopener">
+              Get Lifetime Access on our main site →
+            </a>
+          ) : (
+            <Link href="/signup?redirect=/paywall" className={ctaClass}>
+              Create Your Account
+            </Link>
           )}
 
-          <button
-            type="button"
-            onClick={handleBuy}
-            disabled={working || isLoading}
-            className="btn-primary w-full text-base sm:text-lg py-4 disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {working ? 'Redirecting to Stripe…' : 'Get Lifetime Access'}
-          </button>
-
           <p className="mt-4 text-xs text-gray-500 text-center">
-            Secure payment via Stripe. Card, Apple Pay, Google Pay, and PayPal supported.
+            {user
+              ? 'Takes you to rebuildthemanprotocol.com to complete your purchase. Secure payment via Stripe — card, Apple Pay, Google Pay, and PayPal supported.'
+              : 'Create your account first, then complete your purchase on our main site.'}
           </p>
 
           <div className="mt-8 pt-6 border-t border-tactical-lightgray flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">

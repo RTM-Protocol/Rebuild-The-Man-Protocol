@@ -5,13 +5,23 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AuthCard from '@/components/auth/AuthCard';
 import { useAuth } from '@/contexts/AuthContext';
-import { LIFETIME_PRICE_DISPLAY } from '@/lib/stripe';
+
+function formatAmount(minorUnits: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: currency.toUpperCase(),
+    }).format(minorUnits / 100);
+  } catch {
+    return `${(minorUnits / 100).toFixed(2)} ${currency.toUpperCase()}`;
+  }
+}
 
 function PaymentSuccessInner() {
   const router = useRouter();
   const params = useSearchParams();
   const sessionId = params.get('session_id');
-  const { user, hasPaid, isLoading, refreshPaymentStatus } = useAuth();
+  const { user, hasPaid, isLoading, customer, refreshPaymentStatus } = useAuth();
   const [statusText, setStatusText] = useState<string>(
     'Confirming your purchase…'
   );
@@ -67,9 +77,18 @@ function PaymentSuccessInner() {
             <span style={{ color: '#faf9f5' }}>Rebuild The Man</span>{' '}
             <span style={{ color: '#cc6119' }}>Protocol</span>
           </span>
-          . Your one-time payment of{' '}
-          <span className="text-white font-bold">{LIFETIME_PRICE_DISPLAY}</span> gives you lifetime
-          access to all protocols, Emergency Tools, progress tracking, and every future update.
+          . Your one-time payment
+          {customer && (
+            <>
+              {' '}
+              of{' '}
+              <span className="text-white font-bold">
+                {formatAmount(customer.amount_paid, customer.currency)}
+              </span>
+            </>
+          )}{' '}
+          gives you lifetime access to all protocols, Emergency Tools, progress tracking, and every
+          future update.
         </>
       }
       footer={

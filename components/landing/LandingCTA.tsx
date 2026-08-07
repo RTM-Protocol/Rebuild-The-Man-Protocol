@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { startCheckout } from '@/lib/checkout';
+import { PURCHASE_URL } from '@/lib/purchaseUrl';
 
 interface LandingCTAProps {
   className?: string;
@@ -20,7 +19,7 @@ interface LandingCTAProps {
  * based on the visitor's auth + payment state.
  *
  * - Not logged in → /signup (encourages account creation first)
- * - Logged in, no purchase → triggers Stripe Checkout via /api/checkout
+ * - Logged in, no purchase → links out to the landing site's purchase page
  * - Logged in + paid → /  (the protocol dashboard)
  */
 export default function LandingCTA({
@@ -29,9 +28,7 @@ export default function LandingCTA({
   unpaidLabel = 'Get Lifetime Access',
   paidLabel = 'Go to Protocols',
 }: LandingCTAProps) {
-  const { user, hasPaid, isLoading } = useAuth();
-  const [working, setWorking] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { user, hasPaid } = useAuth();
 
   if (!user) {
     return (
@@ -49,27 +46,9 @@ export default function LandingCTA({
     );
   }
 
-  const handleClick = async () => {
-    setError(null);
-    setWorking(true);
-    const errMsg = await startCheckout();
-    if (errMsg) {
-      setError(errMsg);
-      setWorking(false);
-    }
-  };
-
   return (
-    <div className="flex flex-col gap-2 items-center w-full sm:w-auto">
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={isLoading || working}
-        className={`${className} disabled:opacity-60 disabled:cursor-not-allowed`}
-      >
-        {working ? 'Redirecting…' : unpaidLabel}
-      </button>
-      {error && <span className="text-red-400 text-xs">{error}</span>}
-    </div>
+    <a href={PURCHASE_URL} className={className} rel="noopener">
+      {unpaidLabel} →
+    </a>
   );
 }

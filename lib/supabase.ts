@@ -23,17 +23,28 @@ export const isSupabaseConfigured = () => {
 };
 
 // Database types
-export type PurchaseStatus = 'completed' | 'refunded';
 
-export interface PurchaseRow {
+/** Only 'active' grants access. A refunded customer keeps their row. */
+export type CustomerStatus = 'active' | 'cancelled' | 'refunded';
+
+export type CustomerType = 'founding' | 'standard';
+
+/**
+ * Written by the landing site's Stripe webhook — this app only reads it.
+ * RLS scopes any select to the caller's own row (matched on auth_user_id
+ * or the session email), so queries here never filter by identity.
+ */
+export interface CustomerRow {
   id: string;
-  user_id: string;
-  stripe_checkout_session_id: string | null;
+  auth_user_id: string | null;
+  email: string;
+  customer_type: CustomerType;
   stripe_customer_id: string | null;
+  /** Minor units (pence for GBP). */
   amount_paid: number;
   currency: string;
-  status: PurchaseStatus;
-  purchased_at: string;
+  status: CustomerStatus;
+  created_at: string;
   refunded_at: string | null;
 }
 
@@ -75,28 +86,30 @@ export type Database = {
           updated_at?: string;
         };
       };
-      purchases: {
-        Row: PurchaseRow;
+      customers: {
+        Row: CustomerRow;
         Insert: {
           id?: string;
-          user_id: string;
-          stripe_checkout_session_id?: string | null;
+          auth_user_id?: string | null;
+          email: string;
+          customer_type?: CustomerType;
           stripe_customer_id?: string | null;
           amount_paid: number;
           currency?: string;
-          status?: PurchaseStatus;
-          purchased_at?: string;
+          status?: CustomerStatus;
+          created_at?: string;
           refunded_at?: string | null;
         };
         Update: {
           id?: string;
-          user_id?: string;
-          stripe_checkout_session_id?: string | null;
+          auth_user_id?: string | null;
+          email?: string;
+          customer_type?: CustomerType;
           stripe_customer_id?: string | null;
           amount_paid?: number;
           currency?: string;
-          status?: PurchaseStatus;
-          purchased_at?: string;
+          status?: CustomerStatus;
+          created_at?: string;
           refunded_at?: string | null;
         };
       };

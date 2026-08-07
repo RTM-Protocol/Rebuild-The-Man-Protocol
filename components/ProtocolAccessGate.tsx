@@ -14,7 +14,7 @@ interface ProtocolAccessGateProps {
 }
 
 /**
- * Wraps any route that requires login + a completed purchase.
+ * Wraps any route that requires login + an active `customers` row.
  *
  * - While auth state is loading: shows a tactical loading screen
  * - Not authenticated: redirects to /login with ?redirect=<current path>

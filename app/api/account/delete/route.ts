@@ -11,11 +11,11 @@ export const runtime = 'nodejs';
  * Requires the Supabase access token in the Authorization header.
  *
  * What gets deleted:
- *   - auth.users row (cascades to purchases via FK ON DELETE CASCADE)
+ *   - auth.users row
  *   - any rows in tables that have user_id FK to auth.users with CASCADE
  *
- * Note: `purchases.user_id` has ON DELETE CASCADE in the spec SQL, so
- * deleting the auth user automatically cleans the purchases row.
+ * Note: the `customers` row is a billing record owned by the landing
+ * project, keyed on a nullable auth_user_id, so it is not cascaded here.
  */
 export async function POST(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
   }
   const userId = userData.user.id;
 
-  // Use the admin client to delete the auth user. Any `user_progress`,
-  // `purchases`, etc. rows with `ON DELETE CASCADE` on user_id will follow.
+  // Use the admin client to delete the auth user. Any `user_progress`, etc.
+  // rows with `ON DELETE CASCADE` on user_id will follow.
   try {
     const admin = getSupabaseAdmin();
     const { error: deleteError } = await admin.auth.admin.deleteUser(userId);

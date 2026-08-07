@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import ProtocolAccessGate from '@/components/ProtocolAccessGate';
 
 /**
- * Gates EVERY route under /protocol/* behind login + a completed purchase.
+ * Gates EVERY route under /protocol/* behind login + an active customer row.
  * This is the single chokepoint for the paywall — individual protocol pages
  * don't need their own auth checks.
  *

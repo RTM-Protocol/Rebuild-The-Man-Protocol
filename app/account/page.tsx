@@ -13,8 +13,7 @@ import {
   MAILTO_REQUESTS,
   EMAIL_LINK_CLASS,
 } from '@/lib/mailtoUrls';
-import { LIFETIME_PRICE_DISPLAY } from '@/lib/stripe';
-import { startCheckout } from '@/lib/checkout';
+import { PURCHASE_URL } from '@/lib/purchaseUrl';
 
 function formatDate(iso: string | null | undefined): string {
   if (!iso) return '—';
@@ -42,14 +41,12 @@ function formatAmount(pence: number, currency: string): string {
 
 export default function AccountPage() {
   const router = useRouter();
-  const { user, isLoading, hasPaid, purchase, signOut } = useAuth();
+  const { user, isLoading, hasPaid, customer, signOut } = useAuth();
   const [resetEmailStatus, setResetEmailStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [resetErrorMsg, setResetErrorMsg] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
-  const [checkingOut, setCheckingOut] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -95,16 +92,6 @@ export default function AccountPage() {
   const handleSignOut = async () => {
     await signOut();
     router.replace('/');
-  };
-
-  const handleStartCheckout = async () => {
-    setCheckoutError(null);
-    setCheckingOut(true);
-    const errMsg = await startCheckout();
-    if (errMsg) {
-      setCheckoutError(errMsg);
-      setCheckingOut(false);
-    }
   };
 
   const handleDelete = async () => {
@@ -194,20 +181,20 @@ export default function AccountPage() {
                 )}
               </dd>
             </div>
-            {hasPaid && purchase && (
+            {hasPaid && customer && (
               <>
                 <div className="flex flex-col sm:flex-row sm:gap-2">
                   <dt className="text-tactical-orange font-mono text-sm uppercase sm:min-w-[12rem]">
                     Purchase date
                   </dt>
-                  <dd className="text-white">{formatDate(purchase.purchased_at)}</dd>
+                  <dd className="text-white">{formatDate(customer.created_at)}</dd>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:gap-2">
                   <dt className="text-tactical-orange font-mono text-sm uppercase sm:min-w-[12rem]">
                     Amount paid
                   </dt>
                   <dd className="text-white">
-                    {formatAmount(purchase.amount_paid, purchase.currency)}
+                    {formatAmount(customer.amount_paid, customer.currency)}
                   </dd>
                 </div>
               </>
@@ -220,22 +207,19 @@ export default function AccountPage() {
           <section className="mb-10 bg-tactical-darkgray border-2 border-tactical-orange p-6">
             <h2 className="text-xl font-bold text-white uppercase mb-2">Unlock Lifetime Access</h2>
             <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-              One-time payment of {LIFETIME_PRICE_DISPLAY}. All protocols, Emergency Tools,
-              progress tracking, and every future update. 14-day money-back guarantee.
+              One payment, no subscription. All protocols, Emergency Tools, progress tracking,
+              and every future update. 14-day money-back guarantee.
             </p>
-            {checkoutError && (
-              <div className="mb-4 bg-red-900/20 border-l-4 border-red-600 text-red-200 px-4 py-3 text-sm leading-relaxed">
-                {checkoutError}
-              </div>
-            )}
-            <button
-              type="button"
-              onClick={handleStartCheckout}
-              disabled={checkingOut}
-              className="btn-primary w-full sm:w-auto text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            <a
+              href={PURCHASE_URL}
+              rel="noopener"
+              className="btn-primary w-full sm:w-auto text-sm inline-block text-center"
             >
-              {checkingOut ? 'Redirecting…' : `Get Lifetime Access — ${LIFETIME_PRICE_DISPLAY}`}
-            </button>
+              See Current Pricing →
+            </a>
+            <p className="mt-3 text-xs text-gray-500">
+              Opens rebuildthemanprotocol.com, where pricing and purchases are handled.
+            </p>
           </section>
         )}
 
@@ -300,8 +284,9 @@ export default function AccountPage() {
             Delete Account
           </h2>
           <p className="text-gray-300 text-sm leading-relaxed mb-4">
-            Deleting your account will permanently remove all your data including protocol
-            progress, check-ins, and field notes. This cannot be undone.
+            Deleting your account permanently removes your login and all your protocol
+            progress, check-ins, and field notes. This cannot be undone. Your billing
+            record is kept for accounting and refund purposes, unlinked from your identity.
           </p>
           {deleteError && (
             <div className="mb-4 bg-red-900/20 border-l-4 border-red-600 text-red-200 px-4 py-3 text-sm leading-relaxed">
@@ -335,7 +320,7 @@ export default function AccountPage() {
       <ConfirmationModal
         isOpen={deleteOpen}
         title="Delete your account?"
-        message="Are you sure? This action cannot be undone. Your profile, progress, check-ins, field notes, and purchase record will all be permanently removed."
+        message="This cannot be undone. Your account, protocol progress, check-ins, and field notes will be permanently deleted. Your billing record is retained for accounting and refund purposes, unlinked from your identity."
         confirmText={deleting ? 'Deleting…' : 'Yes, Delete'}
         cancelText="Cancel"
         onConfirm={handleDelete}

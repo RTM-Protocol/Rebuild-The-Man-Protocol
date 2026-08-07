@@ -12,18 +12,18 @@ import {
 } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
-import type { PurchaseRow } from '@/lib/supabase';
+import type { CustomerRow } from '@/lib/supabase';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
-  /** True once a 'completed' purchase row exists for this user. */
+  /** True only while the customer row's status is 'active'. */
   hasPaid: boolean;
-  /** Most recent completed purchase (if any). Useful for /account. */
-  purchase: PurchaseRow | null;
+  /** The caller's active customer row (if any). Useful for /account. */
+  customer: CustomerRow | null;
   signOut: () => Promise<void>;
-  /** Force-refetch the purchase row (e.g. after returning from Stripe Checkout). */
+  /** Force-refetch the customer row (e.g. after returning from checkout). */
   refreshPaymentStatus: () => Promise<void>;
 }
 
@@ -32,34 +32,39 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [purchase, setPurchase] = useState<PurchaseRow | null>(null);
+  const [customer, setCustomer] = useState<CustomerRow | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const isMountedRef = useRef(true);
 
-  const fetchPurchase = useCallback(async (userId: string | null) => {
+  /**
+   * RLS scopes `customers` to the caller's own row (matched on auth_user_id
+   * or the session email), so no identity filter is applied here. `userId`
+   * only decides whether it's worth querying at all.
+   *
+   * Every failure path clears the row, so access always fails CLOSED.
+   */
+  const fetchCustomer = useCallback(async (userId: string | null) => {
     if (!userId) {
-      setPurchase(null);
+      setCustomer(null);
       return;
     }
     try {
       const { data, error } = await supabase
-        .from('purchases')
+        .from('customers')
         .select('*')
-        .eq('user_id', userId)
-        .eq('status', 'completed')
-        .order('purchased_at', { ascending: false })
+        .eq('status', 'active')
         .limit(1)
         .maybeSingle();
 
       if (error) {
-        console.error('Failed to load purchase status:', error.message);
-        if (isMountedRef.current) setPurchase(null);
+        console.error('Failed to load customer status:', error.message);
+        if (isMountedRef.current) setCustomer(null);
         return;
       }
-      if (isMountedRef.current) setPurchase((data as PurchaseRow | null) ?? null);
+      if (isMountedRef.current) setCustomer((data as CustomerRow | null) ?? null);
     } catch (err) {
-      console.error('Unexpected error fetching purchase:', err);
-      if (isMountedRef.current) setPurchase(null);
+      console.error('Unexpected error fetching customer:', err);
+      if (isMountedRef.current) setCustomer(null);
     }
   }, []);
 
@@ -73,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!isMountedRef.current) return;
         setSession(data.session);
         setUser(data.session?.user ?? null);
-        await fetchPurchase(data.session?.user?.id ?? null);
+        await fetchCustomer(data.session?.user?.id ?? null);
       })
       .catch((err) => {
         console.error('Initial getSession failed:', err);
@@ -86,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!isMountedRef.current) return;
       setSession(newSession);
       setUser(newSession?.user ?? null);
-      await fetchPurchase(newSession?.user?.id ?? null);
+      await fetchCustomer(newSession?.user?.id ?? null);
       setIsLoading(false);
     });
 
@@ -94,28 +99,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isMountedRef.current = false;
       sub.subscription.unsubscribe();
     };
-  }, [fetchPurchase]);
+  }, [fetchCustomer]);
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
-    setPurchase(null);
+    setCustomer(null);
   }, []);
 
   const refreshPaymentStatus = useCallback(async () => {
-    await fetchPurchase(user?.id ?? null);
-  }, [fetchPurchase, user?.id]);
+    await fetchCustomer(user?.id ?? null);
+  }, [fetchCustomer, user?.id]);
 
   const value = useMemo<AuthContextType>(
     () => ({
       user,
       session,
       isLoading,
-      hasPaid: purchase?.status === 'completed',
-      purchase,
+      hasPaid: customer?.status === 'active',
+      customer,
       signOut,
       refreshPaymentStatus,
     }),
-    [user, session, isLoading, purchase, signOut, refreshPaymentStatus]
+    [user, session, isLoading, customer, signOut, refreshPaymentStatus]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

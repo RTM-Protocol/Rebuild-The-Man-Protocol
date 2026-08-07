@@ -4,8 +4,10 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
  * Server-only Supabase client using the service-role key. Bypasses RLS.
  * NEVER import this from a Client Component or expose it to the browser.
  * Used by:
- *   - Stripe webhook (inserts/updates `purchases` rows)
  *   - Account deletion route (deletes auth.users + cascades user data)
+ *
+ * The `customers` table is written by the landing project's Stripe webhook,
+ * never from here — this app only reads it through RLS.
  *
  * Note: we intentionally don't pass a Database generic here — the project's
  * Database type only covers Tables, and supabase-js v2's typed client expects
