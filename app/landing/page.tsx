@@ -359,7 +359,7 @@ export default function LandingPage() {
                   'Active: execute daily missions',
                   'Track measurable progress',
                   'Free to start, low commitment',
-                  'Private. No social features.'
+                  'Private. Optional accountability partners (WhatsApp only).'
                 ].map((item, index) => (
                   <div key={index} className="flex items-start gap-3 text-gray-200">
                     <span className="text-tactical-green-bright text-xl">✓</span>

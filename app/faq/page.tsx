@@ -220,7 +220,7 @@ export default function FAQPage() {
         },
         {
           question: 'Can other people see my progress?',
-          answer: "No. There are no social features. No sharing, no public profiles, no \"friends\" seeing your activity. This is completely private."
+          answer: "You can optionally invite a friend as an accountability partner via WhatsApp. They'll receive daily check-ins showing which days you've completed — nothing more. They have no access to your journal, exercises, or any personal details. This feature is completely optional and private."
         },
         {
           question: 'What data do you collect?',
