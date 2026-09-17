@@ -72,27 +72,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isMountedRef.current = true;
 
     // Initial hydration from any persisted session.
+    // isLoading clears as soon as the session is applied — the customer
+    // fetch runs in the background. hasPaid stays false until that row lands.
     supabase.auth
       .getSession()
-      .then(async ({ data }) => {
-        if (!isMountedRef.current) return;
+      .then(({ data }) => {
         setSession(data.session);
         setUser(data.session?.user ?? null);
-        await fetchCustomer(data.session?.user?.id ?? null);
+        void fetchCustomer(data.session?.user?.id ?? null);
       })
       .catch((err) => {
         console.error('Initial getSession failed:', err);
       })
       .finally(() => {
-        if (isMountedRef.current) setIsLoading(false);
+        setIsLoading(false);
       });
 
-    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (!isMountedRef.current) return;
+    // Must not await any supabase call inside this callback — v2 holds an
+    // auth lock until the callback settles, which deadlocks fetchCustomer.
+    const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user ?? null);
-      await fetchCustomer(newSession?.user?.id ?? null);
       setIsLoading(false);
+
+      if (event === 'TOKEN_REFRESHED') {
+        return;
+      }
+
+      queueMicrotask(() => {
+        void fetchCustomer(newSession?.user?.id ?? null);
+      });
     });
 
     return () => {
