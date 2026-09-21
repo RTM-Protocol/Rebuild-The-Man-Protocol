@@ -26,7 +26,7 @@ export default function Paywall({ headline = 'Unlock All Protocols', embedded = 
 
   return (
     <div className={embedded ? '' : 'min-h-screen bg-tactical-black flex items-center justify-center px-4 py-10 sm:py-16'}>
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-3xl mx-auto">
         <div className="bg-tactical-darkgray border-2 border-tactical-orange p-6 sm:p-10">
           <p className="text-tactical-orange font-mono text-xs sm:text-sm uppercase tracking-widest mb-3 text-center">
             Lifetime access
