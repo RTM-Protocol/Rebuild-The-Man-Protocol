@@ -253,10 +253,6 @@ export default function FAQPage() {
           answer: "Because most mental health resources use communication styles and approaches designed with women in mind. Men often need different language, different framing, and more action-oriented methods. We're not saying men can't do traditional therapy—many do successfully. We're saying there's a gap for guys who think differently, and we built this to fill it."
         },
         {
-          question: 'Can I gift this to someone?',
-          answer: "Since the app is free, you can simply share the link with anyone who might benefit. If you want to support someone's rebuild journey, send them the link and check in on their progress (if they're comfortable sharing)."
-        },
-        {
           question: 'Are you hiring or looking for contributors?',
           answer: (
             <>
