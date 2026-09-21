@@ -105,7 +105,7 @@ export const emergencyProtocols: EmergencyProtocol[] = [
       }
     ],
     whyItWorks: 'Panic attacks are false alarms. Your body thinks there\'s danger when there isn\'t. This protocol interrupts the feedback loop by engaging your senses, slowing your breathing, and moving your body - all signals that you\'re safe.',
-    note: 'If panic attacks are frequent, you need the Control Systems Protocol. This is just first aid.'
+    note: 'If panic attacks are frequent, you need the System Overload Protocol. This is just first aid.'
   },
   {
     id: 'sleep-emergency',
@@ -227,7 +227,7 @@ export const emergencyProtocols: EmergencyProtocol[] = [
       }
     ],
     whyItWorks: 'Overwhelm is mental gridlock - too many inputs, no clear next move. This protocol breaks the paralysis by externalizing chaos (brain dump), creating a micro-decision (pick one), and generating momentum (do it). One small win often unlocks the next.',
-    note: 'If overwhelm is constant, you need the System Overhaul Protocol. This is just to get unstuck.'
+    note: 'If overwhelm is constant, you need the System Overload Protocol. This is just to get unstuck.'
   },
   {
     id: 'urge-control',
@@ -294,7 +294,7 @@ export const emergencyProtocols: EmergencyProtocol[] = [
       }
     ],
     whyItWorks: 'Urges typically peak within 15-30 minutes and then decline. You don\'t need to resist forever - just outlast the wave. By delaying and distracting, you ride it out. By identifying the trigger, you address the root cause instead of just the symptom.',
-    note: 'This is emergency protocol. If urges are daily, you need Reset & Rewire Protocol or professional support. If you\'re in active addiction and experiencing withdrawal symptoms, seek medical help immediately.'
+    note: 'This is emergency protocol. If urges are daily, you need the Engine Restart Protocol or professional support. If urges are daily and you cannot manage them with a protocol, seek professional support. If you\'re in active addiction and experiencing withdrawal symptoms, seek medical help immediately.'
   },
   {
     id: 'conflict-deescalation',
@@ -357,7 +357,7 @@ export const emergencyProtocols: EmergencyProtocol[] = [
       }
     ],
     whyItWorks: 'When conflict escalates, your rational brain goes offline and your reactive brain takes over. Nothing productive happens in that state. This timeout isn\'t running away - it\'s strategic de-escalation. It gives both parties time to regulate before causing real damage.',
-    note: 'If conflicts are frequent, you need Communication Upgrade Protocol. This is just damage control.'
+    note: 'If conflicts are frequent, you need the Pressure Valve Protocol. This is just damage control.'
   }
 ];
 
