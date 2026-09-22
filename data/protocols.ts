@@ -29,7 +29,7 @@ export const protocols: Protocol[] = [
     problem: 'You\'ve lost your edge. Operating on autopilot. Going through motions without purpose. The foundation needs rebuilding from the ground up.',
     solution: 'A 14-day intensive protocol to reconstruct your mental framework, sharpen your mind, and reclaim your drive through deliberate action and deep reflection.',
     icon: '',
-    durations: [7, 14, 30],
+    durations: [14],
     missions: {
       7: [],
       14: [
