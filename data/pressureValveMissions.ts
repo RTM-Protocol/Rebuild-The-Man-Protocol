@@ -472,8 +472,335 @@ export const pressureValveMissions30: DailyMission[] = [
   },
 ];
 
-export const pressureValveMissions14: DailyMission[] =
-  pressureValveMissions30.slice(0, 14);
+export const pressureValveMissions14: DailyMission[] = [
+  {
+    day: 1,
+    title: 'Anger Audit',
+    description:
+      'Map your anger landscape. You can\'t control what you can\'t see.',
+    instructions: [
+      'Write down the 3 moments in the past 7 days when you felt the most anger or irritation.',
+      'For each one, note: What happened? Where were you? Who was involved? How did you react?',
+      'Rate each incident 1-10 for intensity. This is your anger baseline — you\'ll measure against it later.',
+    ],
+    whyItWorks:
+      'You can only improve what you measure. A written baseline turns anger from a blur into something you can track and change.',
+    proTip: 'Be specific; "work sucked" is useless. Note the exact trigger and your behaviour.',
+    affirmation: 'I look at my anger honestly so I can steer it, not deny it.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'Trigger Identification',
+    description: 'Every anger response has a trigger. Today you find yours.',
+    instructions: [
+      'Review yesterday\'s audit. For each incident, identify the specific trigger — not the person, the trigger. Was it disrespect? Loss of control? Feeling unheard? Injustice?',
+      'Write your top 3 triggers in order of frequency. These are the patterns you\'ll learn to intercept.',
+      'For the rest of today, actively notice when any of these triggers fire. Don\'t try to change anything yet — just observe and note the time.',
+    ],
+    whyItWorks:
+      'Naming triggers moves you from "they made me mad" to "this pattern hooks me" — the first step to intercepting the loop.',
+    proTip: 'Separate the person from the pattern; you\'re training pattern recognition, not blame.',
+    affirmation: 'I can name what sets me off. Naming it gives me leverage.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 3,
+    title: 'The Tactical Pause',
+    description:
+      'Learn the single most effective anger intervention: the deliberate pause between stimulus and response.',
+    instructions: [
+      'Memorise this sequence: STOP → BREATHE (4 seconds in, 6 seconds out, 3 cycles) → ASSESS ("Will this matter in 24 hours?") → CHOOSE your response.',
+      'Practice this sequence 3 times right now using a past anger scenario. Close your eyes, visualise the trigger, and run the pause.',
+      'Set a reminder on your phone labelled "TACTICAL PAUSE" for 3 times today. When it fires, run the breathing cycle wherever you are.',
+    ],
+    whyItWorks:
+      'Breathing and assessment engage your prefrontal cortex before your motor system commits to an explosion.',
+    proTip: 'Rehearse when calm so the sequence is automatic when heat rises.',
+    affirmation: 'Between trigger and response, I own a pause — and I use it.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 4,
+    title: 'Physical De-escalation',
+    description:
+      'Anger lives in the body before the mind. Today you learn to discharge it physically.',
+    instructions: [
+      'Do 20 press-ups, 20 squats, and a 60-second plank right now. Notice how your body state changes.',
+      'Write down 3 physical outlets you can realistically access within 2 minutes when anger spikes (e.g. walk outside, press-ups, grip a stress ball, cold water on wrists).',
+      'Practice the "90-second rule": the neurochemical surge of anger lasts approximately 90 seconds. Set a timer for 90 seconds and do controlled breathing. Everything after 90 seconds is a choice, not a chemical reaction.',
+    ],
+    whyItWorks:
+      'Movement and cold complete the stress cycle in the body so your brain stops sounding a false emergency.',
+    proTip: 'Pick outlets you will actually use in a parking lot, office, or hallway.',
+    affirmation: 'I can discharge pressure through my body instead of dumping it on people.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 5,
+    title: 'The Anger Log',
+    description: 'Start tracking anger in real time. Data beats guesswork.',
+    instructions: [
+      'Create a simple log in your phone\'s notes app with columns: Time, Trigger, Intensity (1-10), Used Pause (Y/N), Outcome.',
+      'Log every anger or irritation event today, no matter how small. Traffic frustration, work email, partner comment — everything.',
+      'At the end of the day, review your log. Count how many times you used the tactical pause vs reacted automatically.',
+    ],
+    whyItWorks:
+      'Logging removes denial and shows whether new skills are showing up where it counts — in real life.',
+    proTip: 'Log fast in the moment; polish spelling never.',
+    affirmation: 'I treat my reactions like data, not character flaws.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 6,
+    title: 'Cognitive Reframe',
+    description:
+      'Change the story, change the response. Most anger is built on assumptions.',
+    instructions: [
+      'Take your top trigger from Day 2. Write down the story you tell yourself when it fires (e.g. "They\'re disrespecting me on purpose").',
+      'Now write 3 alternative explanations that are equally plausible (e.g. "They\'re stressed and not thinking", "They don\'t realise the impact", "This isn\'t about me").',
+      'For the rest of today, when a trigger fires, force yourself to consider one alternative explanation before responding.',
+    ],
+    whyItWorks:
+      'Anger often follows a rigid story. Alternatives loosen the story before you act.',
+    proTip: 'Plausible beats generous — you\'re not faking positivity.',
+    affirmation: 'I question my first story before I act on it.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 7,
+    title: 'Communication Under Pressure',
+    description: 'Learn to express what you need without detonating the room.',
+    instructions: [
+      'Learn the formula: "When [specific behaviour], I feel [emotion], because [reason]. What I need is [request]."',
+      'Rewrite your top 3 anger incidents from Day 1 using this formula. How would the conversation have gone differently?',
+      'Practice saying one of these statements out loud 3 times. It will feel awkward. That\'s normal. Repetition builds fluency.',
+    ],
+    whyItWorks:
+      'Clear, non-attacking language lowers defensiveness in others and keeps your own nervous system regulated.',
+    proTip: 'Script one sentence today you can actually say tomorrow.',
+    affirmation: 'I can be clear and firm without being cruel.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 8,
+    title: 'The Anger Iceberg',
+    description: 'Anger is the visible emotion. Beneath it lies what\'s actually driving you.',
+    instructions: [
+      'Draw an iceberg. Above the waterline write "ANGER." Below it, write the emotions that are actually underneath your anger: fear, shame, hurt, exhaustion, feeling trapped, grief, loneliness.',
+      'For your most recent anger episode, identify which deeper emotion was actually present. Write a sentence that starts with that emotion instead of anger.',
+      'Recognising the real emotion changes your response. Anger says "attack." Hurt says "communicate." Practice naming the real feeling once today.',
+    ],
+    whyItWorks:
+      'Labelling the softer emotion activates different coping behaviours than rage does.',
+    proTip: 'If "hurt" feels exposing, write it privately — still counts.',
+    affirmation: 'I can name what anger is protecting.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 9,
+    title: 'The Cool-Down Protocol',
+    description:
+      'Build a personalised de-escalation sequence you can deploy anywhere.',
+    instructions: [
+      'Using everything you\'ve learned, build your personal cool-down protocol — a 3-step sequence you can run in under 2 minutes.',
+      'Write it on a card or a note in your phone. Example: (1) Tactical Pause — 4 breaths, (2) Name the real emotion, (3) State what I need using the formula.',
+      'Test it by visualising your most intense trigger scenario and running through the protocol mentally. Repeat 3 times.',
+    ],
+    whyItWorks:
+      'A rehearsed stack beats improvisation when your IQ temporarily drops under heat.',
+    proTip: 'Three steps max — more and you won\'t use it.',
+    affirmation: 'I have a protocol I can run when everything gets loud.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 10,
+    title: 'Sleep and Anger',
+    description:
+      'Sleep deprivation increases emotional reactivity by up to 60%. Fix the foundation.',
+    instructions: [
+      'Track your sleep for the past 3 nights: hours, quality (1-10), and how reactive you were the following day.',
+      'Identify one sleep habit that\'s hurting you (late screen time, caffeine after 2pm, inconsistent bedtime, alcohol) and commit to changing it for the remaining protocol days.',
+      'Tonight, try the 4-7-8 breathing technique before bed: inhale for 4 seconds, hold for 7, exhale for 8. Do 4 cycles. This activates the parasympathetic nervous system.',
+    ],
+    whyItWorks:
+      'Sleep restores prefrontal braking power; without it, you drive with bad brakes.',
+    proTip: 'One sleep lever beats a ten-item sleep lecture.',
+    affirmation: 'I protect sleep like I protect the people around me.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 11,
+    title: 'Gratitude Counterbalance',
+    description:
+      'Anger narrows your focus to threats. Gratitude widens it back to reality.',
+    instructions: [
+      'Write down 5 things that went well today or this week. Not big things — small wins, moments of peace, things that worked.',
+      'For each one, write who or what contributed to it. This counteracts the anger habit of seeing only problems.',
+      'Set a phone alarm for the same time tomorrow. When it fires, write 3 things you\'re grateful for in that moment. This is the beginning of a pattern interrupt.',
+    ],
+    whyItWorks:
+      'Broadening attention competes with threat-scanning circuits anger feeds on.',
+    proTip: 'Tiny specifics beat generic "family/health".',
+    affirmation: 'I can hold frustration and still see what is working.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 12,
+    title: 'Empathy Training',
+    description:
+      'Understanding other people\'s perspective doesn\'t mean agreeing with them. It means you can respond instead of react.',
+    instructions: [
+      'Think of the last person you were angry at. Write the situation from their perspective — genuinely trying to understand their motivations, pressures, and feelings.',
+      'Identify one thing about their behaviour that makes sense from their point of view, even if you still disagree.',
+      'Today, in any conversation that frustrates you, ask yourself: "What pressure is this person under right now?" before responding.',
+    ],
+    whyItWorks:
+      'Perspective-taking reduces mind-reading that inflames anger.',
+    proTip: 'Empathy for pressure is not permission for harm.',
+    affirmation: 'I can see their humanity and still hold my line.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 13,
+    title: 'The Accountability Partner',
+    description: 'Anger thrives in isolation. Accountability accelerates change.',
+    instructions: [
+      'Identify one person you trust — friend, partner, sibling, colleague — who you could be honest with about your anger work.',
+      'Send them a message or have a conversation: "I\'ve been working on managing my anger better. I\'d appreciate if you could let me know when you notice me handling things well, or when I slip."',
+      'If you\'re not ready for that, write yourself a letter of accountability: what you\'ve committed to, what you\'re doing, and what you\'ll do when you fail. Read it out loud.',
+    ],
+    whyItWorks:
+      'Social witness raises the cost of old habits and the reward of new ones.',
+    proTip: 'Ask for observation, not parenting.',
+    affirmation: 'I don\'t white-knuckle change alone anymore.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 14,
+    title: 'Final Assessment and Maintenance Plan',
+    description: 'Measure your transformation and build your ongoing system.',
+    instructions: [
+      'Re-do the Day 1 anger audit with your top 3 scenarios. Rate intensity now vs Day 1. Calculate your percentage improvement.',
+      'Write your personal anger management maintenance plan: (1) Daily practice (2 min breathing), (2) Weekly review (anger log check), (3) Monthly calibration (re-run this assessment).',
+      'Write a single sentence that captures what you\'ve learned: "Anger is [your definition]. I manage it by [your method]. I am [who you are now]." Put this where you\'ll see it daily.',
+    ],
+    whyItWorks:
+      'Maintenance plans prevent the common crash after a sprint of self-improvement.',
+    proTip: 'Schedule the weekly review like a meeting you can\'t skip.',
+    affirmation: 'This protocol ends; the practice continues.',
+    estimatedTime: '25 minutes',
+  },
+];
 
-export const pressureValveMissions7: DailyMission[] =
-  pressureValveMissions30.slice(0, 7);
+export const pressureValveMissions7: DailyMission[] = [
+  {
+    day: 1,
+    title: 'Anger Audit',
+    description:
+      'Map your anger landscape. You can\'t control what you can\'t see.',
+    instructions: [
+      'Write down the 3 moments in the past 7 days when you felt the most anger or irritation.',
+      'For each one, note: What happened? Where were you? Who was involved? How did you react?',
+      'Rate each incident 1-10 for intensity. This is your anger baseline — you\'ll measure against it later.',
+    ],
+    whyItWorks:
+      'You can only improve what you measure. A written baseline turns anger from a blur into something you can track and change.',
+    proTip: 'Be specific; "work sucked" is useless. Note the exact trigger and your behaviour.',
+    affirmation: 'I look at my anger honestly so I can steer it, not deny it.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'Trigger Identification',
+    description: 'Every anger response has a trigger. Today you find yours.',
+    instructions: [
+      'Review yesterday\'s audit. For each incident, identify the specific trigger — not the person, the trigger. Was it disrespect? Loss of control? Feeling unheard? Injustice?',
+      'Write your top 3 triggers in order of frequency. These are the patterns you\'ll learn to intercept.',
+      'For the rest of today, actively notice when any of these triggers fire. Don\'t try to change anything yet — just observe and note the time.',
+    ],
+    whyItWorks:
+      'Naming triggers moves you from "they made me mad" to "this pattern hooks me" — the first step to intercepting the loop.',
+    proTip: 'Separate the person from the pattern; you\'re training pattern recognition, not blame.',
+    affirmation: 'I can name what sets me off. Naming it gives me leverage.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 3,
+    title: 'The Tactical Pause',
+    description:
+      'Learn the single most effective anger intervention: the deliberate pause between stimulus and response.',
+    instructions: [
+      'Memorise this sequence: STOP → BREATHE (4 seconds in, 6 seconds out, 3 cycles) → ASSESS ("Will this matter in 24 hours?") → CHOOSE your response.',
+      'Practice this sequence 3 times right now using a past anger scenario. Close your eyes, visualise the trigger, and run the pause.',
+      'Set a reminder on your phone labelled "TACTICAL PAUSE" for 3 times today. When it fires, run the breathing cycle wherever you are.',
+    ],
+    whyItWorks:
+      'Breathing and assessment engage your prefrontal cortex before your motor system commits to an explosion.',
+    proTip: 'Rehearse when calm so the sequence is automatic when heat rises.',
+    affirmation: 'Between trigger and response, I own a pause — and I use it.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 4,
+    title: 'Physical De-escalation',
+    description:
+      'Anger lives in the body before the mind. Today you learn to discharge it physically.',
+    instructions: [
+      'Do 20 press-ups, 20 squats, and a 60-second plank right now. Notice how your body state changes.',
+      'Write down 3 physical outlets you can realistically access within 2 minutes when anger spikes (e.g. walk outside, press-ups, grip a stress ball, cold water on wrists).',
+      'Practice the "90-second rule": the neurochemical surge of anger lasts approximately 90 seconds. Set a timer for 90 seconds and do controlled breathing. Everything after 90 seconds is a choice, not a chemical reaction.',
+    ],
+    whyItWorks:
+      'Movement and cold complete the stress cycle in the body so your brain stops sounding a false emergency.',
+    proTip: 'Pick outlets you will actually use in a parking lot, office, or hallway.',
+    affirmation: 'I can discharge pressure through my body instead of dumping it on people.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 5,
+    title: 'Communication Under Pressure',
+    description: 'Learn to express what you need without detonating the room.',
+    instructions: [
+      'Learn the formula: "When [specific behaviour], I feel [emotion], because [reason]. What I need is [request]."',
+      'Rewrite your top 3 anger incidents from Day 1 using this formula. How would the conversation have gone differently?',
+      'Practice saying one of these statements out loud 3 times. It will feel awkward. That\'s normal. Repetition builds fluency.',
+    ],
+    whyItWorks:
+      'Clear, non-attacking language lowers defensiveness in others and keeps your own nervous system regulated.',
+    proTip: 'Script one sentence today you can actually say tomorrow.',
+    affirmation: 'I can be clear and firm without being cruel.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 6,
+    title: 'The Cool-Down Protocol',
+    description:
+      'Build a personalised de-escalation sequence you can deploy anywhere.',
+    instructions: [
+      'Using everything you\'ve learned, build your personal cool-down protocol — a 3-step sequence you can run in under 2 minutes.',
+      'Write it on a card or a note in your phone. Example: (1) Tactical Pause — 4 breaths, (2) Name the real emotion, (3) State what I need using the formula.',
+      'Test it by visualising your most intense trigger scenario and running through the protocol mentally. Repeat 3 times.',
+    ],
+    whyItWorks:
+      'A rehearsed stack beats improvisation when your IQ temporarily drops under heat.',
+    proTip: 'Three steps max — more and you won\'t use it.',
+    affirmation: 'I have a protocol I can run when everything gets loud.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 7,
+    title: 'Final Assessment and Maintenance Plan',
+    description: 'Measure your transformation and build your ongoing system.',
+    instructions: [
+      'Re-do the Day 1 anger audit with your top 3 scenarios. Rate intensity now vs Day 1. Calculate your percentage improvement.',
+      'Write your personal anger management maintenance plan: (1) Daily practice (2 min breathing), (2) Weekly review (revisit your top 3 triggers and note what\'s shifted), (3) Monthly calibration (re-run this assessment).',
+      'Write a single sentence that captures what you\'ve learned: "Anger is [your definition]. I manage it by [your method]. I am [who you are now]." Put this where you\'ll see it daily.',
+    ],
+    whyItWorks:
+      'Maintenance plans prevent the common crash after a sprint of self-improvement.',
+    proTip: 'Schedule the weekly review like a meeting you can\'t skip.',
+    affirmation: 'This protocol ends; the practice continues.',
+    estimatedTime: '25 minutes',
+  },
+];
