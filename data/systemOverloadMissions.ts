@@ -480,5 +480,344 @@ export const systemOverloadMissions30: DailyMission[] = [
   },
 ];
 
-export const systemOverloadMissions14 = systemOverloadMissions30.slice(0, 14);
-export const systemOverloadMissions7 = systemOverloadMissions30.slice(0, 7);
+export const systemOverloadMissions14: DailyMission[] = [
+  {
+    day: 1,
+    title: 'Stress Inventory',
+    description:
+      'Catalogue every active stressor in your life. You can\'t manage what you haven\'t mapped.',
+    instructions: [
+      'Write down every source of stress in your life right now. Work, money, relationships, health, housing, family, future uncertainty — everything.',
+      'Rate each one: Impact (1–10) and Control (1–10). High impact + high control = priority. High impact + low control = acceptance work.',
+      'Circle your top 3 highest-impact stressors. These are your focus for this protocol.',
+    ],
+    whyItWorks:
+      'Stress feels like one big fog until you itemise it. Impact × control shows where effort pays off versus where you need acceptance skills.',
+    proTip: 'Be honest on Control — "none" is rare; often there is a small lever (boundary, ask, habit).',
+    affirmation: 'I name what loads my system so I can work it deliberately.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'The Control Sort',
+    description:
+      'Separate what you can control from what you can\'t. Then let go of one category.',
+    instructions: [
+      'Take your stress inventory from Day 1. Draw two columns: "Within My Control" and "Outside My Control." Sort every stressor into one column.',
+      'For the "Outside My Control" column, write next to each: "I release the need to control this. I focus on my response."',
+      'For the "Within My Control" column, write one specific action you can take this week for each item. Small, concrete, doable.',
+    ],
+    whyItWorks:
+      'Burnout feeds on fused responsibility — pretending you can steer outcomes you can\'t. Sorting restores accurate effort.',
+    proTip: 'If you resist "outside my control," ask: could I guarantee the outcome with unlimited effort? If no, it\'s not fully yours.',
+    affirmation: 'I invest energy where I have leverage and practise acceptance where I don\'t.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 3,
+    title: 'Energy Audit',
+    description:
+      'Stress isn\'t just about what\'s happening to you. It\'s about what\'s draining you.',
+    instructions: [
+      'Write down everything you did yesterday. Next to each activity, mark it as E+ (gave you energy) or E− (drained you).',
+      'Calculate the ratio. If you have more E− than E+, your system is in deficit — burnout is inevitable.',
+      'Identify one E− activity you can eliminate, delegate, or reduce this week, and one E+ activity you can add or extend.',
+    ],
+    whyItWorks:
+      'Stress is load minus recovery. The ledger reveals silent leaks you can plug before the tank hits empty.',
+    proTip: 'Even 15 extra minutes of an E+ counts — think minimum viable recharge.',
+    affirmation: 'I protect my energy like a finite resource — because it is.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 4,
+    title: 'Breathing Reset',
+    description:
+      'Learn three breathing techniques that lower cortisol in under 5 minutes.',
+    instructions: [
+      'Technique 1 — Box Breathing: Inhale 4 sec, hold 4 sec, exhale 4 sec, hold 4 sec. Repeat 4 cycles. Used by Navy SEALs under combat stress.',
+      'Technique 2 — Physiological Sigh: Double inhale through nose (one long, one short), slow exhale through mouth. This is the fastest way to calm the nervous system. Do 3 reps.',
+      'Technique 3 — 4-7-8: Inhale 4 sec, hold 7 sec, exhale 8 sec. 4 cycles. Best for sleep and deep relaxation. Practice all three and note which one works best for you.',
+    ],
+    whyItWorks:
+      'Longer exhales shift tone toward the parasympathetic system — the brake pedal on stress chemistry.',
+    proTip: 'Pick a default technique today and use the same one for every spike this week.',
+    affirmation: 'My breath is a dial I can turn when stress spikes.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 5,
+    title: 'The Time Boundary',
+    description:
+      'Overcommitment is the number one driver of chronic stress. Today you build a wall.',
+    instructions: [
+      'Look at your calendar for the next 7 days. Identify 2 commitments you can cancel, decline, or reschedule without serious consequences.',
+      'Write a template decline message: "Thanks for thinking of me. I can\'t commit to this right now. Let me know if [alternative]." Practice using it.',
+      'Block 30 minutes of "nothing time" in your calendar for tomorrow. Not rest, not exercise — literally nothing. Protect this time as if it\'s a meeting with your CEO.',
+    ],
+    whyItWorks:
+      'Capacity is finite; every unguarded yes borrows from sleep, health, and patience. Boundaries are preventative medicine.',
+    proTip: 'Decline without over-explaining; clarity beats a paragraph of guilt.',
+    affirmation: 'My calendar reflects my priorities, not everyone else\'s urgency.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 6,
+    title: 'Movement as Medicine',
+    description:
+      'Exercise is the most underutilised antidepressant and anti-anxiety tool in existence.',
+    instructions: [
+      'Do 20 minutes of moderate exercise right now. Walking counts. The key is elevated heart rate for a sustained period.',
+      'During the exercise, focus on your breathing and physical sensations — not your problems. This is active meditation.',
+      'Commit to 20 minutes of movement every day for the remaining protocol. Put it in your calendar. Non-negotiable. The research is unambiguous: regular exercise reduces cortisol by up to 30%.',
+    ],
+    whyItWorks:
+      'Aerobic movement metabolises stress hormones and improves sleep — the two biggest stress regulators.',
+    proTip: 'Same time daily beats heroic random workouts for nervous system stability.',
+    affirmation: 'Moving my body is part of how I regulate my mind.',
+    estimatedTime: '25 minutes',
+  },
+  {
+    day: 7,
+    title: 'Sleep Repair',
+    description:
+      'Sleep is when your brain processes stress. Poor sleep = accumulated stress.',
+    instructions: [
+      'Write down your current sleep routine. What time do you stop screens? What time do you get into bed? What do you do in the last hour before sleep?',
+      'Design a new wind-down protocol: (1) Screens off 60 min before bed, (2) Dim lights, (3) Do 5 minutes of 4-7-8 breathing, (4) Same bedtime every night.',
+      'Implement one change tonight. Not all of them — one. Add another tomorrow. Habit stacking works better than overhaul.',
+    ],
+    whyItWorks:
+      'Sleep debt lowers prefrontal control and amplifies amygdala reactivity — you stress harder on less sleep.',
+    proTip: 'Fix wake time first; bedtime often follows once melatonin timing stabilises.',
+    affirmation: 'Sleep is maintenance, not luxury — I protect it.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 8,
+    title: 'Cognitive Defusion',
+    description:
+      'Your stressful thoughts are not facts. Today you learn to separate yourself from them.',
+    instructions: [
+      'Take your most persistent worry. Write it down as: "I\'m having the thought that [worry]." Notice how adding that prefix creates distance.',
+      'Repeat the worry out loud in a cartoon voice (literally — Mickey Mouse, Homer Simpson, whatever). Notice how the emotional charge reduces. This is cognitive defusion from ACT therapy.',
+      'For the rest of today, when a stressful thought arises, prefix it with "I notice I\'m having the thought that..." You are not your thoughts. You are the one observing them.',
+    ],
+    whyItWorks:
+      'Fusion with thoughts treats hypotheses as verdicts. Defusion restores the gap between idea and identity.',
+    proTip: 'Silly voice isn\'t trivial — it\'s a rapid pattern interrupt for the auditory loop.',
+    affirmation: 'Thoughts pass through me; they are not commands I must obey.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 9,
+    title: 'Worry Window',
+    description:
+      'Schedule your worrying. Sounds strange. Works powerfully.',
+    instructions: [
+      'Set a specific 15-minute window tomorrow as your "worry time" — e.g. 5:00–5:15pm. Write it in your calendar.',
+      'Every time a worry arises outside that window, write it on a list and tell yourself: "I\'ll deal with this at 5pm." Then refocus.',
+      'During your worry window, go through the list. Solve what you can, write next actions for what needs them, and let go of the rest. You\'ll find most worries have dissolved by the time you revisit them.',
+    ],
+    whyItWorks:
+      'Containment trains the brain that worry has a slot — it doesn\'t need to run all day.',
+    proTip: 'Use a physical pad for the capture list — tangibility helps the deferral stick.',
+    affirmation: 'I postpone rumination on purpose; I don\'t ban thinking — I schedule it.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 10,
+    title: 'Nature Reset',
+    description:
+      'Research shows 20+ minutes in nature reduces cortisol by 21%. Get outside.',
+    instructions: [
+      'Spend 30 minutes in a green space. Park, woodland, riverside, garden — anywhere with trees and open sky.',
+      'Leave your phone on silent in your pocket. Walk slowly. Notice colours, sounds, smells, air temperature. This is attention restoration therapy.',
+      'When you return, rate your stress level compared to before. Write one sentence about what you noticed.',
+    ],
+    whyItWorks:
+      'Soft fascination in natural settings lets directed attention recover — the same resource multitasking depletes.',
+    proTip: 'No earbuds — let the soundscape do part of the work.',
+    affirmation: 'The outside world helps my inside world settle.',
+    estimatedTime: '30 minutes',
+  },
+  {
+    day: 11,
+    title: 'The Values Compass',
+    description:
+      'Stress often comes from living out of alignment with what matters most to you.',
+    instructions: [
+      'Write your top 5 personal values (e.g. freedom, family, integrity, growth, adventure, security).',
+      'For each value, rate 1–10 how well your current life reflects it. Where are the gaps?',
+      'Choose the biggest gap. Write one small action you can take this week to move closer to that value. Alignment reduces stress more than time management ever will.',
+    ],
+    whyItWorks:
+      'Misalignment creates background friction — you\'re winning tasks while losing self-coherence.',
+    proTip: 'Small value-aligned actions beat big plans you never start.',
+    affirmation: 'I steer my week toward what I say matters.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 12,
+    title: 'Saying No Without Guilt',
+    description:
+      'Every yes to something unimportant is a no to something that matters.',
+    instructions: [
+      'Write down 3 recent occasions where you said yes to something you wanted to say no to.',
+      'For each one, write the real reason you said yes: guilt, fear of conflict, people-pleasing, FOMO.',
+      'Write a "No Script" you can use: "I appreciate you thinking of me. I can\'t take this on right now, but [alternative if appropriate]." Practice saying it out loud until it feels natural.',
+    ],
+    whyItWorks:
+      'Scripts lower the social anxiety cost of boundaries so you actually use them.',
+    proTip: 'You don\'t owe a life story — brief and kind beats long and apologetic.',
+    affirmation: 'A clear no protects my yeses.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 13,
+    title: 'Support System Activation',
+    description:
+      'Isolation amplifies stress. Connection reduces it.',
+    instructions: [
+      'Identify 3 people who genuinely want to support you. Not everyone qualifies — choose people who listen without judging.',
+      'Reach out to one of them today. Not to vent — to connect. Ask how they\'re doing. Have a real conversation.',
+      'If you don\'t have 3 people, write down one way you could build connection: a group, a community, a regular meetup. Take one step toward it.',
+    ],
+    whyItWorks:
+      'Co-regulation lowers physiological stress markers; loneliness inflames them.',
+    proTip: 'Lead with curiosity about them — connection before unloading builds trust.',
+    affirmation: 'I don\'t have to carry everything alone.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 14,
+    title: 'Final Assessment and Forward Plan',
+    description:
+      'Measure your progress and set your ongoing system.',
+    instructions: [
+      'Re-do the Day 1 stress inventory. Rate every stressor for Impact and Control. Compare to your Day 1 scores.',
+      'Calculate: How many stressors have reduced? How many have you eliminated? How has your physical stress response changed?',
+      'Write your ongoing maintenance plan: (1) Daily practice (breathing + movement), (2) Weekly review (run a worry window and note what\'s shifted), (3) Monthly calibration (re-run the inventory). This is how you prevent system overload permanently.',
+    ],
+    whyItWorks:
+      'Closure without maintenance planning snaps back old baselines; a written cadence keeps gains compound.',
+    proTip: 'Put the monthly inventory on your calendar now — not when you\'re already overloaded.',
+    affirmation: 'I built a system for stress — not just a good fortnight.',
+    estimatedTime: '25 minutes',
+  },
+];
+
+export const systemOverloadMissions7: DailyMission[] = [
+  {
+    day: 1,
+    title: 'Stress Inventory',
+    description:
+      'Catalogue every active stressor in your life. You can\'t manage what you haven\'t mapped.',
+    instructions: [
+      'Write down every source of stress in your life right now. Work, money, relationships, health, housing, family, future uncertainty — everything.',
+      'Rate each one: Impact (1–10) and Control (1–10). High impact + high control = priority. High impact + low control = acceptance work.',
+      'Circle your top 3 highest-impact stressors. These are your focus for this protocol.',
+    ],
+    whyItWorks:
+      'Stress feels like one big fog until you itemise it. Impact × control shows where effort pays off versus where you need acceptance skills.',
+    proTip: 'Be honest on Control — "none" is rare; often there is a small lever (boundary, ask, habit).',
+    affirmation: 'I name what loads my system so I can work it deliberately.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'The Control Sort',
+    description:
+      'Separate what you can control from what you can\'t. Then let go of one category.',
+    instructions: [
+      'Take your stress inventory from Day 1. Draw two columns: "Within My Control" and "Outside My Control." Sort every stressor into one column.',
+      'For the "Outside My Control" column, write next to each: "I release the need to control this. I focus on my response."',
+      'For the "Within My Control" column, write one specific action you can take this week for each item. Small, concrete, doable.',
+    ],
+    whyItWorks:
+      'Burnout feeds on fused responsibility — pretending you can steer outcomes you can\'t. Sorting restores accurate effort.',
+    proTip: 'If you resist "outside my control," ask: could I guarantee the outcome with unlimited effort? If no, it\'s not fully yours.',
+    affirmation: 'I invest energy where I have leverage and practise acceptance where I don\'t.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 3,
+    title: 'Breathing Reset',
+    description:
+      'Learn three breathing techniques that lower cortisol in under 5 minutes.',
+    instructions: [
+      'Technique 1 — Box Breathing: Inhale 4 sec, hold 4 sec, exhale 4 sec, hold 4 sec. Repeat 4 cycles. Used by Navy SEALs under combat stress.',
+      'Technique 2 — Physiological Sigh: Double inhale through nose (one long, one short), slow exhale through mouth. This is the fastest way to calm the nervous system. Do 3 reps.',
+      'Technique 3 — 4-7-8: Inhale 4 sec, hold 7 sec, exhale 8 sec. 4 cycles. Best for sleep and deep relaxation. Practice all three and note which one works best for you.',
+    ],
+    whyItWorks:
+      'Longer exhales shift tone toward the parasympathetic system — the brake pedal on stress chemistry.',
+    proTip: 'Pick a default technique today and use the same one for every spike this week.',
+    affirmation: 'My breath is a dial I can turn when stress spikes.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 4,
+    title: 'Movement as Medicine',
+    description:
+      'Exercise is the most underutilised antidepressant and anti-anxiety tool in existence.',
+    instructions: [
+      'Do 20 minutes of moderate exercise right now. Walking counts. The key is elevated heart rate for a sustained period.',
+      'During the exercise, focus on your breathing and physical sensations — not your problems. This is active meditation.',
+      'Commit to 20 minutes of movement every day for the remaining protocol. Put it in your calendar. Non-negotiable. The research is unambiguous: regular exercise reduces cortisol by up to 30%.',
+    ],
+    whyItWorks:
+      'Aerobic movement metabolises stress hormones and improves sleep — the two biggest stress regulators.',
+    proTip: 'Same time daily beats heroic random workouts for nervous system stability.',
+    affirmation: 'Moving my body is part of how I regulate my mind.',
+    estimatedTime: '25 minutes',
+  },
+  {
+    day: 5,
+    title: 'Worry Window',
+    description:
+      'Schedule your worrying. Sounds strange. Works powerfully.',
+    instructions: [
+      'Set a specific 15-minute window tomorrow as your "worry time" — e.g. 5:00–5:15pm. Write it in your calendar.',
+      'Every time a worry arises outside that window, write it on a list and tell yourself: "I\'ll deal with this at 5pm." Then refocus.',
+      'During your worry window, go through the list. Solve what you can, write next actions for what needs them, and let go of the rest. You\'ll find most worries have dissolved by the time you revisit them.',
+    ],
+    whyItWorks:
+      'Containment trains the brain that worry has a slot — it doesn\'t need to run all day.',
+    proTip: 'Use a physical pad for the capture list — tangibility helps the deferral stick.',
+    affirmation: 'I postpone rumination on purpose; I don\'t ban thinking — I schedule it.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 6,
+    title: 'Support System Activation',
+    description:
+      'Isolation amplifies stress. Connection reduces it.',
+    instructions: [
+      'Identify 3 people who genuinely want to support you. Not everyone qualifies — choose people who listen without judging.',
+      'Reach out to one of them today. Not to vent — to connect. Ask how they\'re doing. Have a real conversation.',
+      'If you don\'t have 3 people, write down one way you could build connection: a group, a community, a regular meetup. Take one step toward it.',
+    ],
+    whyItWorks:
+      'Co-regulation lowers physiological stress markers; loneliness inflames them.',
+    proTip: 'Lead with curiosity about them — connection before unloading builds trust.',
+    affirmation: 'I don\'t have to carry everything alone.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 7,
+    title: 'Final Assessment and Forward Plan',
+    description:
+      'Measure your progress and set your ongoing system.',
+    instructions: [
+      'Re-do the Day 1 stress inventory. Rate every stressor for Impact and Control. Compare to your Day 1 scores.',
+      'Calculate: How many stressors have reduced? How many have you eliminated? How has your physical stress response changed?',
+      'Write your ongoing maintenance plan: (1) Daily practice (breathing + movement), (2) Weekly review (run a worry window and note what\'s shifted), (3) Monthly calibration (re-run the inventory). This is how you prevent system overload permanently.',
+    ],
+    whyItWorks:
+      'Closure without maintenance planning snaps back old baselines; a written cadence keeps gains compound.',
+    proTip: 'Put the monthly inventory on your calendar now — not when you\'re already overloaded.',
+    affirmation: 'I built a system for stress — not just a good week.',
+    estimatedTime: '25 minutes',
+  },
+];
