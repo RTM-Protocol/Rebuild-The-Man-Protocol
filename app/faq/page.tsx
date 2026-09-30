@@ -52,7 +52,7 @@ export default function FAQPage() {
           answer: (
             <>
               Lifetime access is a one-time payment &mdash; no subscriptions, no recurring charges.
-              Your purchase includes all four protocols, Emergency Tools, progress tracking, and
+              Your purchase includes all five protocols, Emergency Tools, progress tracking, and
               every future update. We offer a 14-day money-back guarantee. If it&apos;s not for
               you, email{' '}
               <a href={MAILTO_SUPPORT} className={EMAIL_LINK_CLASS}>

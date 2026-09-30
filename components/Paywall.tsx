@@ -13,7 +13,7 @@ interface PaywallProps {
 }
 
 const INCLUDED_ITEMS = [
-  'All 4 protocols (Rebuild The Man, Pressure Valve, System Overload, Engine Restart, Reality Calibration)',
+  'All 5 protocols (Rebuild The Man, Pressure Valve, System Overload, Engine Restart, Reality Calibration)',
   'Emergency Tools — free for everyone, even without an account',
   'Progress tracking, streaks, and check-in history',
   'Field notes and weekly briefs',

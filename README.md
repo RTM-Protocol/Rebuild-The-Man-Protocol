@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the app!
 ### ✅ Complete Features
 
 1. **Protocol Library (Homepage)**
-   - 4 mental health protocols
+   - 5 mental health protocols
    - Tactical, masculine design
    - Duration selection (7/14/30 days)
 
