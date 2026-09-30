@@ -23,6 +23,7 @@ import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
 import { shouldShowBrief, generateCommandersBrief } from '@/utils/briefGenerator';
 import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReason, getCompletionLimitMessage } from '@/utils/progressUtils';
+import { isPreMissionCheckInMandatory } from '@/utils/checkInSchedule';
 import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
@@ -78,6 +79,9 @@ export default function MissionPage() {
   const blockReason = activeProtocol ? getDayBlockReason(dayNumber, activeProtocol) : null;
   const completionLimitMsg = activeProtocol ? getCompletionLimitMessage(activeProtocol) : null;
   const currentWorkingDay = activeProtocol ? getCurrentWorkingDay(activeProtocol) : 1;
+  const preCheckIn = getCheckIn(dayNumber);
+  const checkInMandatory = isPreMissionCheckInMandatory(dayNumber, duration);
+  const checkInBlocksComplete = checkInMandatory && !preCheckIn?.preMission;
 
   // Check if user has done pre-mission check-in for this day
   useEffect(() => {
@@ -266,7 +270,7 @@ export default function MissionPage() {
   }
 
   const handleCompleteMission = () => {
-    if (!activeProtocol || missionCompleted) return;
+    if (!activeProtocol || missionCompleted || checkInBlocksComplete) return;
     
     // Show post-mission check-in before completing
     setShowPostCheckIn(true);
@@ -595,11 +599,16 @@ export default function MissionPage() {
               )}
               
               <div className="flex flex-col gap-4">
+                {checkInBlocksComplete && (
+                  <p className="text-gray-300 text-sm">
+                    Today&apos;s check-in feeds your end-of-protocol report.
+                  </p>
+                )}
                 <button
                   onClick={handleCompleteMission}
-                  disabled={!canComplete}
-                  className={`btn-primary w-full ${!canComplete ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  title={!canComplete ? 'Cannot complete mission today' : 'Complete mission'}
+                  disabled={!canComplete || checkInBlocksComplete}
+                  className={`btn-primary w-full ${!canComplete || checkInBlocksComplete ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  title={!canComplete ? 'Cannot complete mission today' : checkInBlocksComplete ? "Today's check-in feeds your end-of-protocol report." : 'Complete mission'}
                 >
                   ✓ COMPLETE MISSION
                 </button>

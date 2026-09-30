@@ -7,6 +7,8 @@ import { protocols } from '@/data/protocols';
 import { ProtocolDuration } from '@/types';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import AccountabilityPartnerPrompt from '@/components/AccountabilityPartnerPrompt';
+import BaselineSkipPrompt from '@/components/BaselineSkipPrompt';
+import QuickDiagnostic from '@/components/QuickDiagnostic';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Navigation from '@/components/Navigation';
 import { useProgress } from '@/contexts/ProgressContext';
@@ -22,6 +24,7 @@ import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
 import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
 import ProtocolIcon from '@/components/ProtocolIcon';
+import { loadStoredAssessmentAnswers } from '@/utils/assessmentAnswers';
 
 export default function ProtocolDetail() {
   const params = useParams();
@@ -35,6 +38,9 @@ export default function ProtocolDetail() {
   const [showReplaceWarning, setShowReplaceWarning] = useState(false);
   const [showAccountabilityPrompt, setShowAccountabilityPrompt] = useState(false);
   const [showRemovePartnerModal, setShowRemovePartnerModal] = useState(false);
+  const [showBaselineSkipPrompt, setShowBaselineSkipPrompt] = useState(false);
+  const [showBaselineAssessment, setShowBaselineAssessment] = useState(false);
+  const [baselinePromptHandled, setBaselinePromptHandled] = useState(false);
 
   // Check if this is the user's active protocol
   const isActiveProtocol = activeProtocol?.protocolId === protocolId;
@@ -46,6 +52,12 @@ export default function ProtocolDetail() {
       setSelectedDuration(activeProtocol.duration);
     }
   }, [activeProtocol, protocolId]);
+
+  useEffect(() => {
+    setBaselinePromptHandled(false);
+    setShowBaselineSkipPrompt(false);
+    setShowBaselineAssessment(false);
+  }, [protocolId]);
 
   if (!protocol) {
     return (
@@ -74,15 +86,26 @@ export default function ProtocolDetail() {
     }
   };
 
+  const proceedToAccountability = () => {
+    setShowBaselineSkipPrompt(false);
+    setShowBaselineAssessment(false);
+    setShowAccountabilityPrompt(true);
+  };
+
   const handleConfirmStart = () => {
     if (!selectedDuration || !protocol) return;
     setShowModal(false);
-    setShowAccountabilityPrompt(true);
+    if (loadStoredAssessmentAnswers() || baselinePromptHandled) {
+      proceedToAccountability();
+      return;
+    }
+    setShowBaselineSkipPrompt(true);
   };
 
   const handleStartProtocol = (withAccountabilityPartner?: boolean) => {
     if (!selectedDuration || !protocol) return;
-    startProtocol(protocol.id, selectedDuration, withAccountabilityPartner);
+    const baseline = loadStoredAssessmentAnswers() ?? undefined;
+    startProtocol(protocol.id, selectedDuration, withAccountabilityPartner, baseline);
     router.push(`/protocol/${protocol.id}/mission/1?duration=${selectedDuration}`);
   };
 
@@ -451,6 +474,28 @@ export default function ProtocolDetail() {
         confirmText="START PROTOCOL"
         cancelText="NOT YET"
       />
+
+      <BaselineSkipPrompt
+        isOpen={showBaselineSkipPrompt}
+        onTake={() => {
+          setShowBaselineSkipPrompt(false);
+          setShowBaselineAssessment(true);
+        }}
+        onSkip={() => {
+          setBaselinePromptHandled(true);
+          proceedToAccountability();
+        }}
+      />
+
+      {showBaselineAssessment && (
+        <QuickDiagnostic
+          hideSkip
+          onComplete={() => {
+            setBaselinePromptHandled(true);
+            proceedToAccountability();
+          }}
+        />
+      )}
 
       {/* Accountability Partner Prompt */}
       <AccountabilityPartnerPrompt

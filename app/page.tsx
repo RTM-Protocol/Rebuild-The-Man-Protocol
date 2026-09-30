@@ -14,16 +14,9 @@ import DiagnosticRecommendation from '@/components/DiagnosticRecommendation';
 import Footer from '@/components/Footer';
 import { useProgress } from '@/contexts/ProgressContext';
 import { useRouter } from 'next/navigation';
+import type { AssessmentAnswers } from '@/types';
 
 type OnboardingStep = 'landing' | 'diagnostic' | 'recommendation' | 'complete';
-
-interface DiagnosticAnswer {
-  q1: string;
-  q2: string;
-  q3: string;
-  q4: string;
-  q5: string;
-}
 
 export default function Home() {
   const router = useRouter();
@@ -31,7 +24,7 @@ export default function Home() {
   const [onboardingStep, setOnboardingStep] = useState<OnboardingStep>('landing');
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [checkingOnboarding, setCheckingOnboarding] = useState(true);
-  const [diagnosticAnswers, setDiagnosticAnswers] = useState<DiagnosticAnswer | null>(null);
+  const [diagnosticAnswers, setDiagnosticAnswers] = useState<AssessmentAnswers | null>(null);
 
   useEffect(() => {
     // Check if user has completed onboarding
@@ -58,7 +51,7 @@ export default function Home() {
     router.push('/protocol/rebuild-the-man');
   };
 
-  const handleDiagnosticComplete = (answers: DiagnosticAnswer) => {
+  const handleDiagnosticComplete = (answers: AssessmentAnswers) => {
     setDiagnosticAnswers(answers);
     setOnboardingStep('recommendation');
   };

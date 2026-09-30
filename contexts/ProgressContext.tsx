@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
-import { UserProgress, ProtocolDuration, ReminderSettings } from '@/types';
+import { UserProgress, ProtocolDuration, ReminderSettings, AssessmentAnswers, CompletedProtocol } from '@/types';
 import { syncService, type SyncData, type SyncStatusEvent } from '@/lib/syncService';
 
 export interface CloudSyncDisplay {
@@ -14,18 +14,14 @@ export interface CloudSyncDisplay {
 
 interface ProgressContextType {
   activeProtocol: UserProgress | null;
-  completedProtocols: Array<{
-    protocolId: string;
-    duration: ProtocolDuration;
-    completedDate: string;
-  }>;
+  completedProtocols: CompletedProtocol[];
   lifetimeStats: {
     totalMissionsCompleted: number;
     totalProtocolsCompleted: number;
     longestStreak: number;
   };
   reminderSettings: ReminderSettings;
-  startProtocol: (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean) => void;
+  startProtocol: (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean, baseline?: AssessmentAnswers) => void;
   completeDay: (day: number) => void;
   markSetback: (day: number, note?: string) => void;
   updateReminderSettings: (settings: Partial<ReminderSettings>) => void;
@@ -44,13 +40,20 @@ interface ProgressContextType {
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
+/** Pre-launch: drop archived runs that lack startedDate rather than migrate. */
+function withRequiredStartedDate(records: unknown): CompletedProtocol[] {
+  if (!Array.isArray(records)) return [];
+  return records.filter((p): p is CompletedProtocol =>
+    !!p &&
+    typeof p === 'object' &&
+    typeof (p as CompletedProtocol).startedDate === 'string' &&
+    (p as CompletedProtocol).startedDate.length > 0
+  );
+}
+
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [activeProtocol, setActiveProtocol] = useState<UserProgress | null>(null);
-  const [completedProtocols, setCompletedProtocols] = useState<Array<{
-    protocolId: string;
-    duration: ProtocolDuration;
-    completedDate: string;
-  }>>([]);
+  const [completedProtocols, setCompletedProtocols] = useState<CompletedProtocol[]>([]);
   const [lifetimeStats, setLifetimeStats] = useState({
     totalMissionsCompleted: 0,
     totalProtocolsCompleted: 0,
@@ -140,8 +143,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           setActiveProtocol(parsed);
         }
 
+        let localCompleted: CompletedProtocol[] = [];
         if (savedCompleted) {
-          setCompletedProtocols(JSON.parse(savedCompleted));
+          localCompleted = withRequiredStartedDate(JSON.parse(savedCompleted));
+          setCompletedProtocols(localCompleted);
         }
 
         if (savedLifetimeStats) {
@@ -170,7 +175,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
               // Prepare local data
               const localData: SyncData = {
                 activeProtocol: savedActive ? JSON.parse(savedActive) : null,
-                completedProtocols: savedCompleted ? JSON.parse(savedCompleted) : [],
+                completedProtocols: localCompleted,
                 lifetimeStats: savedLifetimeStats ? JSON.parse(savedLifetimeStats) : {
                   totalProtocolsCompleted: 0,
                   totalMissionsCompleted: 0,
@@ -187,8 +192,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
               const mergedData = syncService.mergeData(localData, cloudData);
 
               // Update state with merged data
+              const mergedCompleted = withRequiredStartedDate(mergedData.completedProtocols);
+
               setActiveProtocol(mergedData.activeProtocol);
-              setCompletedProtocols(mergedData.completedProtocols);
+              setCompletedProtocols(mergedCompleted);
               setLifetimeStats(mergedData.lifetimeStats);
               setReminderSettings(mergedData.reminderSettings);
 
@@ -196,7 +203,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
               if (mergedData.activeProtocol) {
                 localStorage.setItem('activeProtocol', JSON.stringify(mergedData.activeProtocol));
               }
-              localStorage.setItem('completedProtocols', JSON.stringify(mergedData.completedProtocols));
+              localStorage.setItem('completedProtocols', JSON.stringify(mergedCompleted));
               localStorage.setItem('lifetimeStats', JSON.stringify(mergedData.lifetimeStats));
               localStorage.setItem('reminderSettings', JSON.stringify(mergedData.reminderSettings));
 
@@ -269,7 +276,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   }, [activeProtocol, completedProtocols, lifetimeStats, reminderSettings, isLoading, isSyncEnabled]);
 
-  const startProtocol = (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean) => {
+  const startProtocol = (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean, baseline?: AssessmentAnswers) => {
     const newProgress: UserProgress = {
       protocolId,
       duration,
@@ -282,6 +289,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setbacks: [],
       checkIns: [],
       weeklyBriefs: [],
+      baselineAssessment: baseline
+        ? { answers: baseline, takenAt: new Date().toISOString(), phase: 'baseline' }
+        : undefined,
       accountabilityPartner: withAccountabilityPartner !== undefined
         ? { enabled: withAccountabilityPartner, declinedAt: withAccountabilityPartner ? undefined : new Date().toISOString() }
         : undefined
@@ -345,7 +355,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         {
           protocolId: activeProtocol.protocolId,
           duration: activeProtocol.duration,
-          completedDate: new Date().toISOString()
+          completedDate: new Date().toISOString(),
+          startedDate: activeProtocol.startDate,
+          baselineAssessment: activeProtocol.baselineAssessment,
+          closingAssessment: activeProtocol.closingAssessment,
         }
       ]);
       setLifetimeStats(prev => ({

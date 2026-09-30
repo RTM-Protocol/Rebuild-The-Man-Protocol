@@ -56,6 +56,22 @@ export interface WeeklyBrief {
   briefData: any; // CommandersBriefData from utils
 }
 
+export interface AssessmentAnswers {
+  q1: string;          // presenting problem
+  q2: string;          // duration of issue
+  q3: string;          // work impact
+  q4: string;          // relationship impact
+  q5: string;          // prior attempts
+  severity: number;    // 1-10
+  confidence: number;  // 1-10
+}
+
+export interface ProtocolAssessment {
+  answers: AssessmentAnswers;
+  takenAt: string;                      // ISO timestamp
+  phase: 'baseline' | 'closing';
+}
+
 export interface UserProgress {
   protocolId: string;
   duration: ProtocolDuration;
@@ -73,6 +89,8 @@ export interface UserProgress {
   }>;
   checkIns: MissionCheckIn[];
   weeklyBriefs?: WeeklyBrief[];
+  baselineAssessment?: ProtocolAssessment;
+  closingAssessment?: ProtocolAssessment;
   accountabilityPartner?: {
     enabled: boolean;
     declinedAt?: string;
@@ -90,6 +108,15 @@ export interface CompletedProtocol {
   protocolId: string;
   duration: ProtocolDuration;
   completedDate: string;
+  startedDate: string;
+  baselineAssessment?: ProtocolAssessment;
+  closingAssessment?: ProtocolAssessment;
+  checkInSummary?: {
+    openingAverage: { stress: number; anger: number; focus: number };
+    closingAverage: { stress: number; anger: number; focus: number };
+    checkInsRecorded: number;
+    checkInsExpected: number;
+  };
 }
 
 export interface LifetimeStats {
