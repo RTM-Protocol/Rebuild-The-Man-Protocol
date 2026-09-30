@@ -480,5 +480,342 @@ export const engineRestartMissions30: DailyMission[] = [
   },
 ];
 
-export const engineRestartMissions14 = engineRestartMissions30.slice(0, 14);
-export const engineRestartMissions7 = engineRestartMissions30.slice(0, 7);
+export const engineRestartMissions14: DailyMission[] = [
+  {
+    day: 1,
+    title: 'The Stall Assessment',
+    description:
+      'Before you restart, you need to know what stalled. Map the damage honestly.',
+    instructions: [
+      'Rate these areas 1–10 for current motivation: Work, Health/Fitness, Relationships, Personal Growth, Daily Routine.',
+      'For each area rated below 5, write one sentence about when the decline started and what triggered it.',
+      'Write down the last time you felt genuinely motivated and what you were doing. This is your reference point.',
+    ],
+    whyItWorks:
+      'You can\'t fix a stall you haven\'t named. Honest baseline scores turn vague "I feel stuck" into targets you can move.',
+    proTip: 'No self-judgment — you\'re reading diagnostics, not sentencing yourself.',
+    affirmation: 'I see where I stalled so I can restart with precision.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'Micro-Win Stack',
+    description:
+      'Motivation follows action, not the other way around. Today you prove it.',
+    instructions: [
+      'Complete 3 small tasks you\'ve been avoiding — each must take under 5 minutes. Examples: send that email, put away laundry, book that appointment.',
+      'After each one, pause and notice how it felt to complete it. Write one word for the feeling.',
+      'The lesson: motivation is a result of momentum, not a prerequisite. You don\'t wait to feel motivated. You act, and motivation follows.',
+    ],
+    whyItWorks:
+      'Tiny completions spike completion-contingent dopamine and break the freeze loop between intention and motion.',
+    proTip: 'If a 5-minute task balloons, stop at 5 — you\'re wiring "start" not "finish everything."',
+    affirmation: 'Action first; mood catches up when I move.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 3,
+    title: 'The Minimum Viable Day',
+    description:
+      'When everything feels too much, define the absolute minimum that counts as a win.',
+    instructions: [
+      'Write your Minimum Viable Day — the 3–5 non-negotiable actions that, if done, mean the day wasn\'t wasted. Examples: get dressed, eat one real meal, move for 10 minutes, do one work task, go to bed on time.',
+      'This is your floor, not your ceiling. On bad days, do just these. On good days, do more.',
+      'Do your Minimum Viable Day today. Check each item off. Notice that even on a low day, you accomplished something meaningful.',
+    ],
+    whyItWorks:
+      'A defined floor prevents all-or-nothing days that erase streaks and shame you back to zero.',
+    proTip: 'Keep the MVP embarrassingly small — if you nail it, you can always add one bonus.',
+    affirmation: 'My floor is enough to keep the engine from seizing.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 4,
+    title: 'The Identity Audit',
+    description:
+      'Low motivation often comes from losing sight of who you are and who you\'re becoming.',
+    instructions: [
+      'Write 5 statements starting with "I am a man who..." describing the version of yourself you want to be. Not aspirational fluff — concrete behaviours. E.g. "I am a man who shows up even when he doesn\'t feel like it."',
+      'For each statement, rate 1–10 how consistently you\'re living it right now.',
+      'Choose the one with the biggest gap between where you are and where you want to be. This is your focus identity for the protocol.',
+    ],
+    whyItWorks:
+      'Identity frames behaviour — when you know who you\'re practising to be, choices have a direction.',
+    proTip: 'Pick one identity line to rehearse aloud for 10 seconds each morning this week.',
+    affirmation: 'Who I\'m becoming pulls me more than how I feel today.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 5,
+    title: 'Routine Architecture',
+    description:
+      'Motivation is unreliable. Routines are not. Today you build a simple morning structure.',
+    instructions: [
+      'Design a 30-minute morning routine using only 3 elements: (1) Physical — movement, cold water, or stretching, (2) Mental — journaling, reading, or review, (3) Intentional — set one priority for the day.',
+      'Write it down as a specific sequence with times. Example: 6:30 press-ups, 6:40 journal, 6:50 write today\'s priority.',
+      'Do this routine tomorrow morning. The routine doesn\'t need to be perfect. It needs to be done.',
+    ],
+    whyItWorks:
+      'Cues and sequence reduce decision fatigue — the morning you don\'t negotiate with yourself starts better.',
+    proTip: 'Lay out clothes, journal, water the night before so friction is near zero.',
+    affirmation: 'My morning structure carries me when willpower won\'t.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 6,
+    title: 'The Dopamine Audit',
+    description:
+      'Your motivation system runs on dopamine. If you\'re spending it on junk, there\'s nothing left for what matters.',
+    instructions: [
+      'Write down every source of easy dopamine in your life: social media scrolling, gaming, pornography, junk food, binge-watching, online shopping.',
+      'Rate each one: How much time per day? How do you feel 30 minutes after? Is this moving you forward or holding you still?',
+      'Choose one to reduce by 50% for the rest of this protocol. Not eliminate — reduce. Replace the freed time with a high-effort, high-reward activity (exercise, learning, creating, building).',
+    ],
+    whyItWorks:
+      'Cheap hits blunt motivation for hard wins; trimming one leak restores contrast and drive for real work.',
+    proTip: 'Pair the cut with a scheduled replacement slot so the void doesn\'t suck you back.',
+    affirmation: 'I spend my dopamine budget on what builds me, not what numbs me.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 7,
+    title: 'The 2-Minute Rule',
+    description:
+      'If a task takes less than 2 minutes, do it now. This prevents the pile-up that kills motivation.',
+    instructions: [
+      'Walk through your home and workspace. Do every sub-2-minute task you see: hang up a jacket, reply to a text, wipe a counter, file a document.',
+      'Count how many you completed. Most people find 10–20 in under 30 minutes.',
+      'For the rest of the protocol, apply the 2-minute rule every time you notice a small task. Never put off what can be done now.',
+    ],
+    whyItWorks:
+      'Cluttered micro-tasks tax working memory and signal "I\'m behind"; clearing them restores a sense of control.',
+    proTip: 'Timer optional — if it\'s obviously under 2 minutes, execute on sight.',
+    affirmation: 'Small done beats big planned.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 8,
+    title: 'The Done List',
+    description:
+      'To-do lists show what\'s not done. Done lists show what you\'ve achieved. The difference is massive.',
+    instructions: [
+      'At the end of today, write everything you accomplished — no matter how small. Sent an email? Write it. Made a bed? Write it. Had a conversation? Write it.',
+      'Count the items. You\'ll be surprised how much you actually did, even on a "low" day.',
+      'Do this every evening for the rest of the protocol. It retrains your brain to notice progress instead of deficit.',
+    ],
+    whyItWorks:
+      'Brains default to threat scanning; a done list forces evidence that you\'re in motion.',
+    proTip: 'Keep the list next to bed — 60 seconds before sleep.',
+    affirmation: 'I close the day seeing proof I moved forward.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 9,
+    title: 'Goal Clarity',
+    description:
+      'Vague goals produce vague effort. Today you get specific.',
+    instructions: [
+      'Write one goal for the next 90 days. Make it specific, measurable, and meaningful to you. Not "get fit" but "run 5km without stopping by [date]."',
+      'Break it into weekly milestones. What does progress look like at week 1, 4, 8, 12?',
+      'Write your goal on a card and put it where you\'ll see it every morning. The visual reminder keeps the target in focus when motivation dips.',
+    ],
+    whyItWorks:
+      'Concrete end states and milestones turn drifting into steering.',
+    proTip: 'Put the next milestone only on the card if the 90-day view overwhelms you.',
+    affirmation: 'I aim at something clear, so my effort has a target.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 10,
+    title: 'The Accountability Mechanism',
+    description:
+      'You will let yourself down. You\'re less likely to let someone else down.',
+    instructions: [
+      'Tell one person about your 90-day goal from yesterday. Be specific. Give them permission to ask you about it.',
+      'Set a weekly check-in: every Sunday evening, send them a one-line update on your progress.',
+      'If you can\'t find an accountability partner, use a public commitment: post your goal somewhere visible (even a private note to yourself counts if you review it weekly).',
+    ],
+    whyItWorks:
+      'Social expectation and deadlines reduce the "I\'ll start Monday" loop.',
+    proTip: 'Ask for a single yes/no: "Did you hit this week\'s milestone?"',
+    affirmation: 'I\'m not rebuilding alone — someone knows my line in the sand.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 11,
+    title: 'The Comparison Cleanse',
+    description:
+      'Comparing yourself to others is a guaranteed motivation killer.',
+    instructions: [
+      'Identify 3 people or accounts on social media that make you feel worse about yourself or your progress.',
+      'Mute or unfollow them now. Not permanently if you don\'t want to — just for the duration of this protocol.',
+      'Write: "The only person I\'m competing with is yesterday\'s version of me." Put this somewhere visible.',
+    ],
+    whyItWorks:
+      'Comparison hijacks attention to others\' curated output; distance restores focus on your trajectory.',
+    proTip: 'Replace scroll time with your done list from Day 8.',
+    affirmation: 'My scoreboard is me vs last week, not me vs their highlight reel.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 12,
+    title: 'Physical Restart',
+    description:
+      'Your body and mind are the same system. Physical stagnation = mental stagnation.',
+    instructions: [
+      'Do something physically challenging that you haven\'t done recently: a run, a gym session, a bodyweight circuit, a long fast-paced walk, swimming.',
+      'Push to the edge of your comfort zone. Not injury territory — discomfort territory. The point where your brain says "stop" and you do 10% more.',
+      'Afterwards, notice your mental state. Most people report clarity, energy, and reduced rumination. Write one word for how you feel.',
+    ],
+    whyItWorks:
+      'Hard effort resets arousal and proves your system can still mobilise — a direct antidote to helpless stillness.',
+    proTip: 'End with slow breathing so you downshift instead of crashing.',
+    affirmation: 'When I move my body with intent, my mind follows.',
+    estimatedTime: '25 minutes',
+  },
+  {
+    day: 13,
+    title: 'Purpose Mapping',
+    description:
+      'Motivation without purpose burns out fast. Purpose without motivation never starts. Today you connect them.',
+    instructions: [
+      'Write your answer to: "What would I want people to say about me at my funeral?" Not achievements — character and impact.',
+      'Now connect that to your daily actions: which of your current habits and goals serve that legacy? Which ones don\'t?',
+      'Write one sentence that links your 90-day goal to your larger purpose: "I\'m doing [goal] because it moves me toward being [the person you described]."',
+    ],
+    whyItWorks:
+      'Purpose turns tasks into chapters — meaning sustains effort after novelty fades.',
+    proTip: 'Read that one sentence when you skip the morning routine.',
+    affirmation: 'My daily moves connect to who I\'m building over a lifetime.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 14,
+    title: 'Engine Running — Final Assessment',
+    description: 'Fourteen days in. Measure the restart.',
+    instructions: [
+      'Re-rate all 5 areas from Day 1. Calculate the improvement in each area.',
+      'Write your personal motivation manifesto: (1) What drives me, (2) What drains me, (3) How I maintain momentum, (4) What I do when I stall.',
+      'Your maintenance plan: Morning routine (daily), Done List (daily), Accountability check-in (weekly), Full assessment (monthly). The engine doesn\'t maintain itself. You are the mechanic.',
+    ],
+    whyItWorks:
+      'Integration beats intensity — a written maintenance rhythm prevents slide-back.',
+    proTip: 'Calendar the monthly assessment now while motivation is high.',
+    affirmation: 'I proved I can restart; maintaining is the next skill I own.',
+    estimatedTime: '25 minutes',
+  },
+];
+
+export const engineRestartMissions7: DailyMission[] = [
+  {
+    day: 1,
+    title: 'The Stall Assessment',
+    description:
+      'Before you restart, you need to know what stalled. Map the damage honestly.',
+    instructions: [
+      'Rate these areas 1–10 for current motivation: Work, Health/Fitness, Relationships, Personal Growth, Daily Routine.',
+      'For each area rated below 5, write one sentence about when the decline started and what triggered it.',
+      'Write down the last time you felt genuinely motivated and what you were doing. This is your reference point.',
+    ],
+    whyItWorks:
+      'You can\'t fix a stall you haven\'t named. Honest baseline scores turn vague "I feel stuck" into targets you can move.',
+    proTip: 'No self-judgment — you\'re reading diagnostics, not sentencing yourself.',
+    affirmation: 'I see where I stalled so I can restart with precision.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 2,
+    title: 'The Minimum Viable Day',
+    description:
+      'When everything feels too much, define the absolute minimum that counts as a win.',
+    instructions: [
+      'Write your Minimum Viable Day — the 3–5 non-negotiable actions that, if done, mean the day wasn\'t wasted. Examples: get dressed, eat one real meal, move for 10 minutes, do one work task, go to bed on time.',
+      'This is your floor, not your ceiling. On bad days, do just these. On good days, do more.',
+      'Do your Minimum Viable Day today. Check each item off. Notice that even on a low day, you accomplished something meaningful.',
+    ],
+    whyItWorks:
+      'A defined floor prevents all-or-nothing days that erase streaks and shame you back to zero.',
+    proTip: 'Keep the MVP embarrassingly small — if you nail it, you can always add one bonus.',
+    affirmation: 'My floor is enough to keep the engine from seizing.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 3,
+    title: 'Routine Architecture',
+    description:
+      'Motivation is unreliable. Routines are not. Today you build a simple morning structure.',
+    instructions: [
+      'Design a 30-minute morning routine using only 3 elements: (1) Physical — movement, cold water, or stretching, (2) Mental — journaling, reading, or review, (3) Intentional — set one priority for the day.',
+      'Write it down as a specific sequence with times. Example: 6:30 press-ups, 6:40 journal, 6:50 write today\'s priority.',
+      'Do this routine tomorrow morning. The routine doesn\'t need to be perfect. It needs to be done.',
+    ],
+    whyItWorks:
+      'Cues and sequence reduce decision fatigue — the morning you don\'t negotiate with yourself starts better.',
+    proTip: 'Lay out clothes, journal, water the night before so friction is near zero.',
+    affirmation: 'My morning structure carries me when willpower won\'t.',
+    estimatedTime: '20 minutes',
+  },
+  {
+    day: 4,
+    title: 'The 2-Minute Rule',
+    description:
+      'If a task takes less than 2 minutes, do it now. This prevents the pile-up that kills motivation.',
+    instructions: [
+      'Walk through your home and workspace. Do every sub-2-minute task you see: hang up a jacket, reply to a text, wipe a counter, file a document.',
+      'Count how many you completed. Most people find 10–20 in under 30 minutes.',
+      'For the rest of the protocol, apply the 2-minute rule every time you notice a small task. Never put off what can be done now.',
+    ],
+    whyItWorks:
+      'Cluttered micro-tasks tax working memory and signal "I\'m behind"; clearing them restores a sense of control.',
+    proTip: 'Timer optional — if it\'s obviously under 2 minutes, execute on sight.',
+    affirmation: 'Small done beats big planned.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 5,
+    title: 'The Done List',
+    description:
+      'To-do lists show what\'s not done. Done lists show what you\'ve achieved. The difference is massive.',
+    instructions: [
+      'At the end of today, write everything you accomplished — no matter how small. Sent an email? Write it. Made a bed? Write it. Had a conversation? Write it.',
+      'Count the items. You\'ll be surprised how much you actually did, even on a "low" day.',
+      'Do this every evening for the rest of the protocol. It retrains your brain to notice progress instead of deficit.',
+    ],
+    whyItWorks:
+      'Brains default to threat scanning; a done list forces evidence that you\'re in motion.',
+    proTip: 'Keep the list next to bed — 60 seconds before sleep.',
+    affirmation: 'I close the day seeing proof I moved forward.',
+    estimatedTime: '10 minutes',
+  },
+  {
+    day: 6,
+    title: 'The Accountability Mechanism',
+    description:
+      'You will let yourself down. You\'re less likely to let someone else down.',
+    instructions: [
+      'Tell one person about the focus area you most want to change over the next 90 days. Be specific. Give them permission to ask you about it.',
+      'Set a weekly check-in: every Sunday evening, send them a one-line update on your progress.',
+      'If you can\'t find an accountability partner, use a public commitment: post your goal somewhere visible (even a private note to yourself counts if you review it weekly).',
+    ],
+    whyItWorks:
+      'Social expectation and deadlines reduce the "I\'ll start Monday" loop.',
+    proTip: 'Ask for a single yes/no: "Did you hit this week\'s milestone?"',
+    affirmation: 'I\'m not rebuilding alone — someone knows my line in the sand.',
+    estimatedTime: '15 minutes',
+  },
+  {
+    day: 7,
+    title: 'Engine Running — Final Assessment',
+    description: 'Seven days in. Measure the restart.',
+    instructions: [
+      'Re-rate all 5 areas from Day 1. Calculate the improvement in each area.',
+      'Write your personal motivation manifesto: (1) What drives me, (2) What drains me, (3) How I maintain momentum, (4) What I do when I stall.',
+      'Your maintenance plan: Morning routine (daily), Done List (daily), Accountability check-in (weekly), Full assessment (monthly). The engine doesn\'t maintain itself. You are the mechanic.',
+    ],
+    whyItWorks:
+      'Integration beats intensity — a written maintenance rhythm prevents slide-back.',
+    proTip: 'Calendar the monthly assessment now while motivation is high.',
+    affirmation: 'I proved I can restart; maintaining is the next skill I own.',
+    estimatedTime: '25 minutes',
+  },
+];
