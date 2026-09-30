@@ -169,8 +169,7 @@ export function generateJSONExport(progress: UserProgress): string {
       completedDays: progress.completedDays,
       streak: progress.streak,
       longestStreak: progress.longestStreak,
-      totalMissionsCompleted: progress.totalMissionsCompleted,
-      intensityMode: progress.intensityMode
+      totalMissionsCompleted: progress.totalMissionsCompleted
     },
     missions: progress.checkIns.map(checkIn => {
       const mission = protocol

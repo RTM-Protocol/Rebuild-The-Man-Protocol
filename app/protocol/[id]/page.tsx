@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { protocols } from '@/data/protocols';
-import { ProtocolDuration, IntensityMode } from '@/types';
+import { ProtocolDuration } from '@/types';
 import ConfirmationModal from '@/components/ConfirmationModal';
-import IntensitySelector from '@/components/IntensitySelector';
 import AccountabilityPartnerPrompt from '@/components/AccountabilityPartnerPrompt';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Navigation from '@/components/Navigation';
@@ -18,6 +17,7 @@ import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getCurrentWorkingDay } from '@/utils/progressUtils';
 import { resolveMissionList } from '@/utils/missionUtils';
+import { getDurationFraming } from '@/utils/durationFraming';
 import ActiveProtocolBlocker from '@/components/ActiveProtocolBlocker';
 import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
@@ -33,10 +33,8 @@ export default function ProtocolDetail() {
   const [selectedDuration, setSelectedDuration] = useState<ProtocolDuration | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showReplaceWarning, setShowReplaceWarning] = useState(false);
-  const [showIntensitySelector, setShowIntensitySelector] = useState(false);
   const [showAccountabilityPrompt, setShowAccountabilityPrompt] = useState(false);
   const [showRemovePartnerModal, setShowRemovePartnerModal] = useState(false);
-  const [selectedIntensity, setSelectedIntensity] = useState<IntensityMode>('standard');
 
   // Check if this is the user's active protocol
   const isActiveProtocol = activeProtocol?.protocolId === protocolId;
@@ -79,18 +77,12 @@ export default function ProtocolDetail() {
   const handleConfirmStart = () => {
     if (!selectedDuration || !protocol) return;
     setShowModal(false);
-    setShowIntensitySelector(true);
-  };
-
-  const handleIntensitySelected = () => {
-    if (!selectedDuration || !protocol) return;
-    setShowIntensitySelector(false);
     setShowAccountabilityPrompt(true);
   };
 
   const handleStartProtocol = (withAccountabilityPartner?: boolean) => {
     if (!selectedDuration || !protocol) return;
-    startProtocol(protocol.id, selectedDuration, selectedIntensity, withAccountabilityPartner);
+    startProtocol(protocol.id, selectedDuration, withAccountabilityPartner);
     router.push(`/protocol/${protocol.id}/mission/1?duration=${selectedDuration}`);
   };
 
@@ -217,7 +209,7 @@ export default function ProtocolDetail() {
               <div className="bg-tactical-gray border-l-4 border-tactical-green p-4 mb-6">
                 <p className="text-gray-300 leading-relaxed">
                   <span className="font-bold text-white">You&apos;re locked into this protocol.</span> You can view 
-                  mission details below for reference, but you cannot restart or change your intensity mode mid-protocol. 
+                  mission details below for reference, but you cannot restart or change duration mid-protocol. 
                   To switch protocols, go to <Link href="/settings" className="text-tactical-orange hover:text-tactical-orange-bright font-bold">Settings</Link> and 
                   reset your progress.
                 </p>
@@ -263,6 +255,7 @@ export default function ProtocolDetail() {
                 const resolvedMissions = resolveMissionList(protocol, duration);
                 const isAvailable = resolvedMissions.length > 0;
                 const isSelected = selectedDuration === duration;
+                const framing = getDurationFraming(duration);
                 
                 return (
                   <button
@@ -284,6 +277,8 @@ export default function ProtocolDetail() {
                   >
                     <div className="text-4xl font-bold text-white mb-2">{duration}</div>
                     <div className="text-sm text-gray-400 uppercase tracking-wide">Days</div>
+                    <div className="text-tactical-orange font-mono text-xs uppercase mt-2">{framing.label}</div>
+                    <div className="text-xs text-gray-400 mt-1 leading-relaxed">{framing.descriptor}</div>
                     {!isAvailable && (
                       <div className="text-xs text-tactical-orange mt-2">COMING SOON</div>
                     )}
@@ -433,7 +428,7 @@ export default function ProtocolDetail() {
         <div className="fixed bottom-0 left-0 right-0 z-40 border-t-2 border-tactical-orange bg-tactical-darkgray/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_40px_rgba(0,0,0,0.55)] backdrop-blur-sm">
           <div className="mx-auto flex max-w-4xl flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
             <p className="text-center font-mono text-xs uppercase tracking-[0.18em] text-tactical-green-bright sm:text-left">
-              Next — commit &amp; choose intensity
+              Next — commit to the protocol
             </p>
             <button
               type="button"
@@ -456,16 +451,6 @@ export default function ProtocolDetail() {
         confirmText="START PROTOCOL"
         cancelText="NOT YET"
       />
-
-      {/* Intensity Selector */}
-      {showIntensitySelector && protocol && (
-        <IntensitySelector
-          protocolName={protocol.title}
-          selectedMode={selectedIntensity}
-          onSelect={setSelectedIntensity}
-          onContinue={handleIntensitySelected}
-        />
-      )}
 
       {/* Accountability Partner Prompt */}
       <AccountabilityPartnerPrompt

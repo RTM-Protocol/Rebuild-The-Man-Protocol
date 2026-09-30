@@ -18,8 +18,6 @@ import PreMissionCheckIn from '@/components/PreMissionCheckIn';
 import PostMissionCheckIn from '@/components/PostMissionCheckIn';
 import MissionFieldNotes from '@/components/MissionFieldNotes';
 import CommandersBrief from '@/components/CommandersBrief';
-import IntensitySelector from '@/components/IntensitySelector';
-import IntensityEscalationPrompt from '@/components/IntensityEscalationPrompt';
 import MissedDayPrompt from '@/components/MissedDayPrompt';
 import ShareProgress from '@/components/ShareProgress';
 import Footer from '@/components/Footer';
@@ -28,23 +26,20 @@ import { isDayAccessible, canCompleteDay, getCurrentWorkingDay, getDayBlockReaso
 import StatCard from '@/components/StatCard';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
 import { getProtocolVisualTheme } from '@/lib/protocolVisualTheme';
+import { getDurationFraming } from '@/utils/durationFraming';
 import { useState, useEffect, useMemo } from 'react';
-import { IntensityMode } from '@/types';
 
 export default function MissionPage() {
   const [showSetbackModal, setShowSetbackModal] = useState(false);
   const [showPreCheckIn, setShowPreCheckIn] = useState(false);
   const [showPostCheckIn, setShowPostCheckIn] = useState(false);
   const [showCommandersBrief, setShowCommandersBrief] = useState(false);
-  const [showIntensityChange, setShowIntensityChange] = useState(false);
-  const [showEscalationPrompt, setShowEscalationPrompt] = useState(false);
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [showShareProgress, setShowShareProgress] = useState(false);
-  const [tempIntensity, setTempIntensity] = useState<IntensityMode>('standard');
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { activeProtocol, completeDay, savePreMissionCheckIn, savePostMissionCheckIn, saveFieldNotes, saveWeeklyBrief, changeIntensity, declineEscalation, getCheckIn, setAccountabilityPartner, dismissAccountabilityPrompt } = useProgress();
+  const { activeProtocol, completeDay, savePreMissionCheckIn, savePostMissionCheckIn, saveFieldNotes, saveWeeklyBrief, getCheckIn, setAccountabilityPartner, dismissAccountabilityPrompt } = useProgress();
   
   const protocolId = params.id as string;
   const dayNumber = parseInt(params.day as string, 10);
@@ -83,7 +78,6 @@ export default function MissionPage() {
   const blockReason = activeProtocol ? getDayBlockReason(dayNumber, activeProtocol) : null;
   const completionLimitMsg = activeProtocol ? getCompletionLimitMessage(activeProtocol) : null;
   const currentWorkingDay = activeProtocol ? getCurrentWorkingDay(activeProtocol) : 1;
-  const currentIntensity = activeProtocol?.intensityMode || 'standard';
 
   // Check if user has done pre-mission check-in for this day
   useEffect(() => {
@@ -95,37 +89,6 @@ export default function MissionPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProtocol, dayNumber, missionCompleted, canComplete]);
-
-  // Check if we should prompt the user to escalate intensity
-  useEffect(() => {
-    if (!activeProtocol || missionCompleted) return;
-    if (currentIntensity === 'intensive') return;
-
-    const history = activeProtocol.intensityHistory || [];
-    let daysOnCurrent = 0;
-    for (let i = history.length - 1; i >= 0; i--) {
-      if (history[i].mode === currentIntensity) daysOnCurrent++;
-      else break;
-    }
-
-    const DAYS_BEFORE_PROMPT = 5;
-    if (daysOnCurrent < DAYS_BEFORE_PROMPT) return;
-
-    if (activeProtocol.declinedEscalation) {
-      const declinedDate = new Date(activeProtocol.declinedEscalation.date);
-      const daysSinceDecline = (Date.now() - declinedDate.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSinceDecline < 5) return;
-    }
-
-    if (activeProtocol.lastEscalationPrompt) {
-      const lastPrompt = new Date(activeProtocol.lastEscalationPrompt);
-      const daysSincePrompt = (Date.now() - lastPrompt.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSincePrompt < 3) return;
-    }
-
-    setShowEscalationPrompt(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeProtocol, dayNumber, missionCompleted, currentIntensity]);
 
   // Detect missed days and show gentle accountability prompt
   useEffect(() => {
@@ -348,25 +311,6 @@ export default function MissionPage() {
       ? Math.round((progress.completedDays.length / progress.duration) * 100)
       : 0;
 
-  const getIntensityLabel = (mode: IntensityMode) => {
-    const labels = {
-      light: 'Light Mode (10 min)',
-      standard: 'Standard Mode (20 min)',
-      intensive: 'Intensive Mode (30 min)'
-    };
-    return labels[mode];
-  };
-
-  const handleIntensityChangeClick = () => {
-    setTempIntensity(currentIntensity);
-    setShowIntensityChange(true);
-  };
-
-  const handleIntensityChangeConfirm = () => {
-    changeIntensity(tempIntensity, dayNumber);
-    setShowIntensityChange(false);
-  };
-
   // Show Commander's Brief if triggered
   if (showCommandersBrief && activeProtocol) {
     const briefData = generateCommandersBrief(activeProtocol, dayNumber);
@@ -408,16 +352,10 @@ export default function MissionPage() {
               <p className="text-tactical-green-bright mt-1 font-mono text-sm">
                 DAY {dayNumber} OF {duration}
               </p>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="mt-2">
                 <span className="text-tactical-orange font-mono text-xs uppercase">
-                  {getIntensityLabel(currentIntensity)}
+                  {getDurationFraming(duration).label}
                 </span>
-                <button
-                  onClick={handleIntensityChangeClick}
-                  className="text-gray-500 hover:text-tactical-orange text-xs uppercase font-bold transition-colors"
-                >
-                  [Change]
-                </button>
               </div>
             </div>
             <div className="text-right">
@@ -735,46 +673,6 @@ export default function MissionPage() {
         onClose={() => setShowPostCheckIn(false)}
         onComplete={handlePostCheckInComplete}
       />
-
-      {/* Intensity Change Selector */}
-      {showIntensityChange && protocol && (
-        <IntensitySelector
-          protocolName={protocol.title}
-          selectedMode={tempIntensity}
-          onSelect={setTempIntensity}
-          onContinue={handleIntensityChangeConfirm}
-        />
-      )}
-
-      {/* Escalation Prompt */}
-      {showEscalationPrompt && activeProtocol && currentIntensity !== 'intensive' && (
-        <IntensityEscalationPrompt
-          isOpen={showEscalationPrompt}
-          currentMode={currentIntensity}
-          daysOnCurrentMode={(() => {
-            const history = activeProtocol.intensityHistory || [];
-            let count = 0;
-            for (let i = history.length - 1; i >= 0; i--) {
-              if (history[i].mode === currentIntensity) {
-                count++;
-              } else {
-                break;
-              }
-            }
-            return count;
-          })()}
-          onUpgrade={() => {
-            const nextMode = currentIntensity === 'light' ? 'standard' : 'intensive';
-            changeIntensity(nextMode, dayNumber);
-            setShowEscalationPrompt(false);
-          }}
-          onDecline={() => {
-            const nextMode = currentIntensity === 'light' ? 'standard' : 'intensive';
-            declineEscalation(currentIntensity, nextMode);
-            setShowEscalationPrompt(false);
-          }}
-        />
-      )}
 
       {/* Missed Day Accountability Prompt */}
       {activeProtocol && (

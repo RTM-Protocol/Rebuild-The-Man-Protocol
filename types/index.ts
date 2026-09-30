@@ -10,14 +10,6 @@ export type ProtocolCategory =
 
 export type ProtocolDuration = 7 | 14 | 30;
 
-export type IntensityMode = 'light' | 'standard' | 'intensive';
-
-export interface IntensityHistory {
-  day: number;
-  mode: IntensityMode;
-  changedAt: string;
-}
-
 export interface DailyMission {
   day: number;
   title: string;
@@ -81,14 +73,6 @@ export interface UserProgress {
   }>;
   checkIns: MissionCheckIn[];
   weeklyBriefs?: WeeklyBrief[];
-  intensityMode?: IntensityMode;
-  intensityHistory?: IntensityHistory[];
-  lastEscalationPrompt?: string;
-  declinedEscalation?: {
-    date: string;
-    fromMode: IntensityMode;
-    toMode: IntensityMode;
-  } | null;
   accountabilityPartner?: {
     enabled: boolean;
     declinedAt?: string;

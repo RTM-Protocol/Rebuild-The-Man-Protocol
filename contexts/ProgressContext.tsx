@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
-import { UserProgress, ProtocolDuration, ReminderSettings, IntensityMode } from '@/types';
+import { UserProgress, ProtocolDuration, ReminderSettings } from '@/types';
 import { syncService, type SyncData, type SyncStatusEvent } from '@/lib/syncService';
 
 export interface CloudSyncDisplay {
@@ -25,7 +25,7 @@ interface ProgressContextType {
     longestStreak: number;
   };
   reminderSettings: ReminderSettings;
-  startProtocol: (protocolId: string, duration: ProtocolDuration, initialIntensity?: IntensityMode, withAccountabilityPartner?: boolean) => void;
+  startProtocol: (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean) => void;
   completeDay: (day: number) => void;
   markSetback: (day: number, note?: string) => void;
   updateReminderSettings: (settings: Partial<ReminderSettings>) => void;
@@ -36,8 +36,6 @@ interface ProgressContextType {
   savePostMissionCheckIn: (day: number, data: { completed: boolean; didHelp: boolean | null }) => void;
   saveFieldNotes: (day: number, notes: string) => void;
   saveWeeklyBrief: (weekNumber: number, day: number, briefData: any) => void;
-  changeIntensity: (mode: IntensityMode, day: number) => void;
-  declineEscalation: (fromMode: IntensityMode, toMode: IntensityMode) => void;
   getCheckIn: (day: number) => any;
   setAccountabilityPartner: (enabled: boolean) => void;
   dismissAccountabilityPrompt: () => void;
@@ -138,15 +136,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           // Migrate old data without weeklyBriefs array
           if (!parsed.weeklyBriefs) {
             parsed.weeklyBriefs = [];
-          }
-          // Migrate old data without intensity mode
-          if (!parsed.intensityMode) {
-            parsed.intensityMode = 'standard';
-            parsed.intensityHistory = [{
-              day: parsed.currentDay,
-              mode: 'standard',
-              changedAt: new Date().toISOString()
-            }];
           }
           setActiveProtocol(parsed);
         }
@@ -280,7 +269,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   }, [activeProtocol, completedProtocols, lifetimeStats, reminderSettings, isLoading, isSyncEnabled]);
 
-  const startProtocol = (protocolId: string, duration: ProtocolDuration, initialIntensity: IntensityMode = 'standard', withAccountabilityPartner?: boolean) => {
+  const startProtocol = (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean) => {
     const newProgress: UserProgress = {
       protocolId,
       duration,
@@ -293,14 +282,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setbacks: [],
       checkIns: [],
       weeklyBriefs: [],
-      intensityMode: initialIntensity,
-      intensityHistory: [{
-        day: 1,
-        mode: initialIntensity,
-        changedAt: new Date().toISOString()
-      }],
-      lastEscalationPrompt: undefined,
-      declinedEscalation: null,
       accountabilityPartner: withAccountabilityPartner !== undefined
         ? { enabled: withAccountabilityPartner, declinedAt: withAccountabilityPartner ? undefined : new Date().toISOString() }
         : undefined
@@ -506,37 +487,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const changeIntensity = (mode: IntensityMode, day: number) => {
-    if (!activeProtocol) return;
-
-    const newHistoryEntry = {
-      day,
-      mode,
-      changedAt: new Date().toISOString()
-    };
-
-    setActiveProtocol({
-      ...activeProtocol,
-      intensityMode: mode,
-      intensityHistory: [...(activeProtocol.intensityHistory || []), newHistoryEntry],
-      lastEscalationPrompt: new Date().toISOString() // Reset prompt timer when manually changed
-    });
-  };
-
-  const declineEscalation = (fromMode: IntensityMode, toMode: IntensityMode) => {
-    if (!activeProtocol) return;
-
-    setActiveProtocol({
-      ...activeProtocol,
-      declinedEscalation: {
-        date: new Date().toISOString(),
-        fromMode,
-        toMode
-      },
-      lastEscalationPrompt: new Date().toISOString()
-    });
-  };
-
   const getCheckIn = (day: number) => {
     if (!activeProtocol) return null;
     return activeProtocol.checkIns.find(ci => ci.day === day) || null;
@@ -576,8 +526,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         savePostMissionCheckIn,
         saveFieldNotes,
         saveWeeklyBrief,
-        changeIntensity,
-        declineEscalation,
         getCheckIn,
         setAccountabilityPartner,
         dismissAccountabilityPrompt,
