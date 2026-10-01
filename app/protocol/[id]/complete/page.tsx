@@ -12,7 +12,13 @@ import ClosingAssessmentPrompt from '@/components/ClosingAssessmentPrompt';
 import QuickDiagnostic from '@/components/QuickDiagnostic';
 import { useProgress } from '@/contexts/ProgressContext';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
-import { downloadCompletionReportPdf } from '@/utils/exportUtils';
+import { downloadCompletionReportPdf, downloadFile } from '@/utils/exportUtils';
+import {
+  generateProtocolReminderIcs,
+  isReminderDateSelectable,
+  localDateYmd,
+  reminderIcsFilename,
+} from '@/utils/calendarReminder';
 import { useState, useEffect, useMemo } from 'react';
 
 function formatDate(iso: string): string {
@@ -52,6 +58,7 @@ export default function ProtocolComplete() {
   const [closingUi, setClosingUi] = useState<'prompt' | 'questions' | 'report' | 'pending'>('pending');
   const [pdfError, setPdfError] = useState(false);
   const [justFinalized, setJustFinalized] = useState<CompletedProtocol | null>(null);
+  const [reminderDate, setReminderDate] = useState('');
 
   const protocolId = params.id as string;
   const durationParam = parseInt(searchParams.get('duration') || '7', 10) as ProtocolDuration;
@@ -268,10 +275,32 @@ export default function ProtocolComplete() {
                   <h4 className="text-white font-bold mb-1">Try a different protocol</h4>
                   <p className="text-gray-400 text-sm">Different problem, same structure.</p>
                 </Link>
-                <div className="bg-tactical-gray p-6 border-l-4 border-tactical-lightgray opacity-50">
-                  <h4 className="text-white font-bold mb-1">Set a reminder</h4>
-                  <p className="text-gray-400 text-sm">
-                    Put a date in your calendar for the next run.
+                <div className="block bg-tactical-gray p-6 border-l-4 border-tactical-orange hover:border-tactical-orange-bright">
+                  <h4 className="text-white font-bold mb-1">Book the next one</h4>
+                  <p className="text-gray-400 text-sm mb-4">
+                    Pick a date and we&apos;ll give you a calendar file. It goes straight into whatever calendar you use.
+                  </p>
+                  <input
+                    type="date"
+                    value={reminderDate}
+                    min={localDateYmd()}
+                    onChange={(e) => setReminderDate(e.target.value)}
+                    className="mb-4 w-full max-w-xs bg-tactical-darkgray border border-tactical-lightgray text-white px-3 py-2"
+                  />
+                  <button
+                    type="button"
+                    disabled={!isReminderDateSelectable(reminderDate)}
+                    className={`btn-primary ${!isReminderDateSelectable(reminderDate) ? 'opacity-40 cursor-not-allowed' : ''}`}
+                    onClick={() => {
+                      if (!isReminderDateSelectable(reminderDate)) return;
+                      const ics = generateProtocolReminderIcs(protocol.title, reminderDate);
+                      downloadFile(ics, reminderIcsFilename(protocol.title, reminderDate), 'text/calendar');
+                    }}
+                  >
+                    Download calendar reminder
+                  </button>
+                  <p className="text-gray-400 text-sm mt-3">
+                    Once it&apos;s in your calendar it&apos;s yours — we can&apos;t see it, change it, or cancel it. Move it or bin it from your calendar app.
                   </p>
                 </div>
               </div>
