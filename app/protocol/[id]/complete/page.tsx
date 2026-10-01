@@ -3,26 +3,67 @@
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import { protocols } from '@/data/protocols';
-import { ProtocolDuration, UserProgress } from '@/types';
+import { ProtocolDuration, UserProgress, AssessmentAnswers, CompletedProtocol } from '@/types';
 import Navigation from '@/components/Navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import StatCard from '@/components/StatCard';
+import ProtocolReport from '@/components/ProtocolReport';
+import ClosingAssessmentPrompt from '@/components/ClosingAssessmentPrompt';
+import QuickDiagnostic from '@/components/QuickDiagnostic';
 import { useProgress } from '@/contexts/ProgressContext';
 import { getStatsForProtocol } from '@/data/mentalHealthStats';
-import { useState, useEffect } from 'react';
+import { downloadCompletionReportPdf } from '@/utils/exportUtils';
+import { useState, useEffect, useMemo } from 'react';
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString();
+}
+
+function openingStatement(opts: {
+  missionsDone: number;
+  duration: number;
+  checkInsLogged: number;
+  hasBaseline: boolean;
+  hasClosing: boolean;
+}): { body: string; thin?: string } {
+  const { missionsDone, duration, checkInsLogged, hasBaseline, hasClosing } = opts;
+  const prefix = `You finished. ${missionsDone} of ${duration} missions, ${checkInsLogged} check-ins logged.`;
+  let body: string;
+  if (hasBaseline && hasClosing) {
+    body = `${prefix} The numbers below are yours — what you reported on day one against what you reported today.`;
+  } else if (!hasClosing) {
+    body = `${prefix} You skipped the closing questions, so this covers your daily scores only.`;
+  } else {
+    body = `${prefix} Without a starting assessment there's no before-and-after, so what follows is where you are now and how your daily scores moved.`;
+  }
+  return {
+    body,
+    thin: checkInsLogged < 2
+      ? 'Not enough check-ins logged to show a trend. The comparison above still stands.'
+      : undefined,
+  };
+}
 
 export default function ProtocolComplete() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const { completedProtocols, activeProtocol } = useProgress();
+  const { completedProtocols, activeProtocol, finalizeProtocol, isLoading } = useProgress();
   const [completedData, setCompletedData] = useState<UserProgress | null>(null);
-  
+  const [closingUi, setClosingUi] = useState<'prompt' | 'questions' | 'report' | 'pending'>('pending');
+  const [pdfError, setPdfError] = useState(false);
+  const [justFinalized, setJustFinalized] = useState<CompletedProtocol | null>(null);
+
   const protocolId = params.id as string;
-  const duration = parseInt(searchParams.get('duration') || '7') as ProtocolDuration;
-  
-  const protocol = protocols.find(p => p.id === protocolId);
-  
-  // Load the persisted protocol data (saved before activeProtocol was cleared)
+  const durationParam = parseInt(searchParams.get('duration') || '7', 10) as ProtocolDuration;
+  const completedParam = searchParams.get('completed');
+
+  const protocol = protocols.find((p) => p.id === protocolId);
+
+  const awaitingFinalize =
+    !!activeProtocol &&
+    activeProtocol.protocolId === protocolId &&
+    activeProtocol.completedDays.length === activeProtocol.duration;
+
   useEffect(() => {
     if (activeProtocol && activeProtocol.protocolId === protocolId) {
       setCompletedData(activeProtocol);
@@ -41,10 +82,37 @@ export default function ProtocolComplete() {
     }
   }, [activeProtocol, protocolId]);
 
-  // Find the most recent completion for this protocol
-  const completedProtocol = completedProtocols
-    .filter(p => p.protocolId === protocolId)
-    .sort((a, b) => new Date(b.completedDate).getTime() - new Date(a.completedDate).getTime())[0];
+  useEffect(() => {
+    if (isLoading) return;
+    setClosingUi((prev) => {
+      if (!awaitingFinalize) return 'report';
+      if (prev === 'questions' || prev === 'report') return prev;
+      return 'prompt';
+    });
+  }, [isLoading, awaitingFinalize]);
+
+  const reportRecord: CompletedProtocol | undefined = useMemo(() => {
+    if (justFinalized) return justFinalized;
+    const forProtocol = completedProtocols.filter((p) => p.protocolId === protocolId);
+    if (completedParam) {
+      return forProtocol.find((p) => p.completedDate === completedParam) ?? forProtocol[0];
+    }
+    return [...forProtocol].sort(
+      (a, b) => new Date(b.completedDate).getTime() - new Date(a.completedDate).getTime(),
+    )[0];
+  }, [completedProtocols, protocolId, completedParam, justFinalized]);
+
+  const handleSkipClosing = () => {
+    const record = finalizeProtocol();
+    if (record) setJustFinalized(record);
+    setClosingUi('report');
+  };
+
+  const handleClosingAnswers = (answers: AssessmentAnswers) => {
+    const record = finalizeProtocol(answers);
+    if (record) setJustFinalized(record);
+    setClosingUi('report');
+  };
 
   if (!protocol) {
     return (
@@ -59,132 +127,168 @@ export default function ProtocolComplete() {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-tactical-black">
+        <Navigation />
+      </div>
+    );
+  }
+
+  const duration = reportRecord?.duration ?? completedData?.duration ?? durationParam;
+  const started = reportRecord?.startedDate ?? completedData?.startDate;
+  const completedAt = reportRecord?.completedDate;
+  const missionsDone = reportRecord?.duration ?? completedData?.completedDays.length ?? duration;
+  const checkInsLogged =
+    reportRecord?.checkInSummary?.checkInsRecorded ??
+    completedData?.checkIns.filter((c) => c.preMission).length ??
+    0;
+  const hasBaseline = !!(reportRecord?.baselineAssessment ?? completedData?.baselineAssessment);
+  const hasClosing = !!reportRecord?.closingAssessment;
+  const opening = openingStatement({
+    missionsDone,
+    duration,
+    checkInsLogged,
+    hasBaseline,
+    hasClosing,
+  });
+
+  const showReport = closingUi === 'report' && !!reportRecord;
+
   return (
     <div className="min-h-screen bg-tactical-black">
-      {/* Navigation */}
       <Navigation />
 
-      {/* Header */}
+      {awaitingFinalize && closingUi === 'prompt' && (
+        <ClosingAssessmentPrompt
+          isOpen
+          baselineTaken={!!activeProtocol?.baselineAssessment}
+          onAnswer={() => setClosingUi('questions')}
+          onSkip={handleSkipClosing}
+        />
+      )}
+
+      {awaitingFinalize && closingUi === 'questions' && (
+        <QuickDiagnostic
+          hideSkip
+          persistToDiagnosticStorage={false}
+          onComplete={handleClosingAnswers}
+        />
+      )}
+
       <header className="border-b-2 border-tactical-green bg-tactical-darkgray">
         <div className="max-w-5xl mx-auto px-4 py-6">
           <Breadcrumbs
             items={[
               { label: 'Protocols', href: '/' },
               { label: protocol.title, href: `/protocol/${protocolId}` },
-              { label: 'Complete' }
+              { label: 'Complete' },
             ]}
           />
           <h1 className="text-3xl font-bold tracking-tight text-tactical-green-bright uppercase mt-2">
-            Protocol Complete
+            Protocol complete.
           </h1>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-12">
-        {/* Success Icon */}
         <div className="text-center mb-8">
-          <div className="text-8xl mb-6">✓</div>
           <h2 className="text-4xl font-bold text-white mb-4 uppercase">
-            {protocol.title}
+            Protocol complete.
           </h2>
-          <p className="text-tactical-green-bright text-xl font-mono">
-            {duration}-DAY PROTOCOL COMPLETED
+          <p className="text-tactical-green-bright text-lg font-mono">
+            {protocol.title} · {duration} days
+            {started && completedAt
+              ? ` · ${formatDate(started)} to ${formatDate(completedAt)}`
+              : ''}
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-tactical-darkgray border-2 border-tactical-green p-6 text-center">
-            <div className="text-tactical-green-bright text-4xl font-bold mb-2">
-              {duration}
-            </div>
-            <div className="text-gray-400 text-sm uppercase tracking-wide">
-              Days Completed
-            </div>
-          </div>
-          
-          <div className="bg-tactical-darkgray border-2 border-tactical-green p-6 text-center">
-            <div className="text-tactical-green-bright text-4xl font-bold mb-2">
-              {completedProtocols.length}
-            </div>
-            <div className="text-gray-400 text-sm uppercase tracking-wide">
-              Total Completed
-            </div>
-          </div>
-          
-          <div className="bg-tactical-darkgray border-2 border-tactical-green p-6 text-center">
-            <div className="text-tactical-green-bright text-4xl font-bold mb-2">
-              100%
-            </div>
-            <div className="text-gray-400 text-sm uppercase tracking-wide">
-              Completion Rate
-            </div>
-          </div>
-        </div>
+        {showReport && (
+          <>
+            <section className="mb-12 bg-tactical-darkgray border-l-4 border-tactical-green p-8">
+              <p className="text-gray-200 leading-relaxed text-lg">{opening.body}</p>
+              {opening.thin && (
+                <p className="text-gray-200 leading-relaxed text-lg mt-4">{opening.thin}</p>
+              )}
+            </section>
 
-        {/* Message */}
-        <section className="mb-12 bg-tactical-darkgray border-l-4 border-tactical-green p-8">
-          <h3 className="text-white font-bold uppercase tracking-wide mb-4 text-xl">
-            System Status: Operational
-          </h3>
-          <p className="text-gray-200 leading-relaxed text-lg mb-4">
-            You&apos;ve completed all {duration} missions. The work you put in has recalibrated your system. 
-            Changes compound over time - what you&apos;ve built here continues to run in the background.
-          </p>
-          <p className="text-gray-200 leading-relaxed text-lg">
-            This isn&apos;t a one-time fix. Mental maintenance is ongoing. When you notice the same 
-            system starting to degrade, run this protocol again. Or deploy a different one.
-          </p>
-        </section>
+            <div className="mb-12">
+              <ProtocolReport
+                record={reportRecord}
+                protocolTitle={protocol.title}
+                missionsCompleted={missionsDone}
+              />
+            </div>
 
-        {/* Next Steps */}
-        <section className="mb-12">
-          <h3 className="text-white font-bold uppercase tracking-wide mb-6 text-xl">
-            Next Steps
-          </h3>
-          
-          <div className="space-y-4">
-            <div className="bg-tactical-gray p-6 border-l-4 border-tactical-orange">
-              <h4 className="text-tactical-orange font-bold mb-2 uppercase text-sm">
-                Option 1: Maintain Current System
-              </h4>
-              <p className="text-gray-200">
-                Continue the habits that worked. Keep the pressure valves installed. 
-                Monitor for degradation.
-              </p>
+            <div className="mb-12">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={async () => {
+                  setPdfError(false);
+                  try {
+                    await downloadCompletionReportPdf(reportRecord, protocol.title, missionsDone);
+                  } catch {
+                    setPdfError(true);
+                  }
+                }}
+              >
+                Download PDF
+              </button>
+              {pdfError && (
+                <p className="text-red-400 text-sm mt-2">The PDF could not be created. Try again.</p>
+              )}
             </div>
-            
-            <div className="bg-tactical-gray p-6 border-l-4 border-tactical-orange">
-              <h4 className="text-tactical-orange font-bold mb-2 uppercase text-sm">
-                Option 2: Deploy Another Protocol
-              </h4>
-              <p className="text-gray-200">
-                Different systems need different repairs. Choose your next protocol.
-              </p>
-            </div>
-            
-            <div className="bg-tactical-gray p-6 border-l-4 border-tactical-orange">
-              <h4 className="text-tactical-orange font-bold mb-2 uppercase text-sm">
-                Option 3: Extended Mission
-              </h4>
-              <p className="text-gray-200">
-                Run this same protocol for a longer duration to deepen the calibration.
-              </p>
-            </div>
-          </div>
-        </section>
 
-        {/* Performance Summary */}
-        {completedProtocol && completedData?.weeklyBriefs && completedData.weeklyBriefs.length > 0 && (
+            <section className="mb-12">
+              <h3 className="text-white font-bold uppercase tracking-wide mb-4 text-xl">
+                What now
+              </h3>
+              <p className="text-gray-200 leading-relaxed mb-4">
+                One protocol doesn&apos;t finish the job. It gives you a set of tools and proof you&apos;ll use them.
+              </p>
+              <p className="text-gray-200 leading-relaxed mb-8">
+                The tools work better the second time round — you already know the drill, so you go deeper.
+              </p>
+              <div className="space-y-4">
+                <Link
+                  href={`/protocol/${protocolId}`}
+                  className="block bg-tactical-gray p-6 border-l-4 border-tactical-orange hover:border-tactical-orange-bright"
+                >
+                  <h4 className="text-white font-bold mb-1">Run this one again</h4>
+                  <p className="text-gray-400 text-sm">
+                    Same protocol, fresh baseline. The comparison gets more useful each time.
+                  </p>
+                </Link>
+                <Link
+                  href="/"
+                  className="block bg-tactical-gray p-6 border-l-4 border-tactical-orange hover:border-tactical-orange-bright"
+                >
+                  <h4 className="text-white font-bold mb-1">Try a different protocol</h4>
+                  <p className="text-gray-400 text-sm">Different problem, same structure.</p>
+                </Link>
+                <div className="bg-tactical-gray p-6 border-l-4 border-tactical-lightgray opacity-50">
+                  <h4 className="text-white font-bold mb-1">Set a reminder</h4>
+                  <p className="text-gray-400 text-sm">
+                    Put a date in your calendar for the next run.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
+        {reportRecord && completedData?.weeklyBriefs && completedData.weeklyBriefs.length > 0 && (
           <section className="mb-12 bg-tactical-darkgray border-l-4 border-tactical-green p-6">
             <h3 className="text-white font-bold uppercase tracking-wide mb-4 text-xl flex items-center gap-2">
               <span>📊</span>
               <span>Performance Summary</span>
             </h3>
             <p className="text-gray-300 mb-4">
-              You completed {completedData.weeklyBriefs.length} weekly performance review{completedData.weeklyBriefs.length > 1 ? 's' : ''}. 
-              {completedData.weeklyBriefs.some(b => b.briefData.performanceTier === 'elite') && (
+              You completed {completedData.weeklyBriefs.length} weekly performance review
+              {completedData.weeklyBriefs.length > 1 ? 's' : ''}.
+              {completedData.weeklyBriefs.some((b) => b.briefData.performanceTier === 'elite') && (
                 <span className="text-tactical-green-bright font-bold"> Including elite-level execution.</span>
               )}
             </p>
@@ -197,64 +301,37 @@ export default function ProtocolComplete() {
           </section>
         )}
 
-        {/* Field Notes Summary */}
-        {completedProtocol && completedData?.checkIns && (
+        {reportRecord && completedData?.checkIns &&
           (() => {
-            const notesCount = completedData.checkIns.filter(ci => ci.fieldNotes && ci.fieldNotes.length > 0).length;
-            if (notesCount > 0) {
-              return (
-                <section className="mb-12 bg-tactical-darkgray border-l-4 border-tactical-orange p-6">
-                  <h3 className="text-white font-bold uppercase tracking-wide mb-4 text-xl flex items-center gap-2">
-                    <span>📋</span>
-                    <span>Your Field Notes</span>
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    You documented {notesCount} of {duration} missions. These notes are your record—review them anytime.
-                  </p>
-                  <Link
-                    href={`/protocol/${protocolId}/history?duration=${duration}`}
-                    className="btn-secondary inline-block"
-                  >
-                    Review All Field Notes
-                  </Link>
-                </section>
-              );
-            }
-            return null;
-          })()
-        )}
+            const notesCount = completedData.checkIns.filter(
+              (ci) => ci.fieldNotes && ci.fieldNotes.length > 0,
+            ).length;
+            if (notesCount === 0) return null;
+            return (
+              <section className="mb-12 bg-tactical-darkgray border-l-4 border-tactical-orange p-6">
+                <h3 className="text-white font-bold uppercase tracking-wide mb-4 text-xl flex items-center gap-2">
+                  <span>📋</span>
+                  <span>Your Field Notes</span>
+                </h3>
+                <p className="text-gray-300 mb-4">
+                  You documented {notesCount} of {duration} missions. These notes are your record—review them anytime.
+                </p>
+                <Link
+                  href={`/protocol/${protocolId}/history?duration=${duration}`}
+                  className="btn-secondary inline-block"
+                >
+                  Review All Field Notes
+                </Link>
+              </section>
+            );
+          })()}
 
-        {/* Research Context - Completion Stats */}
         <section className="mb-12">
-          <StatCard 
-            stats={getStatsForProtocol(protocolId, 'completion')} 
+          <StatCard
+            stats={getStatsForProtocol(protocolId, 'completion')}
             title="You Did What Most Men Don't"
           />
         </section>
-
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            href="/"
-            className="btn-primary flex-1 text-center"
-          >
-            BROWSE PROTOCOLS
-          </Link>
-          
-          <Link
-            href={`/protocol/${protocolId}`}
-            className="btn-secondary flex-1 text-center"
-          >
-            RUN AGAIN
-          </Link>
-        </div>
-
-        {/* Final Message */}
-        <div className="mt-12 bg-tactical-black border-2 border-tactical-green p-6 text-center">
-          <p className="text-tactical-green-bright font-bold text-lg uppercase tracking-wide">
-            Outstanding execution. Systems nominal.
-          </p>
-        </div>
       </main>
     </div>
   );

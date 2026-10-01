@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { UserProgress, ProtocolDuration, ReminderSettings, AssessmentAnswers, CompletedProtocol } from '@/types';
 import { syncService, type SyncData, type SyncStatusEvent } from '@/lib/syncService';
+import { computeCheckInSummary } from '@/utils/reportMetrics';
 
 export interface CloudSyncDisplay {
   isOnline: boolean;
@@ -23,6 +24,7 @@ interface ProgressContextType {
   reminderSettings: ReminderSettings;
   startProtocol: (protocolId: string, duration: ProtocolDuration, withAccountabilityPartner?: boolean, baseline?: AssessmentAnswers) => void;
   completeDay: (day: number) => void;
+  finalizeProtocol: (closing?: AssessmentAnswers) => CompletedProtocol | null;
   markSetback: (day: number, note?: string) => void;
   updateReminderSettings: (settings: Partial<ReminderSettings>) => void;
   resetProtocol: () => void;
@@ -345,28 +347,43 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       longestStreak: Math.max(prev.longestStreak, newStreak)
     }));
 
-    // If protocol is complete, archive it
+    // Last day: keep the run live so the closing assessment can write onto it.
     if (updatedProgress.completedDays.length === updatedProgress.duration) {
-      // Persist the full protocol data so the completion page can access it
       localStorage.setItem('lastCompletedProtocolData', JSON.stringify(updatedProgress));
-
-      setCompletedProtocols(prev => [
-        ...prev,
-        {
-          protocolId: activeProtocol.protocolId,
-          duration: activeProtocol.duration,
-          completedDate: new Date().toISOString(),
-          startedDate: activeProtocol.startDate,
-          baselineAssessment: activeProtocol.baselineAssessment,
-          closingAssessment: activeProtocol.closingAssessment,
-        }
-      ]);
-      setLifetimeStats(prev => ({
-        ...prev,
-        totalProtocolsCompleted: prev.totalProtocolsCompleted + 1
-      }));
-      setActiveProtocol(null);
     }
+  };
+
+  const finalizeProtocol = (closing?: AssessmentAnswers): CompletedProtocol | null => {
+    if (!activeProtocol) return null;
+    if (activeProtocol.completedDays.length !== activeProtocol.duration) return null;
+
+    const closingAssessment = closing
+      ? { answers: closing, takenAt: new Date().toISOString(), phase: 'closing' as const }
+      : undefined;
+
+    const finished: UserProgress = {
+      ...activeProtocol,
+      closingAssessment,
+    };
+
+    const record: CompletedProtocol = {
+      protocolId: finished.protocolId,
+      duration: finished.duration,
+      completedDate: new Date().toISOString(),
+      startedDate: finished.startDate,
+      baselineAssessment: finished.baselineAssessment,
+      closingAssessment,
+      checkInSummary: computeCheckInSummary(finished) ?? undefined,
+    };
+
+    localStorage.setItem('lastCompletedProtocolData', JSON.stringify(finished));
+    setCompletedProtocols((prev) => [...prev, record]);
+    setLifetimeStats((prev) => ({
+      ...prev,
+      totalProtocolsCompleted: prev.totalProtocolsCompleted + 1,
+    }));
+    setActiveProtocol(null);
+    return record;
   };
 
   const markSetback = (day: number, note?: string) => {
@@ -530,6 +547,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         reminderSettings,
         startProtocol,
         completeDay,
+        finalizeProtocol,
         markSetback,
         updateReminderSettings,
         resetProtocol,

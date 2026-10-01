@@ -121,7 +121,7 @@ export default function StatsPage() {
                 
                 return (
                   <div 
-                    key={index}
+                    key={`${completed.protocolId}-${completed.startedDate}-${completed.completedDate}-${index}`}
                     className="bg-tactical-darkgray border-l-4 p-6 flex items-center justify-between"
                     style={{
                       borderLeftColor:
@@ -137,13 +137,16 @@ export default function StatsPage() {
                           {protocol.title}
                         </h3>
                         <p className="text-gray-400 text-sm">
-                          {completed.duration} days • Completed {new Date(completed.completedDate).toLocaleDateString()}
+                          {completed.duration} days · {new Date(completed.startedDate).toLocaleDateString()} → {new Date(completed.completedDate).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    <div className="text-3xl" style={{ color: getProtocolVisualTheme(protocol.id)?.hex ?? '#4ade80' }}>
-                      ✓
-                    </div>
+                    <Link
+                      href={`/protocol/${completed.protocolId}/complete?duration=${completed.duration}&completed=${encodeURIComponent(completed.completedDate)}`}
+                      className="btn-secondary text-sm"
+                    >
+                      View report
+                    </Link>
                   </div>
                 );
               })}

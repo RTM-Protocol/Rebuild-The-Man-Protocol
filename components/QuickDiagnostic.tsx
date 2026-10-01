@@ -4,111 +4,20 @@ import { useState } from 'react';
 import ProtocolIcon from '@/components/ProtocolIcon';
 import type { AssessmentAnswers } from '@/types';
 import { DIAGNOSTIC_ANSWERS_KEY } from '@/utils/assessmentAnswers';
+import { ASSESSMENT_QUESTIONS } from '@/utils/assessmentQuestions';
 
 interface QuickDiagnosticProps {
   onComplete: (answers: AssessmentAnswers) => void;
   onSkip?: () => void;
   hideSkip?: boolean;
+  persistToDiagnosticStorage?: boolean;
 }
-
-type CategoricalQuestion = {
-  kind: 'categorical';
-  id: 'q1' | 'q2' | 'q3' | 'q4' | 'q5';
-  question: string;
-  options: Array<{ value: string; label: string; icon?: string }>;
-};
-
-type ScaleQuestion = {
-  kind: 'scale';
-  id: 'severity' | 'confidence';
-  question: string;
-  subLine: string;
-  lowAnchor: string;
-  highAnchor: string;
-};
-
-type DiagnosticQuestion = CategoricalQuestion | ScaleQuestion;
-
-const questions: DiagnosticQuestion[] = [
-  {
-    kind: 'categorical',
-    id: 'q1',
-    question: "What's your biggest problem right now?",
-    options: [
-      { value: 'stress', label: 'Stress crushing me', icon: '⚠️' },
-      { value: 'anger', label: 'Angry all the time', icon: '🔥' },
-      { value: 'burnout', label: "Can't focus / burned out", icon: '🔋' },
-      { value: 'confidence', label: 'Confidence shot', icon: '🎯' },
-      { value: 'porn', label: 'Porn/sexual issues', icon: '🔄' },
-      { value: 'relationship', label: 'Relationship problems', icon: '💬' },
-      { value: 'depression', label: 'Depressed / no motivation', icon: '⚙️' },
-      { value: 'anxiety', label: 'Anxious / overthinking', icon: '🌀' },
-      { value: 'multiple', label: 'Not sure / multiple issues', icon: '__shield__' },
-    ],
-  },
-  {
-    kind: 'categorical',
-    id: 'q2',
-    question: 'How long has this been an issue?',
-    options: [
-      { value: 'recent', label: 'Last few weeks' },
-      { value: 'months', label: '2-6 months' },
-      { value: 'year', label: '6 months to a year' },
-      { value: 'chronic', label: 'Over a year / always' },
-    ],
-  },
-  {
-    kind: 'categorical',
-    id: 'q3',
-    question: 'Is this affecting your work?',
-    options: [
-      { value: 'yes', label: 'Yes, significantly' },
-      { value: 'somewhat', label: 'Somewhat' },
-      { value: 'no', label: 'Not really' },
-    ],
-  },
-  {
-    kind: 'categorical',
-    id: 'q4',
-    question: 'Is this affecting your relationships?',
-    options: [
-      { value: 'yes', label: 'Yes, significantly' },
-      { value: 'somewhat', label: 'Somewhat' },
-      { value: 'no', label: 'Not really' },
-    ],
-  },
-  {
-    kind: 'categorical',
-    id: 'q5',
-    question: 'Tried fixing this before?',
-    options: [
-      { value: 'no', label: 'No, first time addressing it' },
-      { value: 'failed', label: 'Yes, but failed' },
-      { value: 'didnt-stick', label: "Yes, worked briefly but didn't stick" },
-    ],
-  },
-  {
-    kind: 'scale',
-    id: 'severity',
-    question: 'Right now, how bad is it?',
-    subLine: 'The thing you picked above. Rate it as it stands today.',
-    lowAnchor: '1 — Barely registers',
-    highAnchor: '10 — Running my life',
-  },
-  {
-    kind: 'scale',
-    id: 'confidence',
-    question: 'If it came back next month, could you handle it?',
-    subLine: "Not whether you'd enjoy it. Whether you'd cope.",
-    lowAnchor: "1 — No idea where I'd start",
-    highAnchor: '10 — I know exactly what to do',
-  },
-];
 
 export default function QuickDiagnostic({
   onComplete,
   onSkip,
   hideSkip = false,
+  persistToDiagnosticStorage = true,
 }: QuickDiagnosticProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<AssessmentAnswers>({
@@ -121,12 +30,14 @@ export default function QuickDiagnostic({
     confidence: 0,
   });
 
-  const currentQ = questions[currentQuestion];
-  const totalQuestions = questions.length;
+  const currentQ = ASSESSMENT_QUESTIONS[currentQuestion];
+  const totalQuestions = ASSESSMENT_QUESTIONS.length;
 
   const persistAndComplete = (next: AssessmentAnswers) => {
-    localStorage.setItem(DIAGNOSTIC_ANSWERS_KEY, JSON.stringify(next));
-    localStorage.setItem('diagnostic_completed', 'true');
+    if (persistToDiagnosticStorage) {
+      localStorage.setItem(DIAGNOSTIC_ANSWERS_KEY, JSON.stringify(next));
+      localStorage.setItem('diagnostic_completed', 'true');
+    }
     onComplete(next);
   };
 

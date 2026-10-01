@@ -2,9 +2,17 @@
  * Export utilities for protocol mission data
  */
 
-import { UserProgress } from '@/types';
+import { CompletedProtocol, UserProgress } from '@/types';
 import { protocols } from '@/data/protocols';
 import { getMissionForProtocolDay } from '@/utils/missionUtils';
+import { categoricalLabel } from '@/utils/assessmentQuestions';
+import {
+  computeCheckInTrend,
+  computeComparison,
+  changeOutcomeLabel,
+  FOCUS_DIRECTION_NOTE,
+  checkInWindowsOverlap,
+} from '@/utils/reportMetrics';
 
 export type ExportFormat = 'pdf' | 'csv' | 'txt' | 'json' | 'png' | 'jpeg';
 
@@ -414,5 +422,193 @@ export function generateHTMLForExport(progress: UserProgress): string {
   `;
 
   return html;
+}
+
+function formatReportScore(n: number): string {
+  return Number.isInteger(n) ? String(n) : n.toFixed(1);
+}
+
+/**
+ * HTML for the completion comparison report (same generation approach as generateHTMLForExport).
+ */
+export function generateCompletionReportHTML(
+  record: CompletedProtocol,
+  protocolTitle: string,
+  missionsCompleted: number,
+): string {
+  const comparison = computeComparison(record.baselineAssessment, record.closingAssessment);
+  const showBaselineOnly = !!record.baselineAssessment && !record.closingAssessment;
+  const trend = record.checkInSummary ? computeCheckInTrend(record.checkInSummary) : null;
+  const showCategorical = !!record.baselineAssessment && !!record.closingAssessment;
+  const checkInsLogged = record.checkInSummary?.checkInsRecorded ?? 0;
+
+  const metricLine = (label: string, before: number, after?: number, extra?: string) => {
+    let line = `${label}: ${formatReportScore(before)}`;
+    if (after !== undefined) {
+      line += ` → ${formatReportScore(after)}`;
+      if (extra) line += ` (${extra})`;
+    }
+    return `<div class="summary-item"><span>${line}</span></div>`;
+  };
+
+  let body = '';
+
+  if (comparison) {
+    body += `
+      <div class="summary">
+        <div class="mission-header">Where you started, where you finished</div>
+        <div class="subtitle" style="margin-bottom:12px">Your own ratings, day one against today.</div>
+        ${comparison
+          .map((m) => {
+            const delta = `${m.absoluteChange > 0 ? '+' : ''}${formatReportScore(m.absoluteChange)}, ${changeOutcomeLabel(m)}`;
+            return metricLine(m.label, m.before, m.after, delta);
+          })
+          .join('')}
+      </div>`;
+  } else if (showBaselineOnly && record.baselineAssessment) {
+    body += `
+      <div class="summary">
+        <div class="mission-header">Where you started, where you finished</div>
+        <div class="subtitle" style="margin-bottom:12px">Your own ratings, day one against today.</div>
+        ${metricLine('Severity', record.baselineAssessment.answers.severity)}
+        ${metricLine('Confidence', record.baselineAssessment.answers.confidence)}
+      </div>`;
+  }
+
+  if (trend && record.checkInSummary) {
+    body += `
+      <div class="summary">
+        <div class="mission-header">Your daily scores</div>
+        <div class="subtitle" style="margin-bottom:8px">First three check-ins against your last three.</div>
+        <div class="subtitle" style="margin-bottom:12px">${FOCUS_DIRECTION_NOTE}</div>
+        ${trend
+          .map((m) => {
+            const delta = `${m.absoluteChange > 0 ? '+' : ''}${formatReportScore(m.absoluteChange)}, ${changeOutcomeLabel(m)}`;
+            return metricLine(m.label, m.before, m.after, delta);
+          })
+          .join('')}
+        <div class="summary-item"><span>${record.checkInSummary.checkInsRecorded} of ${record.checkInSummary.checkInsExpected} expected check-ins.</span></div>
+        ${checkInWindowsOverlap(record.checkInSummary.checkInsRecorded)
+          ? `<div class="summary-item"><span>Not enough check-ins to compare a start against an end — these are the same scores read twice.</span></div>`
+          : ''}
+      </div>`;
+  }
+
+  if (showCategorical && record.baselineAssessment && record.closingAssessment) {
+    const lines = (['q2', 'q3', 'q4'] as const)
+      .map((id) => {
+        const from = categoricalLabel(id, record.baselineAssessment!.answers[id]);
+        const to = categoricalLabel(id, record.closingAssessment!.answers[id]);
+        return `<div class="summary-item"><span>${from} → ${to}</span></div>`;
+      })
+      .join('');
+    body += `
+      <div class="summary">
+        <div class="mission-header">What changed around you</div>
+        <div class="subtitle" style="margin-bottom:12px">Work, relationships, and how long you'd been carrying it.</div>
+        ${lines}
+      </div>`;
+  }
+
+  body += `
+    <div class="summary">
+      <div class="mission-header">The work you did</div>
+      <div class="summary-item"><span>${protocolTitle}</span></div>
+      <div class="summary-item"><span>${missionsCompleted} of ${record.duration} missions</span></div>
+      <div class="summary-item"><span>${checkInsLogged}${record.checkInSummary ? ` of ${record.checkInSummary.checkInsExpected}` : ''} check-ins logged</span></div>
+    </div>`;
+
+  const completed = new Date(record.completedDate).toLocaleDateString();
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body {
+          font-family: 'Courier New', monospace;
+          background: #1a1a1a;
+          color: #e0e0e0;
+          padding: 40px;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+        .header {
+          text-align: center;
+          border-bottom: 3px solid #ff6b35;
+          padding-bottom: 20px;
+          margin-bottom: 30px;
+        }
+        .title {
+          font-size: 28px;
+          font-weight: bold;
+          color: #ff6b35;
+          text-transform: uppercase;
+          margin-bottom: 10px;
+        }
+        .subtitle { font-size: 14px; color: #4ade80; }
+        .summary {
+          background: #2a2a2a;
+          border-left: 4px solid #4ade80;
+          padding: 20px;
+          margin-bottom: 30px;
+        }
+        .summary-item { margin: 8px 0; }
+        .mission-header {
+          font-size: 18px;
+          font-weight: bold;
+          color: #ff6b35;
+          margin-bottom: 10px;
+          text-transform: uppercase;
+        }
+        .footer {
+          text-align: center;
+          color: #666;
+          font-size: 12px;
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #333;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="title">${protocolTitle}</div>
+        <div class="subtitle">Completed ${completed}</div>
+      </div>
+      ${body}
+      <div class="footer">
+        Rebuild The Man Protocol - rebuildthemanprotocol.com
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+export async function downloadCompletionReportPdf(
+  record: CompletedProtocol,
+  protocolTitle: string,
+  missionsCompleted: number,
+): Promise<void> {
+  const html2pdf = (await import('html2pdf.js' as any)).default;
+  const html = generateCompletionReportHTML(record, protocolTitle, missionsCompleted);
+  const element = document.createElement('div');
+  element.innerHTML = html;
+  element.style.width = '800px';
+
+  const dateStamp = new Date(record.completedDate).toISOString().split('T')[0];
+  const safeTitle = protocolTitle.replace(/\s+/g, '_');
+
+  await html2pdf()
+    .set({
+      margin: 10,
+      filename: `${safeTitle}_${dateStamp}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#1a1a1a' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    })
+    .from(element)
+    .save();
 }
 
