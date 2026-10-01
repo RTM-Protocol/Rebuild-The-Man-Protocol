@@ -16,12 +16,9 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
     const mapping: Record<string, string> = {
       'stress': 'system-overload',
       'anger': 'pressure-valve',
-      'burnout': 'system-overhaul',
-      'confidence': 'confidence-calibration',
-      'porn': 'reset-rewire',
-      'relationship': 'communication-upgrade',
+      'burnout': 'rebuild-the-man',
+      'confidence': 'calibration-protocol',
       'depression': 'engine-restart',
-      'anxiety': 'control-systems',
       'multiple': 'rebuild-the-man' // Foundation protocol
     };
 
@@ -48,10 +45,7 @@ export default function DiagnosticRecommendation({ primaryIssue, onBrowseAll }: 
       'anger': "Quick reactive anger means your pressure valve is broken. This protocol rebuilds your response system so you control the anger—it doesn't control you.",
       'burnout': "When focus is gone and you're running on empty, you need a complete system overhaul. This protocol rebuilds your energy management from the ground up.",
       'confidence': "Confidence isn't built by thinking—it's built by doing. This protocol recalibrates your self-assessment system through action.",
-      'porn': "This is a wiring issue. The reset protocol breaks the patterns and rewires your reward system. Clinical, tactical, effective.",
-      'relationship': "Communication breakdowns need systematic repair. This protocol upgrades how you process, express, and receive in relationships.",
       'depression': "When the engine won't start, you need a manual ignition sequence. This protocol gets core systems back online, one component at a time.",
-      'anxiety': "Overthinking is a control system malfunction. This protocol recalibrates your threat assessment and teaches your brain to differentiate real problems from noise.",
       'multiple': "Multiple issues or unsure where to start? The Foundation Protocol covers fundamentals. Think of it as basic training before specialized missions."
     };
 
